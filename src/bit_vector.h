@@ -95,7 +95,11 @@ namespace bsim {
   template<int N>
   static inline bit_vector<N> operator&(const bit_vector<N>& a,
 					const bit_vector<N>& b) {
-    return a;
+    bit_vector<N> a_and_b;
+    for (int i = 0; i < N; i++) {
+      a_and_b.set(i, a.get(i) & b.get(i));
+    }
+    return a_and_b;
   }
   
   template<int N>
