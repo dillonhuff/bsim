@@ -62,8 +62,6 @@ namespace bsim {
 
 	unsigned_int<4> c = a + b;
 
-	cout << "c = " << c << endl;
-
 	REQUIRE(c.get(3) == 1);
 	REQUIRE(c.get(2) == 0);
 	REQUIRE(c.get(1) == 1);
@@ -142,6 +140,23 @@ namespace bsim {
 	expected.set(2, 0);
 
 	REQUIRE(c == expected);
+      }
+
+      SECTION("32 bit numbers") {
+	bit_vector<32> a;
+	a.set(23, 1);
+	a.set(4, 1);
+
+	bit_vector<32> b;
+	b.set(4, 1);
+	b.set(9, 1);
+
+	bit_vector<32> c = a & b;
+
+	bit_vector<32> correct;
+	correct.set(4, 1);
+
+	REQUIRE(c == correct);
       }
 
     }

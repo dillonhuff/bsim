@@ -70,17 +70,6 @@ namespace bsim {
 
       return true;
 
-      // if (N % 8 == 0) {
-      // 	return (this->bits[N - 1]) == (other.bits[N - 1]);
-      // }
-
-      // int used_bits_in_last_byte = (N % 8);
-      // unsigned char mask = (1 << used_bits_in_last_byte) - 1;
-
-      // unsigned char lb = mask & this->bits[N - 1];
-      // unsigned char lo = mask & other.bits[N - 1];
-
-      // return lb == lo;
     }
 
     inline bv_uint32 as_native_uint32() const {
@@ -169,7 +158,6 @@ namespace bsim {
       std::cout << "b = " << b.as_native_uint32() << std::endl;
       bv_uint32 res = a.as_native_uint32() + b.as_native_uint32();
 
-      //assert(false);
       return unsigned_int<32>(res);
     }
   };
@@ -178,32 +166,37 @@ namespace bsim {
   static inline unsigned_int<N> operator+(const unsigned_int<N>& a,
 					  const unsigned_int<N>& b) {
     return unsigned_int_operations<N>::add(a, b);
-    // if (N == 32) {
-    //   std::cout << "a = " << a.as_native_uint32() << std::endl;
-    //   std::cout << "b = " << b.as_native_uint32() << std::endl;
-    //   bv_uint32 res = a.as_native_uint32() + b.as_native_uint32();
-
-    //   //assert(false);
-    //   return unsigned_int<N>(res);
-    // }
-
-    // unsigned_int<N> res;
-    // unsigned char carry = 0;
-    // for (int i = 0; i < N; i++) {
-    //   res.set(i, 0x01 & (carry + a.get(i) + b.get(i)));
-    //   carry = a.get(i) & b.get(i);
-    // }
-    // return res;
   }
+
+  template<int Width>
+  class bit_vector_operations {
+  public:
+    static inline bit_vector<Width> land(const bit_vector<Width>& a,
+					 const bit_vector<Width>& b) {
+      bit_vector<Width> a_and_b;
+      for (int i = 0; i < Width; i++) {
+	a_and_b.set(i, a.get(i) & b.get(i));
+      }
+      return a_and_b;
+
+    }
+  };
+
+  template<>
+  class bit_vector_operations<32> {
+  public:
+    static inline bit_vector<32> land(const bit_vector<32>& a,
+				      const bit_vector<32>& b) {
+      std::cout << "a bits = " << a.as_native_uint32() << std::endl;
+      return bit_vector<32>(a.as_native_uint32() & b.as_native_uint32());
+    }
+
+  };
 
   template<int N>
   static inline bit_vector<N> operator&(const bit_vector<N>& a,
 					const bit_vector<N>& b) {
-    bit_vector<N> a_and_b;
-    for (int i = 0; i < N; i++) {
-      a_and_b.set(i, a.get(i) & b.get(i));
-    }
-    return a_and_b;
+    return bit_vector_operations<N>::land(a, b);
   }
 
   template<int N>
