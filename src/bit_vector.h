@@ -177,8 +177,7 @@ namespace bsim {
 
     template<int Q = Width>
     static inline
-    //static inline unsigned_int<Width>
-    typename std::enable_if<Q >= 0, unsigned_int<Q> >::type
+    typename std::enable_if<Q >= 65, unsigned_int<Q> >::type
     add(const unsigned_int<Width>& a,
 	const unsigned_int<Width>& b) {
 
@@ -191,15 +190,20 @@ namespace bsim {
       return res;
     }
 
-    // static inline unsigned_int<32> add(const unsigned_int<32>& a,
-    // 				       const unsigned_int<32>& b) {
+    template<int Q = Width>
+    static inline
+    typename std::enable_if<Q <= 64, unsigned_int<Q> >::type
+    
+    // static inline unsigned_int<32>
+    add(const unsigned_int<Q>& a,
+	const unsigned_int<Q>& b) {
 
-    //   std::cout << "a = " << a.as_native_uint32() << std::endl;
-    //   std::cout << "b = " << b.as_native_uint32() << std::endl;
-    //   bv_uint32 res = a.as_native_uint32() + b.as_native_uint32();
+      std::cout << "a = " << a.as_native_uint64() << std::endl;
+      std::cout << "b = " << b.as_native_uint64() << std::endl;
+      bv_uint32 res = a.as_native_uint64() + b.as_native_uint64();
 
-    //   return unsigned_int<32>(res);
-    // }
+      return unsigned_int<Q>(res);
+    }
     
   };
 
