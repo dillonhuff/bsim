@@ -33,19 +33,35 @@ namespace bsim {
     }
 
     SECTION("Adding bit vectors") {
-      bit_vector<4> a;
-      a.set(3, 1);
-      a.set(0, 1);
 
-      bit_vector<4> b;
-      b.set(0, 1);
+      SECTION("4 bit numbers") {
+	bit_vector<4> a;
+	a.set(3, 1);
+	a.set(0, 1);
 
-      bit_vector<4> c = a + b;
+	bit_vector<4> b;
+	b.set(0, 1);
 
-      REQUIRE(c.get(3) == 1);
-      REQUIRE(c.get(2) == 0);
-      REQUIRE(c.get(1) == 1);
-      REQUIRE(c.get(0) == 0);
+	bit_vector<4> c = a + b;
+
+	REQUIRE(c.get(3) == 1);
+	REQUIRE(c.get(2) == 0);
+	REQUIRE(c.get(1) == 1);
+	REQUIRE(c.get(0) == 0);
+      }
+
+      SECTION("137 bit numbers") {
+	bit_vector<137> a;
+	a.set(136, 1);
+
+	bit_vector<137> b;
+	b.set(136, 1);
+
+	bit_vector<137> c = a + b;
+
+	REQUIRE(c.get(136) == 0);
+
+      }
     }
   }
 
