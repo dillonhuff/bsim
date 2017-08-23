@@ -8,6 +8,7 @@
 #define NUM_BYTES(N) (((N) / 8) + 1 - (((N) % 8 == 0)))
 
 typedef uint32_t bv_uint32;
+
 namespace bsim {
 
   template<int N>
@@ -191,6 +192,16 @@ namespace bsim {
       return bit_vector<32>(a.as_native_uint32() & b.as_native_uint32());
     }
 
+    static inline bit_vector<32> lor(const bit_vector<32>& a,
+				     const bit_vector<32>& b) {
+      return bit_vector<32>(a.as_native_uint32() | b.as_native_uint32());
+    }
+
+    static inline bit_vector<32> lxor(const bit_vector<32>& a,
+				      const bit_vector<32>& b) {
+      return bit_vector<32>(a.as_native_uint32() ^ b.as_native_uint32());
+    }
+    
   };
 
   template<int N>
