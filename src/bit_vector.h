@@ -192,19 +192,56 @@ namespace bsim {
 
     template<int Q = Width>
     static inline
-    typename std::enable_if<Q <= 64, unsigned_int<Q> >::type
-    
-    // static inline unsigned_int<32>
-    add(const unsigned_int<Q>& a,
-	const unsigned_int<Q>& b) {
+    typename std::enable_if<(33 <= Q) && (Q <= 64), unsigned_int<Q> >::type
+    add(const unsigned_int<Width>& a,
+	const unsigned_int<Width>& b) {
 
       std::cout << "a = " << a.as_native_uint64() << std::endl;
       std::cout << "b = " << b.as_native_uint64() << std::endl;
       bv_uint32 res = a.as_native_uint64() + b.as_native_uint64();
 
-      return unsigned_int<Q>(res);
+      return unsigned_int<Width>(res);
     }
-    
+
+    template<int Q = Width>
+    static inline
+    typename std::enable_if<(17 <= Q) && (Q <= 32), unsigned_int<Q> >::type
+    add(const unsigned_int<Width>& a,
+	const unsigned_int<Width>& b) {
+
+      std::cout << "a 32 bit = " << a.as_native_uint32() << std::endl;
+      std::cout << "b 32 bit = " << b.as_native_uint32() << std::endl;
+      bv_uint32 res = a.as_native_uint32() + b.as_native_uint32();
+
+      return unsigned_int<Width>(res);
+    }
+      
+    template<int Q = Width>
+    static inline
+    typename std::enable_if<(9 <= Q) && (Q <= 16), unsigned_int<Q> >::type
+    add(const unsigned_int<Width>& a,
+	const unsigned_int<Width>& b) {
+
+      std::cout << "a 16 bit = " << a.as_native_uint16() << std::endl;
+      std::cout << "b 16 bit = " << b.as_native_uint16() << std::endl;
+      bv_uint32 res = a.as_native_uint16() + b.as_native_uint16();
+
+      return unsigned_int<Width>(res);
+    }
+      
+    template<int Q = Width>
+    static inline
+    typename std::enable_if<(1 <= Q) && (Q <= 8), unsigned_int<Q> >::type
+    add(const unsigned_int<Width>& a,
+	const unsigned_int<Width>& b) {
+
+      std::cout << "a 8 bit = " << a.as_native_uint8() << std::endl;
+      std::cout << "b 8 bit = " << b.as_native_uint8() << std::endl;
+      bv_uint32 res = a.as_native_uint8() + b.as_native_uint8();
+
+      return unsigned_int<Width>(res);
+    }
+      
   };
 
   // template<>
