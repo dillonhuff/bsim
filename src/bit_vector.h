@@ -4,7 +4,7 @@
 #include <cassert>
 #include <iostream>
 
-#define NUM_BITS(N) ((N) / 8) + 1
+#define NUM_BITS(N) (((N) / 8) + 1 - (((N) % 8 == 0)))
 
 namespace bsim {
 
@@ -100,6 +100,12 @@ namespace bsim {
       a_and_b.set(i, a.get(i) & b.get(i));
     }
     return a_and_b;
+  }
+
+  template<int N>
+  static inline bool operator!=(const bit_vector<N>& a,
+				const bit_vector<N>& b) {
+    return !a.equals(b);
   }
   
   template<int N>
