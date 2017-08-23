@@ -32,17 +32,17 @@ namespace bsim {
       
     }
 
-    SECTION("Adding bit vectors") {
+    SECTION("Adding unsigned numbers") {
 
       SECTION("4 bit numbers") {
-	bit_vector<4> a;
+	unsigned_int<4> a;
 	a.set(3, 1);
 	a.set(0, 1);
 
-	bit_vector<4> b;
+	unsigned_int<4> b;
 	b.set(0, 1);
 
-	bit_vector<4> c = a + b;
+	unsigned_int<4> c = a + b;
 
 	REQUIRE(c.get(3) == 1);
 	REQUIRE(c.get(2) == 0);
@@ -51,13 +51,13 @@ namespace bsim {
       }
 
       SECTION("137 bit numbers") {
-	bit_vector<137> a;
+	unsigned_int<137> a;
 	a.set(136, 1);
 
-	bit_vector<137> b;
+	unsigned_int<137> b;
 	b.set(136, 1);
 
-	bit_vector<137> c = a + b;
+	unsigned_int<137> c = a + b;
 
 	REQUIRE(c.get(136) == 0);
 
