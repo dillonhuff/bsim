@@ -16,7 +16,7 @@ namespace bsim {
       REQUIRE(NUM_BYTES(8) == 1);
     }
 
-    SECTION("5 byte to store 33 bits") {
+    SECTION("5 bytes to store 33 bits") {
       REQUIRE(NUM_BYTES(33) == 5);
     }
     
@@ -64,6 +64,21 @@ namespace bsim {
 	REQUIRE(c.get(2) == 0);
 	REQUIRE(c.get(1) == 1);
 	REQUIRE(c.get(0) == 0);
+      }
+
+      SECTION("32 bit numbers") {
+	unsigned_int<32> a;
+	a.set(0, 1);
+
+	unsigned_int<32> b;
+	b.set(0, 1);
+
+	unsigned_int<32> c = a + b;
+
+	unsigned_int<32> correct;
+	correct.set(1, 1);
+
+	REQUIRE(c == correct);
       }
 
       SECTION("137 bit numbers") {
