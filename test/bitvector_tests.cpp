@@ -6,6 +6,22 @@
 
 namespace bsim {
 
+  TEST_CASE("Num bytes test") {
+
+    SECTION("1 byte to store 1 bit") {
+      REQUIRE(NUM_BYTES(1) == 1);
+    }
+
+    SECTION("1 byte to store 8 bits") {
+      REQUIRE(NUM_BYTES(8) == 1);
+    }
+
+    SECTION("5 byte to store 33 bits") {
+      REQUIRE(NUM_BYTES(33) == 5);
+    }
+    
+  }
+
   TEST_CASE("Bitvector arithmetic") {
 
     SECTION("Setting bit vector values") {

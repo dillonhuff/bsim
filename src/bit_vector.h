@@ -4,13 +4,13 @@
 #include <cassert>
 #include <iostream>
 
-#define NUM_BITS(N) (((N) / 8) + 1 - (((N) % 8 == 0)))
+#define NUM_BYTES(N) (((N) / 8) + 1 - (((N) % 8 == 0)))
 
 namespace bsim {
 
   template<int N>
   class bit_vector {
-    unsigned char bits[NUM_BITS(N)];
+    unsigned char bits[NUM_BYTES(N)];
 
   public:
     bit_vector() {
@@ -56,7 +56,7 @@ namespace bsim {
     }
 
     inline bool equals(const bit_vector<N>& other) const {
-      for (int i = 0; i < NUM_BITS(N); i++) {
+      for (int i = 0; i < NUM_BYTES(N); i++) {
 	if (this->bits[i] != other.bits[i]) {
 	  return false;
 	}

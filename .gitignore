@@ -4,3 +4,4 @@ CMakeFiles/
 Makefile
 all-tests
 cmake_install.cmake
+all-tests.dSYM/
