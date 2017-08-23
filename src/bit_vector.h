@@ -6,7 +6,12 @@
 #include <stdint.h>
 #include <type_traits>
 
-#define NUM_BYTES(N) (((N) / 8) + 1 - (((N) % 8 == 0)))
+#define GEN_NUM_BYTES(N) (((N) / 8) + 1 - (((N) % 8 == 0)))
+#define NUM_BYTES_GT_8(N) GEN_NUM_BYTES(N)
+#define NUM_BYTES_GT_4(N) (N <= 64 ? 8 : NUM_BYTES_GT_8(N))
+#define NUM_BYTES_GT_2(N) (N <= 32 ? 4 : NUM_BYTES_GT_4(N))
+#define NUM_BYTES_GT_1(N) (N <= 16 ? 2 : NUM_BYTES_GT_2(N))
+#define NUM_BYTES(N) (N <= 8 ? (1) : NUM_BYTES_GT_1(N))
 
 typedef uint8_t  bv_uint8;
 typedef uint16_t bv_uint16;

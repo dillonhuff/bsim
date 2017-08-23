@@ -9,7 +9,7 @@ using namespace std;
 namespace bsim {
 
   TEST_CASE("Num bytes test") {
-
+    
     SECTION("1 byte to store 1 bit") {
       REQUIRE(NUM_BYTES(1) == 1);
     }
@@ -18,9 +18,34 @@ namespace bsim {
       REQUIRE(NUM_BYTES(8) == 1);
     }
 
-    SECTION("5 bytes to store 33 bits") {
-      REQUIRE(NUM_BYTES(33) == 5);
+    SECTION("2 bytes to store 13 bits") {
+      REQUIRE(NUM_BYTES(13) == 2);
     }
+    
+    SECTION("2 bytes to store 16 bits") {
+      REQUIRE(NUM_BYTES(16) == 2);
+    }
+
+    SECTION("4 bytes to store 17 bits") {
+      REQUIRE(NUM_BYTES(16) == 2);
+    }
+    
+    SECTION("4 bytes to store 32 bits") {
+      REQUIRE(NUM_BYTES(32) == 4);
+    }
+
+    SECTION("8 bytes to store 33 bits") {
+      REQUIRE(NUM_BYTES(33) == 8);
+    }
+    
+    SECTION("8 bytes to store 64 bits") {
+      REQUIRE(NUM_BYTES(64) == 8);
+    }
+
+    SECTION("9 bytes to store 65 bits") {
+      REQUIRE(NUM_BYTES(65) == 9);
+    }
+    
     
   }
 
