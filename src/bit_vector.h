@@ -88,10 +88,22 @@ namespace bsim {
 
     }
 
+    inline bv_uint64 as_native_uint64() const {
+      return *((bv_uint64*) (&bits));
+    }
+
     inline bv_uint32 as_native_uint32() const {
       return *((bv_uint32*) (&bits));
     }
 
+    inline bv_uint16 as_native_uint16() const {
+      return *((bv_uint16*) (&bits));
+    }
+
+    inline bv_uint8 as_native_uint8() const {
+      return *((bv_uint8*) (&bits));
+    }
+    
   };
 
   template<int N>
@@ -135,10 +147,22 @@ namespace bsim {
       return (this->bits).equals((other.bits));
     }
 
+    inline bv_uint64 as_native_uint64() const {
+      return bits.as_native_uint64();
+    }
+    
     inline bv_uint32 as_native_uint32() const {
       return bits.as_native_uint32();
     }
 
+    inline bv_uint16 as_native_uint16() const {
+      return bits.as_native_uint16();
+    }
+
+    inline bv_uint8 as_native_uint8() const {
+      return bits.as_native_uint8();
+    }
+    
     inline std::ostream& print(std::ostream& out) const {
       out << bits << "U";
       return out;
