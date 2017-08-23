@@ -4,6 +4,7 @@
 #include <cassert>
 #include <iostream>
 #include <stdint.h>
+#include <type_traits>
 
 #define NUM_BYTES(N) (((N) / 8) + 1 - (((N) % 8 == 0)))
 
@@ -174,8 +175,12 @@ namespace bsim {
   class unsigned_int_operations {
   public:
 
-    static inline unsigned_int<Width> add(const unsigned_int<Width>& a,
-					  const unsigned_int<Width>& b) {
+    template<int Q = Width>
+    static inline
+    //static inline unsigned_int<Width>
+    typename std::enable_if<Q >= 0, unsigned_int<Q> >::type
+    add(const unsigned_int<Width>& a,
+	const unsigned_int<Width>& b) {
 
       unsigned_int<Width> res;
       unsigned char carry = 0;
@@ -186,21 +191,31 @@ namespace bsim {
       return res;
     }
 
+    // static inline unsigned_int<32> add(const unsigned_int<32>& a,
+    // 				       const unsigned_int<32>& b) {
+
+    //   std::cout << "a = " << a.as_native_uint32() << std::endl;
+    //   std::cout << "b = " << b.as_native_uint32() << std::endl;
+    //   bv_uint32 res = a.as_native_uint32() + b.as_native_uint32();
+
+    //   return unsigned_int<32>(res);
+    // }
+    
   };
 
-  template<>
-  class unsigned_int_operations<32> {
-  public:
-    static inline unsigned_int<32> add(const unsigned_int<32>& a,
-				       const unsigned_int<32>& b) {
+  // template<>
+  // class unsigned_int_operations<32> {
+  // public:
+  //   static inline unsigned_int<32> add(const unsigned_int<32>& a,
+  // 				       const unsigned_int<32>& b) {
 
-      std::cout << "a = " << a.as_native_uint32() << std::endl;
-      std::cout << "b = " << b.as_native_uint32() << std::endl;
-      bv_uint32 res = a.as_native_uint32() + b.as_native_uint32();
+  //     std::cout << "a = " << a.as_native_uint32() << std::endl;
+  //     std::cout << "b = " << b.as_native_uint32() << std::endl;
+  //     bv_uint32 res = a.as_native_uint32() + b.as_native_uint32();
 
-      return unsigned_int<32>(res);
-    }
-  };
+  //     return unsigned_int<32>(res);
+  //   }
+  // };
 
   template<int N>
   static inline unsigned_int<N> operator+(const unsigned_int<N>& a,
@@ -220,6 +235,7 @@ namespace bsim {
       return a_and_b;
 
     }
+
   };
 
   template<>
@@ -269,6 +285,7 @@ namespace bsim {
   public:
     static inline bit_vector<16> land(const bit_vector<16>& a,
   				      const bit_vector<16>& b) {
+      std::cout << "Using 16 bit and" << std::endl;
       return bit_vector<16>((bv_uint16)(a.as_native_uint16() & b.as_native_uint16()));
     }
 
@@ -303,7 +320,7 @@ namespace bsim {
     }
     
   };
-  
+
   template<int N>
   static inline bit_vector<N> operator&(const bit_vector<N>& a,
 					const bit_vector<N>& b) {
