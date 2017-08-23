@@ -63,6 +63,53 @@ namespace bsim {
 
       }
     }
+
+    SECTION("Logical and bit vectors") {
+
+      SECTION("3 bit numbers") {
+	bit_vector<3> a;
+	a.set(0, 0);
+	a.set(1, 1);
+	a.set(2, 0);
+
+	bit_vector<3> b;
+	b.set(0, 1);
+	b.set(1, 1);
+	b.set(2, 0);
+
+	bit_vector<3> c = a & b;
+
+	bit_vector<3> expected;
+	expected.set(0, 0);
+	expected.set(1, 1);
+	expected.set(2, 0);
+
+	REQUIRE(c == expected);
+      }
+
+      SECTION("13 bit numbers") {
+	bit_vector<13> a;
+	a.set(0, 0);
+	a.set(1, 1);
+	a.set(2, 0);
+	a.set(12, 1);
+
+	bit_vector<13> b;
+	b.set(0, 1);
+	b.set(1, 1);
+	b.set(2, 0);
+
+	bit_vector<13> c = a & b;
+
+	bit_vector<13> expected;
+	expected.set(0, 0);
+	expected.set(1, 1);
+	expected.set(2, 0);
+
+	REQUIRE(c == expected);
+      }
+
+    }
   }
 
   

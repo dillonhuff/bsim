@@ -1,12 +1,16 @@
 #pragma once
 
 #include <bitset>
+#include <cassert>
+#include <iostream>
+
+#define NUM_BITS(N) ((N) / 8) + 1
 
 namespace bsim {
 
   template<int N>
   class bit_vector {
-    unsigned char bits[(N / 8) + 1];
+    unsigned char bits[NUM_BITS(N)];
 
   public:
     bit_vector() {
@@ -51,9 +55,16 @@ namespace bsim {
       return 0x01 & (target_byte >> bit_num);
     }
 
-    // ~bit_vector() {
-    //   delete bits;
-    // }
+    inline bool equals(const bit_vector<N>& other) const {
+      for (int i = 0; i < NUM_BITS(N); i++) {
+	if (this->bits[i] != other.bits[i]) {
+	  return false;
+	}
+      }
+
+      return true;
+    }
+
   };
 
   template<int N>
@@ -81,4 +92,30 @@ namespace bsim {
     return res;
   }
 
+  template<int N>
+  static inline bit_vector<N> operator&(const bit_vector<N>& a,
+					const bit_vector<N>& b) {
+    return a;
+  }
+  
+  template<int N>
+  static inline bool operator==(const bit_vector<N>& a,
+				const bit_vector<N>& b) {
+    return a.equals(b);
+  }
+
+  template<int N>
+  static inline std::ostream& operator<<(std::ostream& out, const bit_vector<N>& a) {
+    for (int i = N - 1; i >= 0; i--) {
+      if (a.get(i) == 0) {
+	out << "0";
+      } else if (a.get(i) == 1) {
+	out << "1";
+      } else {
+	assert(false);
+      }
+    }
+
+    return out;
+  }
 }
