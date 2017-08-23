@@ -57,6 +57,9 @@ namespace bsim {
 	a.set(3, 1);
 	a.set(0, 1);
 
+	cout << "4 bit a = " << a << endl;
+	cout << "4 bit a as 8 bit = " << a.as_native_uint8() << endl;
+
 	unsigned_int<4> b;
 	b.set(0, 1);
 
@@ -66,6 +69,22 @@ namespace bsim {
 	REQUIRE(c.get(2) == 0);
 	REQUIRE(c.get(1) == 1);
 	REQUIRE(c.get(0) == 0);
+      }
+
+      SECTION("15 bit numbers") {
+	unsigned_int<15> a;
+	a.set(2, 1);
+
+	unsigned_int<15> b;
+	b.set(5, 1);
+
+	unsigned_int<15> res = a + b;
+
+	unsigned_int<15> correct;
+	correct.set(2, 1);
+	correct.set(5, 1);
+
+	REQUIRE(res == correct);
       }
 
       SECTION("32 bit numbers") {

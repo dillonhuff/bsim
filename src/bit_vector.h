@@ -181,6 +181,9 @@ namespace bsim {
     add(const unsigned_int<Width>& a,
 	const unsigned_int<Width>& b) {
 
+      std::cout << "a general = " << a << std::endl;
+      std::cout << "b general = " << b << std::endl;
+
       unsigned_int<Width> res;
       unsigned char carry = 0;
       for (int i = 0; i < Width; i++) {
@@ -198,7 +201,7 @@ namespace bsim {
 
       std::cout << "a = " << a.as_native_uint64() << std::endl;
       std::cout << "b = " << b.as_native_uint64() << std::endl;
-      bv_uint32 res = a.as_native_uint64() + b.as_native_uint64();
+      bv_uint64 res = a.as_native_uint64() + b.as_native_uint64();
 
       return unsigned_int<Width>(res);
     }
@@ -224,7 +227,7 @@ namespace bsim {
 
       std::cout << "a 16 bit = " << a.as_native_uint16() << std::endl;
       std::cout << "b 16 bit = " << b.as_native_uint16() << std::endl;
-      bv_uint32 res = a.as_native_uint16() + b.as_native_uint16();
+      bv_uint16 res = a.as_native_uint16() + b.as_native_uint16();
 
       return unsigned_int<Width>(res);
     }
@@ -237,26 +240,12 @@ namespace bsim {
 
       std::cout << "a 8 bit = " << a.as_native_uint8() << std::endl;
       std::cout << "b 8 bit = " << b.as_native_uint8() << std::endl;
-      bv_uint32 res = a.as_native_uint8() + b.as_native_uint8();
+      bv_uint8 res = a.as_native_uint8() + b.as_native_uint8();
 
       return unsigned_int<Width>(res);
     }
       
   };
-
-  // template<>
-  // class unsigned_int_operations<32> {
-  // public:
-  //   static inline unsigned_int<32> add(const unsigned_int<32>& a,
-  // 				       const unsigned_int<32>& b) {
-
-  //     std::cout << "a = " << a.as_native_uint32() << std::endl;
-  //     std::cout << "b = " << b.as_native_uint32() << std::endl;
-  //     bv_uint32 res = a.as_native_uint32() + b.as_native_uint32();
-
-  //     return unsigned_int<32>(res);
-  //   }
-  // };
 
   template<int N>
   static inline unsigned_int<N> operator+(const unsigned_int<N>& a,
