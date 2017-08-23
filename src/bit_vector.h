@@ -284,26 +284,25 @@ namespace bsim {
     
   };
 
+  template<>
+  class bit_vector_operations<8> {
+  public:
+    static inline bit_vector<8> land(const bit_vector<8>& a,
+				     const bit_vector<8>& b) {
+      return bit_vector<8>((bv_uint8)(a.as_native_uint8() & b.as_native_uint8()));
+    }
 
-  // template<>
-  // class bit_vector_operations<8> {
-  // public:
-  //   static inline bit_vector<8> land(const bit_vector<8>& a,
-  // 				     const bit_vector<8>& b) {
-  //     return bit_vector<8>(a.as_native_uint8() & b.as_native_uint8());
-  //   }
+    static inline bit_vector<8> lor(const bit_vector<8>& a,
+				    const bit_vector<8>& b) {
+      return bit_vector<8>((bv_uint8)(a.as_native_uint8() | b.as_native_uint8()));
+    }
 
-  //   static inline bit_vector<8> lor(const bit_vector<8>& a,
-  // 				    const bit_vector<8>& b) {
-  //     return bit_vector<8>(a.as_native_uint8() | b.as_native_uint8());
-  //   }
-
-  //   static inline bit_vector<8> lxor(const bit_vector<8>& a,
-  // 				     const bit_vector<8>& b) {
-  //     return bit_vector<8>(a.as_native_uint8() ^ b.as_native_uint8());
-  //   }
+    static inline bit_vector<8> lxor(const bit_vector<8>& a,
+				     const bit_vector<8>& b) {
+      return bit_vector<8>((bv_uint8)(a.as_native_uint8() ^ b.as_native_uint8()));
+    }
     
-  // };
+  };
   
   template<int N>
   static inline bit_vector<N> operator&(const bit_vector<N>& a,
