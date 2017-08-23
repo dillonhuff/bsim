@@ -6,7 +6,7 @@ namespace bsim {
 
   template<int N>
   class bit_vector {
-    std::bitset<N> bits;
+    unsigned char bits[(N / 8) + 1];
 
   public:
     bit_vector() {
@@ -15,11 +15,45 @@ namespace bsim {
       }
     }
 
-    void set(const int ind, const unsigned char val) {
-      bits[ind] = val;
+    bit_vector(const bit_vector<N>& other) {
+      for (int i = 0; i < N; i++) {
+	set(i, other.get(i));
+      }
     }
 
-    unsigned char get(const int ind) const { return bits[ind]; }
+    bit_vector<N>& operator=(const bit_vector<N>& other) {
+      if (&other == this) {
+    	return *this;
+      }
+
+      for (int i = 0; i < N; i++) {
+    	set(i, other.get(i));
+      }
+
+      return *this;
+    }
+
+    inline void set(const int ind, const unsigned char val) {
+      int byte_num = ind / 8;
+      int bit_num = ind % 8;
+
+      unsigned char old = bits[byte_num];
+      old ^= (-val ^ old) & (1 << bit_num);
+
+      bits[byte_num] = old;
+    }
+
+    unsigned char get(const int ind) const {
+      int byte_num = ind / 8;
+      int bit_num = ind % 8;
+
+      unsigned char target_byte = bits[byte_num];
+      return 0x01 & (target_byte >> bit_num);
+    }
+
+    // ~bit_vector() {
+    //   delete bits;
+    // }
   };
 
   template<int N>
