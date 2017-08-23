@@ -7,7 +7,10 @@
 
 #define NUM_BYTES(N) (((N) / 8) + 1 - (((N) % 8 == 0)))
 
+typedef uint8_t  bv_uint8;
+typedef uint16_t bv_uint16;
 typedef uint32_t bv_uint32;
+typedef uint64_t bv_uint64;
 
 namespace bsim {
 
@@ -22,10 +25,22 @@ namespace bsim {
       }
     }
 
+    bit_vector(const bv_uint64 val) {
+      *((bv_uint64*)(&bits)) = val;
+    }
+    
     bit_vector(const bv_uint32 val) {
       *((bv_uint32*)(&bits)) = val;
     }
 
+    bit_vector(const bv_uint16 val) {
+      *((bv_uint16*)(&bits)) = val;
+    }
+
+    bit_vector(const bv_uint8 val) {
+      *((bv_uint8*)(&bits)) = val;
+    }
+    
     bit_vector(const bit_vector<N>& other) {
       for (int i = 0; i < N; i++) {
 	set(i, other.get(i));
