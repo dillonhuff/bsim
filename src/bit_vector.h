@@ -90,6 +90,21 @@ namespace bsim {
   };
 
   template<int N>
+  static inline std::ostream& operator<<(std::ostream& out, const bit_vector<N>& a) {
+    for (int i = N - 1; i >= 0; i--) {
+      if (a.get(i) == 0) {
+	out << "0";
+      } else if (a.get(i) == 1) {
+	out << "1";
+      } else {
+	assert(false);
+      }
+    }
+
+    return out;
+  }
+
+  template<int N>
   static inline bool operator==(const bit_vector<N>& a,
 				const bit_vector<N>& b) {
     return a.equals(b);
@@ -118,29 +133,67 @@ namespace bsim {
     inline bv_uint32 as_native_uint32() const {
       return bits.as_native_uint32();
     }
+
+    inline std::ostream& print(std::ostream& out) const {
+      out << bits << "U";
+      return out;
+    }
     
+  };
+
+  template<int Width>
+  class unsigned_int_operations {
+  public:
+
+    static inline unsigned_int<Width> add(const unsigned_int<Width>& a,
+					  const unsigned_int<Width>& b) {
+
+      unsigned_int<Width> res;
+      unsigned char carry = 0;
+      for (int i = 0; i < Width; i++) {
+	res.set(i, 0x01 & (carry + a.get(i) + b.get(i)));
+	carry = a.get(i) & b.get(i);
+      }
+      return res;
+    }
+
+  };
+
+  template<>
+  class unsigned_int_operations<32> {
+  public:
+    static inline unsigned_int<32> add(const unsigned_int<32>& a,
+				       const unsigned_int<32>& b) {
+
+      std::cout << "a = " << a.as_native_uint32() << std::endl;
+      std::cout << "b = " << b.as_native_uint32() << std::endl;
+      bv_uint32 res = a.as_native_uint32() + b.as_native_uint32();
+
+      //assert(false);
+      return unsigned_int<32>(res);
+    }
   };
 
   template<int N>
   static inline unsigned_int<N> operator+(const unsigned_int<N>& a,
 					  const unsigned_int<N>& b) {
+    return unsigned_int_operations<N>::add(a, b);
+    // if (N == 32) {
+    //   std::cout << "a = " << a.as_native_uint32() << std::endl;
+    //   std::cout << "b = " << b.as_native_uint32() << std::endl;
+    //   bv_uint32 res = a.as_native_uint32() + b.as_native_uint32();
 
-    if (N == 32) {
-      // std::cout << "a = " << a.as_native_uint32() << std::endl;
-      // std::cout << "b = " << b.as_native_uint32() << std::endl;
-      //bv_uint32 res = a.as_native_uint32() + b.as_native_uint32();
+    //   //assert(false);
+    //   return unsigned_int<N>(res);
+    // }
 
-      //assert(false);
-      //return unsigned_int<N>(res);
-    }
-
-    unsigned_int<N> res;
-    unsigned char carry = 0;
-    for (int i = 0; i < N; i++) {
-      res.set(i, 0x01 & (carry + a.get(i) + b.get(i)));
-      carry = a.get(i) & b.get(i);
-    }
-    return res;
+    // unsigned_int<N> res;
+    // unsigned char carry = 0;
+    // for (int i = 0; i < N; i++) {
+    //   res.set(i, 0x01 & (carry + a.get(i) + b.get(i)));
+    //   carry = a.get(i) & b.get(i);
+    // }
+    // return res;
   }
 
   template<int N>
@@ -166,17 +219,9 @@ namespace bsim {
   }
   
   template<int N>
-  static inline std::ostream& operator<<(std::ostream& out, const bit_vector<N>& a) {
-    for (int i = N - 1; i >= 0; i--) {
-      if (a.get(i) == 0) {
-	out << "0";
-      } else if (a.get(i) == 1) {
-	out << "1";
-      } else {
-	assert(false);
-      }
-    }
-
+  static inline std::ostream&
+  operator<<(std::ostream& out, const unsigned_int<N>& a) {
+    a.print(out);
     return out;
   }
 }

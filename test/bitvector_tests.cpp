@@ -4,6 +4,8 @@
 
 #include "bit_vector.h"
 
+using namespace std;
+
 namespace bsim {
 
   TEST_CASE("Num bytes test") {
@@ -59,6 +61,8 @@ namespace bsim {
 	b.set(0, 1);
 
 	unsigned_int<4> c = a + b;
+
+	cout << "c = " << c << endl;
 
 	REQUIRE(c.get(3) == 1);
 	REQUIRE(c.get(2) == 0);
