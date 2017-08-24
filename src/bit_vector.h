@@ -50,7 +50,6 @@ namespace bsim {
     bit_vector(const bit_vector<N>& other) {
       for (int i = 0; i < NUM_BYTES(N); i++) {
 	bits[i] = other.bits[i];
-	//set(i, other.get(i));
       }
     }
 
@@ -190,18 +189,40 @@ namespace bsim {
     sub_general_width(const unsigned_int<Width>& a,
 		      const unsigned_int<Width>& b) {
       unsigned_int<Width> diff;
-      unsigned_int<Width> b_cpy = b;
+      unsigned_int<Width> a_cpy = a;
 
       std::cout << "a = " << a << std::endl;
       std::cout << "b = " << b << std::endl;
-      std::cout << "b_cpy = " << b_cpy << std::endl;
+      std::cout << "a_cpy = " << a_cpy << std::endl;
 
+      bool overflow = false;
       for (int i = 0; i < Width; i++) {
-	if ((a.get(i) == 0) &&
-	    (b_cpy.get(i) == 1)) {
-	  assert(false);
-	} else if (a.get(i) == b.get(i)) {
+	std::cout << "a_cpy = " << a_cpy << std::endl;
+
+	if ((a_cpy.get(i) == 0) &&
+	    (b.get(i) == 1)) {
+
+	  int j = i + 1;
+
+	  diff.set(i, 1);	  
+
+	  // Modify to carry
+	  while ((j < Width) && (a_cpy.get(j) != 1)) {
+	    a_cpy.set(j, 1);
+	    j++;
+	  }
+
+	  if (j >= Width) {
+	    overflow = true;
+	  } else {
+	    a_cpy.set(j, 0);
+	  }
+
+	} else if (a_cpy.get(i) == b.get(i)) {
 	  diff.set(i, 0);
+	} else if ((a_cpy.get(i) == 1) &&
+		   (b.get(i) == 0)) {
+	  diff.set(i, 1);
 	} else {
 	  assert(false);
 	}

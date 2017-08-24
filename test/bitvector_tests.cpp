@@ -66,6 +66,15 @@ namespace bsim {
 
 	REQUIRE(b == b_cpy);
       }
+
+      SECTION("bit by bit copy") {
+	unsigned_int<3> b_cpy(b);
+	for (int i = 0; i < 3; i++) {
+	  b_cpy.set(i, b.get(i));
+	}
+
+	REQUIRE(b == b_cpy);
+      }
     }
   }
 
