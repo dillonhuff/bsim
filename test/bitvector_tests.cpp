@@ -93,6 +93,34 @@ namespace bsim {
 	REQUIRE(c.get(0) == 0);
       }
 
+      SECTION("8 bit add overflow") {
+	unsigned_int<8> a;
+	a.set(0, 1);
+	a.set(1, 1);
+	a.set(2, 1);
+	a.set(3, 1);
+	a.set(4, 1);
+	a.set(5, 1);
+	a.set(6, 1);
+	a.set(7, 1);
+
+	unsigned_int<8> b;
+	b.set(1, 1);
+
+	unsigned_int<8> c = a + b;
+
+	auto c_gen =
+	  unsigned_int_operations<8>::add_general_width(a, b);
+
+	cout << "a                = " << a << endl;
+	cout << "b                = " << b << endl;
+	cout << "overflow value c = " << c << endl;
+	cout << "computed value c = " << c_gen << endl;
+
+	
+	REQUIRE(c_gen == c);
+      }
+
       SECTION("15 bit numbers") {
 	unsigned_int<15> a;
 	a.set(2, 1);
@@ -124,6 +152,20 @@ namespace bsim {
 	REQUIRE(c == correct);
       }
 
+      SECTION("66 bit numbers") {
+	unsigned_int<66> a;
+	for (int i = 0; i < 66; i++) {
+	  a.set(i, 1);
+	}
+
+	unsigned_int<66> b;
+	b.set(4, 1);
+
+	auto c = a + b;
+
+	cout << c << endl;
+      }
+      
       SECTION("137 bit numbers") {
 	unsigned_int<137> a;
 	a.set(136, 1);
@@ -216,7 +258,7 @@ namespace bsim {
 
 	REQUIRE(c == correct);
       }
-      
+
     }
 
     SECTION("Logical or") {

@@ -184,22 +184,33 @@ namespace bsim {
   class unsigned_int_operations {
   public:
 
+    static inline
+    unsigned_int<Width>
+    add_general_width(const unsigned_int<Width>& a,
+		      const unsigned_int<Width>& b) {
+
+      unsigned_int<Width> res;
+      unsigned char carry = 0;
+      for (int i = 0; i < Width; i++) {
+	unsigned char sum = a.get(i) + b.get(i) + carry;
+
+	unsigned char z_i = sum % 2;
+	res.set(i, z_i);
+	if (sum >= 2) {
+	  carry = 1;
+	}
+
+      }
+
+      return res;
+    }
+
     template<int Q = Width>
     static inline
     typename std::enable_if<Q >= 65, unsigned_int<Q> >::type
     add(const unsigned_int<Width>& a,
 	const unsigned_int<Width>& b) {
-
-      //std::cout << "a general = " << a << std::endl;
-      //std::cout << "b general = " << b << std::endl;
-
-      unsigned_int<Width> res;
-      unsigned char carry = 0;
-      for (int i = 0; i < Width; i++) {
-	res.set(i, 0x01 & (carry + a.get(i) + b.get(i)));
-	carry = a.get(i) & b.get(i);
-      }
-      return res;
+      return add_general_width(a, b);
     }
 
     template<int Q = Width>
@@ -370,7 +381,7 @@ namespace bsim {
 					const bit_vector<N>& b) {
     return bit_vector_operations<N>::lxor(a, b);
   }
-  
+
   template<int N>
   static inline bool operator!=(const bit_vector<N>& a,
 				const bit_vector<N>& b) {
@@ -382,7 +393,7 @@ namespace bsim {
 				const unsigned_int<N>& b) {
     return a.equals(b);
   }
-  
+
   template<int N>
   static inline std::ostream&
   operator<<(std::ostream& out, const unsigned_int<N>& a) {
