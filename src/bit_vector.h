@@ -191,13 +191,8 @@ namespace bsim {
       unsigned_int<Width> diff;
       unsigned_int<Width> a_cpy = a;
 
-      std::cout << "a = " << a << std::endl;
-      std::cout << "b = " << b << std::endl;
-      std::cout << "a_cpy = " << a_cpy << std::endl;
-
       bool overflow = false;
       for (int i = 0; i < Width; i++) {
-	std::cout << "a_cpy = " << a_cpy << std::endl;
 
 	if ((a_cpy.get(i) == 0) &&
 	    (b.get(i) == 1)) {
