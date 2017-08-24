@@ -84,14 +84,21 @@ namespace bsim {
     }
 
     inline bool equals(const bit_vector<N>& other) const {
-      for (int i = 0; i < NUM_BYTES(N) - 1; i++) {
-	if (this->bits[i] != other.bits[i]) {
+      // for (int i = 0; i < NUM_BYTES(N); i++) {
+      // 	if (this->bits[i] != other.bits[i]) {
+      // 	  return false;
+      // 	}
+      // }
+
+      // return true;
+
+      for (int i = 0; i < N; i++) {
+	if (get(i) != other.get(i)) {
 	  return false;
 	}
       }
 
       return true;
-
     }
 
     inline bv_uint64 as_native_uint64() const {
