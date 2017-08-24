@@ -148,7 +148,10 @@ namespace bsim {
     unsigned_int() {}
 
 
+    unsigned_int(const bv_uint8 val) : bits(val) {}
+    unsigned_int(const bv_uint16 val) : bits(val) {}
     unsigned_int(const bv_uint32 val) : bits(val) {}
+    unsigned_int(const bv_uint64 val) : bits(val) {}
 
     void set(const int ind, const unsigned char val) {
       bits.set(ind, val);
@@ -193,8 +196,8 @@ namespace bsim {
     add(const unsigned_int<Width>& a,
 	const unsigned_int<Width>& b) {
 
-      std::cout << "a general = " << a << std::endl;
-      std::cout << "b general = " << b << std::endl;
+      //std::cout << "a general = " << a << std::endl;
+      //std::cout << "b general = " << b << std::endl;
 
       unsigned_int<Width> res;
       unsigned char carry = 0;
@@ -211,8 +214,8 @@ namespace bsim {
     add(const unsigned_int<Width>& a,
 	const unsigned_int<Width>& b) {
 
-      std::cout << "a = " << a.as_native_uint64() << std::endl;
-      std::cout << "b = " << b.as_native_uint64() << std::endl;
+      //std::cout << "a = " << a.as_native_uint64() << std::endl;
+      //std::cout << "b = " << b.as_native_uint64() << std::endl;
       bv_uint64 res = a.as_native_uint64() + b.as_native_uint64();
 
       return unsigned_int<Width>(res);
@@ -224,8 +227,8 @@ namespace bsim {
     add(const unsigned_int<Width>& a,
 	const unsigned_int<Width>& b) {
 
-      std::cout << "a 32 bit = " << a.as_native_uint32() << std::endl;
-      std::cout << "b 32 bit = " << b.as_native_uint32() << std::endl;
+      //std::cout << "a 32 bit = " << a.as_native_uint32() << std::endl;
+      //std::cout << "b 32 bit = " << b.as_native_uint32() << std::endl;
       bv_uint32 res = a.as_native_uint32() + b.as_native_uint32();
 
       return unsigned_int<Width>(res);
@@ -237,8 +240,8 @@ namespace bsim {
     add(const unsigned_int<Width>& a,
 	const unsigned_int<Width>& b) {
 
-      std::cout << "a 16 bit = " << a.as_native_uint16() << std::endl;
-      std::cout << "b 16 bit = " << b.as_native_uint16() << std::endl;
+      //std::cout << "a 16 bit = " << a.as_native_uint16() << std::endl;
+      //std::cout << "b 16 bit = " << b.as_native_uint16() << std::endl;
       bv_uint16 res = a.as_native_uint16() + b.as_native_uint16();
 
       return unsigned_int<Width>(res);
@@ -250,9 +253,7 @@ namespace bsim {
     add(const unsigned_int<Width>& a,
 	const unsigned_int<Width>& b) {
 
-      std::cout << "a 8 bit = " << a.as_native_uint8() << std::endl;
-      std::cout << "b 8 bit = " << b.as_native_uint8() << std::endl;
-      bv_uint8 res = a.as_native_uint8() + b.as_native_uint8();
+      bv_uint8 res = +(a.as_native_uint8()) + +(b.as_native_uint8());
 
       return unsigned_int<Width>(res);
     }
@@ -327,6 +328,18 @@ namespace bsim {
       return a_or_b;
 
     }
+
+    static inline
+    bit_vector<Width>
+    lxor(const bit_vector<Width>& a,
+	 const bit_vector<Width>& b) {
+      bit_vector<Width> a_or_b;
+      for (int i = 0; i < Width; i++) {
+	a_or_b.set(i, a.get(i) ^ b.get(i));
+      }
+      return a_or_b;
+
+    }
     
   };
 
@@ -349,28 +362,6 @@ namespace bsim {
     }
     
   };
-
-
-  // template<>
-  // class bit_vector_operations<32> {
-  // public:
-  //   static inline bit_vector<32> land(const bit_vector<32>& a,
-  // 				      const bit_vector<32>& b) {
-  //     return bit_vector<32>(a.as_native_uint32() & b.as_native_uint32());
-  //   }
-
-  //   static inline bit_vector<32> lor(const bit_vector<32>& a,
-  // 				     const bit_vector<32>& b) {
-  //     return bit_vector<32>(a.as_native_uint32() | b.as_native_uint32());
-  //   }
-
-  //   static inline bit_vector<32> lxor(const bit_vector<32>& a,
-  // 				      const bit_vector<32>& b) {
-  //     return bit_vector<32>(a.as_native_uint32() ^ b.as_native_uint32());
-  //   }
-    
-  // };
-
 
   template<>
   class bit_vector_operations<16> {
@@ -423,6 +414,12 @@ namespace bsim {
   static inline bit_vector<N> operator|(const bit_vector<N>& a,
 					const bit_vector<N>& b) {
     return bit_vector_operations<N>::lor(a, b);
+  }
+
+  template<int N>
+  static inline bit_vector<N> operator^(const bit_vector<N>& a,
+					const bit_vector<N>& b) {
+    return bit_vector_operations<N>::lxor(a, b);
   }
   
   template<int N>

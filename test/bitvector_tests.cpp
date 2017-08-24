@@ -84,12 +84,13 @@ namespace bsim {
 
 	cout << "4 bit a = " << a << endl;
 
-	cout << "4 bit a as 8 bit = " << a.as_native_uint8() << endl;
+	cout << "4 bit a as 8 bit = " << +(a.as_native_uint8()) << endl;
 
 	unsigned_int<4> b;
 	b.set(0, 1);
 
-	cout << "4 bit b = " << a << endl;	
+	cout << "4 bit b = " << b << endl;	
+	cout << "4 bit b as 8 bit = " << +(b.as_native_uint8()) << endl;
 
 	unsigned_int<4> c = a + b;
 
@@ -99,6 +100,14 @@ namespace bsim {
 	REQUIRE(c.get(2) == 0);
 	REQUIRE(c.get(1) == 1);
 	REQUIRE(c.get(0) == 0);
+      }
+
+      SECTION("8 bit numbers") {
+	unsigned_int<8> a;
+	a.set(7, 1);
+
+	cout << "8 bit a = " << a << endl;
+	cout << "8 bit a as native = " << +(a.as_native_uint8()) << endl;
       }
 
       SECTION("15 bit numbers") {
@@ -228,20 +237,69 @@ namespace bsim {
     }
 
     SECTION("Logical or") {
-      bit_vector<3> a;
-      a.set(0, 1);
-      a.set(2, 1);
 
-      bit_vector<3> b;
-      b.set(0, 1);
+      SECTION("3 bits") {
+	bit_vector<3> a;
+	a.set(0, 1);
+	a.set(2, 1);
 
-      bit_vector<3> c = a | b;
+	bit_vector<3> b;
+	b.set(0, 1);
 
-      bit_vector<3> correct;
-      correct.set(0, 1);
-      correct.set(2, 1);
+	bit_vector<3> c = a | b;
 
-      REQUIRE(c == correct);
+	bit_vector<3> correct;
+	correct.set(0, 1);
+	correct.set(2, 1);
+
+	REQUIRE(c == correct);
+      }
+
+      SECTION("1129 bits") {
+	bit_vector<1129> a;
+	a.set(1000, 1);
+	a.set(932, 1);
+	a.set(60, 1);
+
+	bit_vector<1129> b;
+	b.set(1001, 1);
+	b.set(932, 1);
+	b.set(287, 1);
+
+	bit_vector<1129> c = a | b;
+
+	bit_vector<1129> correct;
+	correct.set(1001, 1);
+	correct.set(1000, 1);
+	correct.set(932, 1);
+	correct.set(287, 1);
+	correct.set(60, 1);
+
+	REQUIRE(c == correct);
+      }
+      
+    }
+
+    SECTION("Logical XOR") {
+
+      SECTION("83 bit vectors") {
+	bit_vector<83> a;
+	a.set(82, 1);
+	a.set(60, 1);
+	a.set(13, 1);
+
+	bit_vector<83> b;
+	b.set(60, 1);
+
+	bit_vector<83> c = a ^ b;
+
+	bit_vector<83> correct;
+	correct.set(82, 1);
+	correct.set(13, 1);
+
+	REQUIRE(c == correct);
+	
+      }
     }
 
   }
