@@ -240,6 +240,20 @@ namespace bsim {
 		      const unsigned_int<Width>& b) {
       unsigned_int<2*Width> full_len;
 
+      for (int i = 0; i < Width; i++) {
+	if (b.get(i) == 1) {
+
+	  unsigned_int<2*Width> shifted_a;
+
+	  for (int j = 0; j < Width; j++) {
+	    shifted_a.set(j + i, a.get(j));
+	  }
+
+	  full_len =
+	    unsigned_int_operations<2*Width>::add_general_width(full_len, shifted_a);
+	}
+      }
+
       unsigned_int<Width> res;
       for (int i = 0; i < Width; i++) {
 	res.set(i, full_len.get(i));
