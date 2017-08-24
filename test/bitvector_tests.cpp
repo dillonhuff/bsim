@@ -209,8 +209,24 @@ namespace bsim {
       }
 
     }
-  }
 
-  
+    SECTION("Logical or") {
+      bit_vector<3> a;
+      a.set(0, 1);
+      a.set(2, 1);
+
+      bit_vector<3> b;
+      b.set(0, 1);
+
+      bit_vector<3> c = a | b;
+
+      bit_vector<3> correct;
+      correct.set(0, 1);
+      correct.set(2, 1);
+
+      REQUIRE(c == correct);
+    }
+
+  }
 
 }

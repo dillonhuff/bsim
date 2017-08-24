@@ -271,6 +271,16 @@ namespace bsim {
 
     }
 
+    static inline bit_vector<Width> lor(const bit_vector<Width>& a,
+					const bit_vector<Width>& b) {
+      bit_vector<Width> a_or_b;
+      for (int i = 0; i < Width; i++) {
+	a_or_b.set(i, a.get(i) | b.get(i));
+      }
+      return a_or_b;
+
+    }
+    
   };
 
   template<>
@@ -362,6 +372,12 @@ namespace bsim {
     return bit_vector_operations<N>::land(a, b);
   }
 
+  template<int N>
+  static inline bit_vector<N> operator|(const bit_vector<N>& a,
+					const bit_vector<N>& b) {
+    return bit_vector_operations<N>::lor(a, b);
+  }
+  
   template<int N>
   static inline bool operator!=(const bit_vector<N>& a,
 				const bit_vector<N>& b) {
