@@ -48,8 +48,9 @@ namespace bsim {
     }
     
     bit_vector(const bit_vector<N>& other) {
-      for (int i = 0; i < N; i++) {
-	set(i, other.get(i));
+      for (int i = 0; i < NUM_BYTES(N); i++) {
+	bits[i] = other.bits[i];
+	//set(i, other.get(i));
       }
     }
 
