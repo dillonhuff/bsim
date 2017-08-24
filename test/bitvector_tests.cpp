@@ -82,32 +82,15 @@ namespace bsim {
 	a.set(3, 1);
 	a.set(0, 1);
 
-	cout << "4 bit a = " << a << endl;
-
-	cout << "4 bit a as 8 bit = " << +(a.as_native_uint8()) << endl;
-
 	unsigned_int<4> b;
 	b.set(0, 1);
 
-	cout << "4 bit b = " << b << endl;	
-	cout << "4 bit b as 8 bit = " << +(b.as_native_uint8()) << endl;
-
 	unsigned_int<4> c = a + b;
-
-	cout << "4 bit c = " << c << endl;
 
 	REQUIRE(c.get(3) == 1);
 	REQUIRE(c.get(2) == 0);
 	REQUIRE(c.get(1) == 1);
 	REQUIRE(c.get(0) == 0);
-      }
-
-      SECTION("8 bit numbers") {
-	unsigned_int<8> a;
-	a.set(7, 1);
-
-	cout << "8 bit a = " << a << endl;
-	cout << "8 bit a as native = " << +(a.as_native_uint8()) << endl;
       }
 
       SECTION("15 bit numbers") {
