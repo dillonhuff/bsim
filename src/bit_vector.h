@@ -186,6 +186,31 @@ namespace bsim {
 
     static inline
     unsigned_int<Width>
+    sub_general_width(const unsigned_int<Width>& a,
+		      const unsigned_int<Width>& b) {
+      unsigned_int<Width> diff;
+      unsigned_int<Width> b_cpy = b;
+
+      std::cout << "a = " << a << std::endl;
+      std::cout << "b = " << b << std::endl;
+      std::cout << "b_cpy = " << b_cpy << std::endl;
+
+      for (int i = 0; i < Width; i++) {
+	if ((a.get(i) == 0) &&
+	    (b_cpy.get(i) == 1)) {
+	  assert(false);
+	} else if (a.get(i) == b.get(i)) {
+	  diff.set(i, 0);
+	} else {
+	  assert(false);
+	}
+      }
+
+      return diff;
+    }    
+
+    static inline
+    unsigned_int<Width>
     add_general_width(const unsigned_int<Width>& a,
 		      const unsigned_int<Width>& b) {
 

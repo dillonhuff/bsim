@@ -49,6 +49,26 @@ namespace bsim {
     
   }
 
+  TEST_CASE("Bit vector comparison") {
+
+    SECTION("3 bits") {
+      unsigned_int<3> b;
+      b.set(0, 1);
+
+      SECTION("Copy construct") {
+	unsigned_int<3> b_cpy(b);
+
+	REQUIRE(b == b_cpy);
+      }
+
+      SECTION("Copy assign") {
+	unsigned_int<3> b_cpy = b;
+
+	REQUIRE(b == b_cpy);
+      }
+    }
+  }
+
   TEST_CASE("Bitvector arithmetic") {
 
     SECTION("Setting bit vector values") {
@@ -73,6 +93,26 @@ namespace bsim {
 	REQUIRE(a.get(2) == 0);
       }
       
+    }
+
+    SECTION("Subtracting unsigned numbers") {
+
+      SECTION("3 bit numbers") {
+	unsigned_int<3> a;
+	a.set(2, 1);
+	
+	unsigned_int<3> b;
+	b.set(0, 1);
+
+	unsigned_int<3> correct;
+	correct.set(0, 1);
+	correct.set(1, 1);
+
+	auto c =
+	  unsigned_int_operations<3>::sub_general_width(a, b);
+
+	REQUIRE(c == correct);
+      }
     }
 
     SECTION("Adding unsigned numbers") {
@@ -112,16 +152,6 @@ namespace bsim {
 	  unsigned_int_operations<7>::add_general_width(a3_gen, b);
 	auto a3_gen_res =
 	  unsigned_int_operations<7>::add_general_width(a3_gen_res_1, b);
-
-	cout << "a      = " << a << endl;
-	cout << "a2     = " << a2 << endl;
-	cout << "a2_gen = " << a2_gen << endl;
-	
-	cout << "a3     = " << a3 << endl;
-	cout << "a3_gen = " << a3_gen << endl;
-
-	cout << "ares   = " << ares << endl;
-	cout << "a3_gen_res = " << a3_gen_res << endl;
 
 	REQUIRE(ares == a3_gen_res);
       }
