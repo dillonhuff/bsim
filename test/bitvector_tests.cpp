@@ -97,22 +97,33 @@ namespace bsim {
 	unsigned_int<7> a; // 1000000
 	a.set(6, 1);
 
+	unsigned_int<7> b;
+	b.set(6, 1);       // 0100000
+
 	auto a2 = a + a; // Should be zero
 	auto a3 = a2 + a2;
+	auto ares = (a3 + b) + b;
 
 	auto a2_gen = 
 	  unsigned_int_operations<7>::add_general_width(a, a);
 	auto a3_gen = 
 	  unsigned_int_operations<7>::add_general_width(a2_gen, a2_gen);
+	auto a3_gen_res_1 =
+	  unsigned_int_operations<7>::add_general_width(a3_gen, b);
+	auto a3_gen_res =
+	  unsigned_int_operations<7>::add_general_width(a3_gen_res_1, b);
 
 	cout << "a      = " << a << endl;
 	cout << "a2     = " << a2 << endl;
 	cout << "a2_gen = " << a2_gen << endl;
-
+	
 	cout << "a3     = " << a3 << endl;
 	cout << "a3_gen = " << a3_gen << endl;
 
-	REQUIRE(a3 == a3_gen);
+	cout << "ares   = " << ares << endl;
+	cout << "a3_gen_res = " << a3_gen_res << endl;
+
+	REQUIRE(ares == a3_gen_res);
       }
 
       SECTION("8 bit add overflow") {
