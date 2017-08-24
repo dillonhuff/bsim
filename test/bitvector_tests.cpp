@@ -302,6 +302,27 @@ namespace bsim {
       }
     }
 
+    SECTION("Logical not") {
+
+      SECTION("77 bits") {
+	bit_vector<77> a;
+	a.set(49, 1);
+	a.set(12, 1);
+
+	bit_vector<77> c = ~a;
+
+	bit_vector<77> correct;
+	for (int i = 0; i < 77; i++) {
+	  if ((i != 49) && (i != 12)) {
+	    correct.set(i, 1);
+	  }
+	}
+
+	REQUIRE(c == correct);
+	
+      }
+    }
+
   }
 
 }

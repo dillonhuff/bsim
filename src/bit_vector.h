@@ -70,7 +70,8 @@ namespace bsim {
       int bit_num = ind % 8;
 
       unsigned char old = bits[byte_num];
-      old ^= (-val ^ old) & (1 << bit_num);
+      // The & 0x01 only seems to be needed for logical not
+      old ^= (-(val & 0x01) ^ old) & (1 << bit_num);
 
       bits[byte_num] = old;
     }
@@ -84,13 +85,6 @@ namespace bsim {
     }
 
     inline bool equals(const bit_vector<N>& other) const {
-      // for (int i = 0; i < NUM_BYTES(N); i++) {
-      // 	if (this->bits[i] != other.bits[i]) {
-      // 	  return false;
-      // 	}
-      // }
-
-      // return true;
 
       for (int i = 0; i < N; i++) {
 	if (get(i) != other.get(i)) {
@@ -319,6 +313,17 @@ namespace bsim {
       return bit_vector<Width>(a_and_b);
     }
 
+
+
+    static inline bit_vector<Width> lnot(const bit_vector<Width>& a) {
+      bit_vector<Width> not_a;
+      for (int i = 0; i < Width; i++) {
+	not_a.set(i, ~a.get(i));
+      }
+      return not_a;
+
+    }
+      
     static inline bit_vector<Width> lor(const bit_vector<Width>& a,
 					const bit_vector<Width>& b) {
       bit_vector<Width> a_or_b;
@@ -404,6 +409,11 @@ namespace bsim {
     
   };
 
+  template<int N>
+  static inline bit_vector<N> operator~(const bit_vector<N>& a) {
+    return bit_vector_operations<N>::lnot(a);
+  }
+  
   template<int N>
   static inline bit_vector<N> operator&(const bit_vector<N>& a,
 					const bit_vector<N>& b) {
