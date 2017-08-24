@@ -122,6 +122,29 @@ namespace bsim {
 
 	REQUIRE(c == correct);
       }
+
+      SECTION("8 bit case with overflow") {
+	unsigned_int<8> a;
+	a.set(7, 1);
+
+	unsigned_int<8> b;
+	b.set(7, 1);
+	b.set(0, 1);
+
+	unsigned_int<8> c =
+	  unsigned_int_operations<8>::sub_general_width(a, b);
+
+	bv_uint8 ac = 128;
+	bv_uint8 bc = 129;
+
+	bv_uint8 res = ac - bc;
+
+	cout << "res = " << +res << endl;
+	cout << "c   = " << c << endl;
+
+	REQUIRE(res == c.as_native_uint8());
+	
+      }
     }
 
     SECTION("Adding unsigned numbers") {
