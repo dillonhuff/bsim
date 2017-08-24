@@ -348,67 +348,6 @@ namespace bsim {
     
   };
 
-  template<>
-  class bit_vector_operations<64> {
-  public:
-    static inline bit_vector<64> land(const bit_vector<64>& a,
-				      const bit_vector<64>& b) {
-      return bit_vector<64>(a.as_native_uint64() & b.as_native_uint64());
-    }
-
-    static inline bit_vector<64> lor(const bit_vector<64>& a,
-				     const bit_vector<64>& b) {
-      return bit_vector<64>(a.as_native_uint64() | b.as_native_uint64());
-    }
-
-    static inline bit_vector<64> lxor(const bit_vector<64>& a,
-				      const bit_vector<64>& b) {
-      return bit_vector<64>(a.as_native_uint64() ^ b.as_native_uint64());
-    }
-    
-  };
-
-  template<>
-  class bit_vector_operations<16> {
-  public:
-    static inline bit_vector<16> land(const bit_vector<16>& a,
-  				      const bit_vector<16>& b) {
-      std::cout << "Using 16 bit and" << std::endl;
-      return bit_vector<16>((bv_uint16)(a.as_native_uint16() & b.as_native_uint16()));
-    }
-
-    static inline bit_vector<16> lor(const bit_vector<16>& a,
-    				     const bit_vector<16>& b) {
-      return bit_vector<16>((bv_uint16)(a.as_native_uint16() | b.as_native_uint16()));
-    }
-
-    static inline bit_vector<16> lxor(const bit_vector<16>& a,
-    				      const bit_vector<16>& b) {
-      return bit_vector<16>((bv_uint16)(a.as_native_uint16() ^ b.as_native_uint16()));
-    }
-    
-  };
-
-  template<>
-  class bit_vector_operations<8> {
-  public:
-    static inline bit_vector<8> land(const bit_vector<8>& a,
-				     const bit_vector<8>& b) {
-      return bit_vector<8>((bv_uint8)(a.as_native_uint8() & b.as_native_uint8()));
-    }
-
-    static inline bit_vector<8> lor(const bit_vector<8>& a,
-				    const bit_vector<8>& b) {
-      return bit_vector<8>((bv_uint8)(a.as_native_uint8() | b.as_native_uint8()));
-    }
-
-    static inline bit_vector<8> lxor(const bit_vector<8>& a,
-				     const bit_vector<8>& b) {
-      return bit_vector<8>((bv_uint8)(a.as_native_uint8() ^ b.as_native_uint8()));
-    }
-    
-  };
-
   template<int N>
   static inline bit_vector<N> operator~(const bit_vector<N>& a) {
     return bit_vector_operations<N>::lnot(a);
