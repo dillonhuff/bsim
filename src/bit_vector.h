@@ -261,14 +261,54 @@ namespace bsim {
   template<int Width>
   class bit_vector_operations {
   public:
-    static inline bit_vector<Width> land(const bit_vector<Width>& a,
-					 const bit_vector<Width>& b) {
+
+    template<int Q = Width>
+    static inline
+    typename std::enable_if<Q >= 65, bit_vector<Q> >::type
+    land(const bit_vector<Width>& a,
+	 const bit_vector<Width>& b) {
       bit_vector<Width> a_and_b;
       for (int i = 0; i < Width; i++) {
 	a_and_b.set(i, a.get(i) & b.get(i));
       }
       return a_and_b;
 
+    }
+
+    template<int Q = Width>
+    static inline
+    typename std::enable_if<33 <= Q && Q <= 64, bit_vector<Q> >::type
+    land(const bit_vector<Width>& a,
+	 const bit_vector<Width>& b) {
+      bv_uint64 a_and_b = a.as_native_uint64() & b.as_native_uint64();
+      return bit_vector<Width>(a_and_b);
+    }
+    
+    template<int Q = Width>
+    static inline
+    typename std::enable_if<17 <= Q && Q <= 32, bit_vector<Q> >::type
+    land(const bit_vector<Width>& a,
+	 const bit_vector<Width>& b) {
+      bv_uint32 a_and_b = a.as_native_uint32() & b.as_native_uint32();
+      return bit_vector<Width>(a_and_b);
+    }
+    
+    template<int Q = Width>
+    static inline
+    typename std::enable_if<9 <= Q && Q <= 16, bit_vector<Q> >::type
+    land(const bit_vector<Width>& a,
+	 const bit_vector<Width>& b) {
+      bv_uint16 a_and_b = a.as_native_uint16() & b.as_native_uint16();
+      return bit_vector<Width>(a_and_b);
+    }
+    
+    template<int Q = Width>
+    static inline
+    typename std::enable_if<1 <= Q && Q <= 8, bit_vector<Q> >::type
+    land(const bit_vector<Width>& a,
+	 const bit_vector<Width>& b) {
+      bv_uint8 a_and_b = a.as_native_uint8() & b.as_native_uint8();
+      return bit_vector<Width>(a_and_b);
     }
 
     static inline bit_vector<Width> lor(const bit_vector<Width>& a,
@@ -304,25 +344,25 @@ namespace bsim {
   };
 
 
-  template<>
-  class bit_vector_operations<32> {
-  public:
-    static inline bit_vector<32> land(const bit_vector<32>& a,
-				      const bit_vector<32>& b) {
-      return bit_vector<32>(a.as_native_uint32() & b.as_native_uint32());
-    }
+  // template<>
+  // class bit_vector_operations<32> {
+  // public:
+  //   static inline bit_vector<32> land(const bit_vector<32>& a,
+  // 				      const bit_vector<32>& b) {
+  //     return bit_vector<32>(a.as_native_uint32() & b.as_native_uint32());
+  //   }
 
-    static inline bit_vector<32> lor(const bit_vector<32>& a,
-				     const bit_vector<32>& b) {
-      return bit_vector<32>(a.as_native_uint32() | b.as_native_uint32());
-    }
+  //   static inline bit_vector<32> lor(const bit_vector<32>& a,
+  // 				     const bit_vector<32>& b) {
+  //     return bit_vector<32>(a.as_native_uint32() | b.as_native_uint32());
+  //   }
 
-    static inline bit_vector<32> lxor(const bit_vector<32>& a,
-				      const bit_vector<32>& b) {
-      return bit_vector<32>(a.as_native_uint32() ^ b.as_native_uint32());
-    }
+  //   static inline bit_vector<32> lxor(const bit_vector<32>& a,
+  // 				      const bit_vector<32>& b) {
+  //     return bit_vector<32>(a.as_native_uint32() ^ b.as_native_uint32());
+  //   }
     
-  };
+  // };
 
 
   template<>

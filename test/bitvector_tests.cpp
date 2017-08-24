@@ -208,6 +208,23 @@ namespace bsim {
 	REQUIRE(c == correct);
       }
 
+      SECTION("41 bit numbers") {
+	bit_vector<41> a;
+	a.set(23, 1);
+	a.set(9, 1);
+
+	bit_vector<41> b;
+	b.set(4, 1);
+	b.set(9, 1);
+
+	bit_vector<41> c = a & b;
+
+	bit_vector<41> correct;
+	correct.set(9, 1);
+
+	REQUIRE(c == correct);
+      }
+      
     }
 
     SECTION("Logical or") {
