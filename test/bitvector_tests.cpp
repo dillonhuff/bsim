@@ -45,8 +45,6 @@ namespace bsim {
     SECTION("9 bytes to store 65 bits") {
       REQUIRE(NUM_BYTES(65) == 9);
     }
-    
-    
   }
 
   TEST_CASE("Bit vector comparison") {
@@ -262,6 +260,31 @@ namespace bsim {
 	REQUIRE(c.get(136) == 0);
 
       }
+    }
+
+    SECTION("Unsigned multiplication") {
+
+      SECTION("32 bit numbers") {
+	unsigned_int<32> a;
+	a.set(1, 1);
+	a.set(7, 1);
+	a.set(23, 1);
+
+	unsigned_int<32> b;
+	b.set(1, 1);
+	b.set(8, 1);
+	b.set(24, 1);
+
+	unsigned_int<32> c =
+	  unsigned_int_operations<32>::mul_general_width(a, b);
+
+	bv_uint32 an = a.as_native_uint32();
+	bv_uint32 bn = b.as_native_uint32();
+	bv_uint32 cn = an * bn;
+
+	REQUIRE(c == unsigned_int<32>(cn));
+      }
+		 
     }
 
     SECTION("Logical and bit vectors") {

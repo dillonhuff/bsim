@@ -233,7 +233,20 @@ namespace bsim {
 	const unsigned_int<Width>& b) {
       return sub_general_width(a, b);
     }
-    
+
+    static inline
+    unsigned_int<Width>
+    mul_general_width(const unsigned_int<Width>& a,
+		      const unsigned_int<Width>& b) {
+      unsigned_int<2*Width> full_len;
+
+      unsigned_int<Width> res;
+      for (int i = 0; i < Width; i++) {
+	res.set(i, full_len.get(i));
+      }
+      return res;
+    }    
+
     static inline
     unsigned_int<Width>
     add_general_width(const unsigned_int<Width>& a,
