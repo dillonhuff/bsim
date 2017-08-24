@@ -93,6 +93,28 @@ namespace bsim {
 	REQUIRE(c.get(0) == 0);
       }
 
+      SECTION("7 bit add double overflow") {
+	unsigned_int<7> a; // 1000000
+	a.set(6, 1);
+
+	auto a2 = a + a; // Should be zero
+	auto a3 = a2 + a2;
+
+	auto a2_gen = 
+	  unsigned_int_operations<7>::add_general_width(a, a);
+	auto a3_gen = 
+	  unsigned_int_operations<7>::add_general_width(a2_gen, a2_gen);
+
+	cout << "a      = " << a << endl;
+	cout << "a2     = " << a2 << endl;
+	cout << "a2_gen = " << a2_gen << endl;
+
+	cout << "a3     = " << a3 << endl;
+	cout << "a3_gen = " << a3_gen << endl;
+
+	REQUIRE(a3 == a3_gen);
+      }
+
       SECTION("8 bit add overflow") {
 	unsigned_int<8> a;
 	a.set(0, 1);
@@ -111,12 +133,6 @@ namespace bsim {
 
 	auto c_gen =
 	  unsigned_int_operations<8>::add_general_width(a, b);
-
-	cout << "a                = " << a << endl;
-	cout << "b                = " << b << endl;
-	cout << "overflow value c = " << c << endl;
-	cout << "computed value c = " << c_gen << endl;
-
 	
 	REQUIRE(c_gen == c);
       }
@@ -150,20 +166,6 @@ namespace bsim {
 	correct.set(1, 1);
 
 	REQUIRE(c == correct);
-      }
-
-      SECTION("66 bit numbers") {
-	unsigned_int<66> a;
-	for (int i = 0; i < 66; i++) {
-	  a.set(i, 1);
-	}
-
-	unsigned_int<66> b;
-	b.set(4, 1);
-
-	auto c = a + b;
-
-	cout << c << endl;
       }
       
       SECTION("137 bit numbers") {
