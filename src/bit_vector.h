@@ -226,6 +226,14 @@ namespace bsim {
       return diff;
     }    
 
+    template<int Q = Width>
+    static inline
+    typename std::enable_if<Q >= 65, unsigned_int<Q> >::type
+    sub(const unsigned_int<Width>& a,
+	const unsigned_int<Width>& b) {
+      return sub_general_width(a, b);
+    }
+    
     static inline
     unsigned_int<Width>
     add_general_width(const unsigned_int<Width>& a,
@@ -313,6 +321,12 @@ namespace bsim {
     return unsigned_int_operations<N>::add(a, b);
   }
 
+  template<int N>
+  static inline unsigned_int<N> operator-(const unsigned_int<N>& a,
+					  const unsigned_int<N>& b) {
+    return unsigned_int_operations<N>::sub(a, b);
+  }
+  
   template<int Width>
   class bit_vector_operations {
   public:

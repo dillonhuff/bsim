@@ -139,11 +139,20 @@ namespace bsim {
 
 	bv_uint8 res = ac - bc;
 
-	cout << "res = " << +res << endl;
-	cout << "c   = " << c << endl;
-
 	REQUIRE(res == c.as_native_uint8());
 	
+      }
+
+      SECTION("Testing plus operator") {
+	unsigned_int<230> a;
+	a.set(220, 1);
+	a.set(23, 1);
+	a.set(3, 1);
+
+	auto c = a - a;
+	unsigned_int<230> zr;
+
+	REQUIRE(c == zr);
       }
     }
 
