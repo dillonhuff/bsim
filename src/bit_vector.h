@@ -191,7 +191,7 @@ namespace bsim {
       unsigned_int<Width> diff;
       unsigned_int<Width> a_cpy = a;
 
-      bool overflow = false;
+      bool underflow = false;
       for (int i = 0; i < Width; i++) {
 
 	if ((a_cpy.get(i) == 0) &&
@@ -208,7 +208,7 @@ namespace bsim {
 	  }
 
 	  if (j >= Width) {
-	    overflow = true;
+	    underflow = true;
 	  } else {
 	    a_cpy.set(j, 0);
 	  }
