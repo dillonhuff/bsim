@@ -8,6 +8,8 @@ vectors. The library also includes a bit vector wrapper for unsigned integers.
 
 # Examples
 
+## Bitwise or on 2 bit vectors
+
 ```cpp
 
 #include <iostream>
@@ -27,6 +29,32 @@ int main() {
 
 }
 ```
+
+## Unsigned addition of long bit vectors
+
+```cpp
+
+#include <iostream>
+
+using namespace std;
+
+int main() {
+    unsigned_int<311> a;
+    a.set(300, 1);
+    a.set(257, 1);
+    a.set(12, 1);
+
+    unsigned_int<311> b;
+    b.set(25, 1);
+    b.set(0, 1);
+
+    unsigned_int<311> c = a + b;
+
+    cout << c << endl;
+
+}
+```
+
 
 # Native Instruction Use for Small Bit Vectors
 
