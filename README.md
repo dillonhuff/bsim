@@ -12,6 +12,7 @@ vectors. The library also includes a bit vector wrapper for unsigned integers.
 
 ```cpp
 
+#include "bit_vector.h"
 #include <iostream>
 
 using namespace std;
@@ -34,6 +35,7 @@ int main() {
 
 ```cpp
 
+#include "bit_vector.h"
 #include <iostream>
 
 using namespace std;
