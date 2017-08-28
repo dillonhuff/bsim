@@ -455,6 +455,13 @@ namespace bsim {
       }
     }
 
+    SECTION("Signed numbers") {
+
+      SECTION("4 bit signed numbers") {
+	signed_int<6> a;
+      }
+    }
+
   }
 
 }

@@ -180,6 +180,52 @@ namespace bsim {
     
   };
 
+  template<int N>
+  class signed_int {
+  protected:
+    bit_vector<N> bits;
+  public:
+    signed_int() {}
+
+
+    signed_int(const bv_uint8 val) : bits(val) {}
+    signed_int(const bv_uint16 val) : bits(val) {}
+    signed_int(const bv_uint32 val) : bits(val) {}
+    signed_int(const bv_uint64 val) : bits(val) {}
+
+    void set(const int ind, const unsigned char val) {
+      bits.set(ind, val);
+    }
+
+    unsigned char get(const int ind) const { return bits.get(ind); }
+
+    inline bool equals(const signed_int<N>& other) const {
+      return (this->bits).equals((other.bits));
+    }
+
+    inline bv_uint64 as_native_uint64() const {
+      return bits.as_native_uint64();
+    }
+    
+    inline bv_uint32 as_native_uint32() const {
+      return bits.as_native_uint32();
+    }
+
+    inline bv_uint16 as_native_uint16() const {
+      return bits.as_native_uint16();
+    }
+
+    inline bv_uint8 as_native_uint8() const {
+      return bits.as_native_uint8();
+    }
+    
+    inline std::ostream& print(std::ostream& out) const {
+      out << bits << "U";
+      return out;
+    }
+    
+  };
+  
   template<int Width>
   class unsigned_int_operations {
   public:
