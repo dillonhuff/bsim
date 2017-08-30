@@ -459,6 +459,14 @@ namespace bsim {
 
       SECTION("4 bit signed numbers") {
 	signed_int<6> a;
+	a.set(0, 1);
+	a.set(2, 1);
+	a.set(5, 1);
+
+	signed_int<32> b = sign_extend<6, 32>(a);
+
+	REQUIRE(a.to_type<int>() == b.to_type<int>());
+	
       }
     }
 

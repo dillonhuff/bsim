@@ -95,6 +95,11 @@ namespace bsim {
       return true;
     }
 
+    template<typename ConvType>
+    ConvType to_type() const {
+      return *((ConvType*) (&bits));
+    }
+
     inline bv_uint64 as_native_uint64() const {
       return *((bv_uint64*) (&bits));
     }
@@ -203,6 +208,11 @@ namespace bsim {
       return (this->bits).equals((other.bits));
     }
 
+    template<typename ConvType>
+    ConvType to_type() const {
+      return bits.template to_type<ConvType>();
+    }
+    
     inline bv_uint64 as_native_uint64() const {
       return bits.as_native_uint64();
     }
@@ -528,5 +538,11 @@ namespace bsim {
   operator<<(std::ostream& out, const unsigned_int<N>& a) {
     a.print(out);
     return out;
+  }
+
+  template<int LowWidth, int HighWidth>
+  signed_int<HighWidth> sign_extend(const signed_int<LowWidth>& a) {
+    signed_int<HighWidth> hw;
+    return hw;
   }
 }
