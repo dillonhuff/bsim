@@ -13,6 +13,8 @@
 #define NUM_BYTES_GT_1(N) (N <= 16 ? 2 : NUM_BYTES_GT_2(N))
 #define NUM_BYTES(N) (N <= 8 ? (1) : NUM_BYTES_GT_1(N))
 
+typedef uint8_t  bv_sint8;
+
 typedef uint8_t  bv_uint8;
 typedef uint16_t bv_uint16;
 typedef uint32_t bv_uint32;
@@ -201,6 +203,8 @@ namespace bsim {
     void set(const int ind, const unsigned char val) {
       bits.set(ind, val);
     }
+
+    bit_vector<N> get_bits() const { return bits; }
 
     unsigned char get(const int ind) const { return bits.get(ind); }
 
@@ -543,6 +547,20 @@ namespace bsim {
   template<int LowWidth, int HighWidth>
   signed_int<HighWidth> sign_extend(const signed_int<LowWidth>& a) {
     signed_int<HighWidth> hw;
+
+    for (int i = 0; i < LowWidth; i++) {
+      hw.set(i, a.get(i));
+    }
+    
+    if (a.get(LowWidth - 1) == 0) {
+      
+      return hw;
+    }
+
+    for (int i = LowWidth; i < HighWidth; i++) {
+      hw.set(i, 1);
+    }
+
     return hw;
   }
 }
