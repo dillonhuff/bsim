@@ -462,11 +462,10 @@ namespace bsim {
 
 	signed_int<32> a(s);
 
-	//cout << a.get(0) << endl;
-
-	//cout << "a = " << a << endl;
-
 	REQUIRE(a.to_type<int>() == s);
+      }
+
+      SECTION("Construct with sign extension") {
       }
 
       SECTION("Sign extending 6 bit number") {
