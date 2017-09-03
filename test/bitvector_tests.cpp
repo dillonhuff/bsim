@@ -463,14 +463,9 @@ namespace bsim {
 	a.set(2, 1);
 	a.set(5, 1);
 
-	signed_int<32> b = sign_extend<6, 32>(a);
+	signed_int<8> b = sign_extend<6, 8>(a);
 
-	cout << "a = " << a.get_bits() << endl;
-	cout << "b = " << b.get_bits() << endl;
-
-	bv_sint8 ai = a.to_type<bv_sint8>();
-	
-	REQUIRE(((int) ai) == b.to_type<int>());
+	REQUIRE(b.get(7) == 1);
 	
       }
     }
