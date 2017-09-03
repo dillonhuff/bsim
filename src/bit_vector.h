@@ -33,6 +33,10 @@ namespace bsim {
       }
     }
 
+    bit_vector(const int val) {
+      *((int*) (&bits)) = val;
+    }
+
     bit_vector(const bv_uint64 val) {
       *((bv_uint64*)(&bits)) = val;
     }
@@ -195,6 +199,8 @@ namespace bsim {
     signed_int() {}
 
 
+    signed_int(const int val) : bits(val) {}
+
     signed_int(const bv_uint8 val) : bits(val) {}
     signed_int(const bv_uint16 val) : bits(val) {}
     signed_int(const bv_uint32 val) : bits(val) {}
@@ -234,7 +240,7 @@ namespace bsim {
     }
     
     inline std::ostream& print(std::ostream& out) const {
-      out << bits << "U";
+      out << bits << "S";
       return out;
     }
     
@@ -544,6 +550,13 @@ namespace bsim {
     return out;
   }
 
+  template<int N>
+  static inline std::ostream&
+  operator<<(std::ostream& out, const signed_int<N>& a) {
+    a.print(out);
+    return out;
+  }
+  
   template<int LowWidth, int HighWidth>
   signed_int<HighWidth> sign_extend(const signed_int<LowWidth>& a) {
     signed_int<HighWidth> hw;

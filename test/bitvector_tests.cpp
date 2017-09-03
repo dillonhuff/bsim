@@ -457,7 +457,19 @@ namespace bsim {
 
     SECTION("Signed numbers") {
 
-      SECTION("4 bit signed numbers") {
+      SECTION("Construct from signed integer") {
+	int s = -230;
+
+	signed_int<6> a(s);
+
+	cout << a.get(0) << endl;
+
+	cout << "a = " << a << endl;
+
+	REQUIRE(a.to_type<int>() == s);
+      }
+
+      SECTION("Sign extending 6 bit number") {
 	signed_int<6> a;
 	a.set(0, 1);
 	a.set(2, 1);
@@ -467,6 +479,12 @@ namespace bsim {
 
 	REQUIRE(b.get(7) == 1);
 	
+      }
+
+      SECTION("Addition") {
+
+	SECTION("29 bit numbers") {
+	}
       }
     }
 
