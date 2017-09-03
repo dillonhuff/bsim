@@ -460,11 +460,11 @@ namespace bsim {
       SECTION("Construct from signed integer") {
 	int s = -230;
 
-	signed_int<6> a(s);
+	signed_int<32> a(s);
 
-	cout << a.get(0) << endl;
+	//cout << a.get(0) << endl;
 
-	cout << "a = " << a << endl;
+	//cout << "a = " << a << endl;
 
 	REQUIRE(a.to_type<int>() == s);
       }
