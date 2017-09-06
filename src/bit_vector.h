@@ -200,6 +200,7 @@ namespace bsim {
   class signed_int {
   protected:
     bit_vector<N> bits;
+
   public:
     signed_int() {}
 
