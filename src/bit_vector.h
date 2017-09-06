@@ -247,7 +247,9 @@ namespace bsim {
       if (N < 32) {
 	signed_int<32> extended = sign_extend<32>();
 
-	bit_vector<N> bv = extended.get_bits();
+	bit_vector<32> bv = extended.get_bits();
+
+	return bv.as_native_int32();
       }
 
       if (N == 32) {
