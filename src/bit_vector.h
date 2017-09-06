@@ -13,7 +13,8 @@
 #define NUM_BYTES_GT_1(N) (N <= 16 ? 2 : NUM_BYTES_GT_2(N))
 #define NUM_BYTES(N) (N <= 8 ? (1) : NUM_BYTES_GT_1(N))
 
-typedef uint8_t  bv_sint8;
+typedef int8_t  bv_sint8;
+typedef int32_t  bv_sint32;
 
 typedef uint8_t  bv_uint8;
 typedef uint16_t bv_uint16;
@@ -106,6 +107,10 @@ namespace bsim {
       return *((ConvType*) (&bits));
     }
 
+    inline bv_uint64 as_native_int32() const {
+      return *((bv_sint32*) (&bits));
+    }
+    
     inline bv_uint64 as_native_uint64() const {
       return *((bv_uint64*) (&bits));
     }
@@ -216,6 +221,40 @@ namespace bsim {
 
     inline bool equals(const signed_int<N>& other) const {
       return (this->bits).equals((other.bits));
+    }
+
+    template<int HighWidth>
+    signed_int<HighWidth> sign_extend() const {
+      signed_int<HighWidth> hw;
+
+      for (int i = 0; i < N; i++) {
+	hw.set(i, get(i));
+      }
+    
+      if (get(N - 1) == 0) {
+      
+	return hw;
+      }
+
+      for (int i = N; i < HighWidth; i++) {
+	hw.set(i, 1);
+      }
+
+      return hw;
+    }
+    
+    bv_sint32 as_native_int32() const {
+      if (N < 32) {
+	signed_int<32> extended = sign_extend<32>();
+
+	bit_vector<N> bv = extended.get_bits();
+      }
+
+      if (N == 32) {
+	return get_bits().as_native_int32();
+      }
+
+      assert(false);
     }
 
     template<typename ConvType>

@@ -458,14 +458,19 @@ namespace bsim {
     SECTION("Signed numbers") {
 
       SECTION("Construct from signed integer") {
-	int s = -230;
+	bv_sint32 s = -230;
 
 	signed_int<32> a(s);
 
-	REQUIRE(a.to_type<int>() == s);
+	REQUIRE(a.as_native_int32() == s);
       }
 
       SECTION("Construct with sign extension") {
+	int s = -230;
+
+	signed_int<12> a(s);
+
+	//REQUIRE();
       }
 
       SECTION("Sign extending 6 bit number") {
