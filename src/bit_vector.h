@@ -154,8 +154,11 @@ namespace bsim {
   class unsigned_int {
   protected:
     bit_vector<N> bits;
+
   public:
     unsigned_int() {}
+
+    
 
 
     unsigned_int(const bv_uint8 val) : bits(val) {}
@@ -204,6 +207,8 @@ namespace bsim {
   public:
     signed_int() {}
 
+
+    signed_int(const bit_vector<N>& bits_) : bits(bits_) {}
 
     signed_int(const int val) : bits(val) {}
 
@@ -287,7 +292,45 @@ namespace bsim {
     }
     
   };
+
+  template<int Width>
+  static inline
+  bit_vector<Width>
+  add_general_width_bv(const bit_vector<Width>& a,
+		       const bit_vector<Width>& b) {
+
+    bit_vector<Width> res;
+    unsigned char carry = 0;
+    for (int i = 0; i < Width; i++) {
+      unsigned char sum = a.get(i) + b.get(i) + carry;
+
+      unsigned char z_i = sum & 0x01; //sum % 2;
+      res.set(i, z_i);
+      if (sum >= 2) {
+	carry = 1;
+      }
+
+    }
+
+    return res;
+  }
   
+  template<int Width>
+  class signed_int_operations {
+  public:
+
+    static inline
+    signed_int<Width>
+    add_general_width(const signed_int<Width>& a,
+		      const signed_int<Width>& b) {
+
+      bit_vector<Width> bits =
+	add_general_width_bv(a.get_bits(), b.get_bits());
+      signed_int<Width> c(bits);
+      return c;
+    }
+  };  
+
   template<int Width>
   class unsigned_int_operations {
   public:

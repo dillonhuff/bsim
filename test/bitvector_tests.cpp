@@ -488,6 +488,17 @@ namespace bsim {
       SECTION("Addition") {
 
 	SECTION("29 bit numbers") {
+	  int ai = 235;
+	  int bi = 12890;
+
+	  signed_int<29> a(ai);
+	  signed_int<29> b(bi);
+
+	  signed_int<29> res =
+	    signed_int_operations<29>::add_general_width(a, b);
+
+	  REQUIRE(res.as_native_int32() == (ai + bi));
+	  
 	}
       }
     }
