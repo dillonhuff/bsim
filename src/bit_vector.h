@@ -326,6 +326,11 @@ namespace bsim {
 
       bit_vector<Width> bits =
 	add_general_width_bv(a.get_bits(), b.get_bits());
+
+      std::cout << "a bits     = " << a.get_bits() << std::endl;
+      std::cout << "b bits     = " << b.get_bits() << std::endl;
+      std::cout << "Added bits = " << bits << std::endl;
+
       signed_int<Width> c(bits);
       return c;
     }

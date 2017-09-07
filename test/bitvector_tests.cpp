@@ -473,7 +473,7 @@ namespace bsim {
 	REQUIRE(a.as_native_int32() == s);
       }
 
-      SECTION("Sign extending 6 bit number") {
+      SECTION("Sign extending negative 6 bit number") {
 	signed_int<6> a;
 	a.set(0, 1);
 	a.set(2, 1);
@@ -485,6 +485,16 @@ namespace bsim {
 	
       }
 
+      SECTION("Sign extending positive 6 bit number") {
+	signed_int<6> a;
+	a.set(0, 1);
+	a.set(2, 1);
+
+	signed_int<8> b = sign_extend<6, 8>(a);
+
+	REQUIRE(b.get(7) == 0);
+      }
+      
       SECTION("Addition") {
 
 	SECTION("29 bit numbers") {
@@ -497,8 +507,14 @@ namespace bsim {
 	  signed_int<29> res =
 	    signed_int_operations<29>::add_general_width(a, b);
 
+	  bv_sint32 resi = res.as_native_int32();
+	  bv_sint32 int_sum = ai + bi;
+
+	  cout << "result    =    " << res << endl;
+	  cout << "resi      = " << bitset<32>(resi) << endl;
+	  cout << "int sum   = " << bitset<32>(int_sum) << endl;
+
 	  REQUIRE(res.as_native_int32() == (ai + bi));
-	  
 	}
       }
     }
