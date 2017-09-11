@@ -34,6 +34,12 @@ namespace bsim {
       }
     }
 
+    bit_vector(const std::string& str) {
+      assert(str.size() == N);
+
+      
+    }
+
     bit_vector(const int val) {
       *((int*) (&bits)) = val;
     }

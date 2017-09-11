@@ -521,4 +521,11 @@ namespace bsim {
 
   }
 
+  TEST_CASE("Adding bit vectors with general add") {
+
+    bit_vector<29> a("00000000000000000000011101011");
+    bit_vector<29> b("00000000000000011001001011010");
+
+  }
+
 }
