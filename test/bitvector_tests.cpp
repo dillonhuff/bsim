@@ -517,6 +517,30 @@ namespace bsim {
 	  REQUIRE(res.as_native_int32() == (ai + bi));
 	}
       }
+
+      SECTION("Multiplication") {
+
+	SECTION("29 bit numbers") {
+	  int ai = 235;
+	  int bi = -54;
+
+	  signed_int<29> a(ai);
+	  signed_int<29> b(bi);
+
+	  signed_int<29> res =
+	    signed_int_operations<29>::mul_general_width(a, b);
+
+	  bv_sint32 resi = res.as_native_int32();
+	  bv_sint32 int_sum = ai + bi;
+
+	  cout << "result    =    " << res << endl;
+	  cout << "resi      = " << bitset<32>(resi) << endl;
+	  cout << "int sum   = " << bitset<32>(int_sum) << endl;
+
+	  REQUIRE(res.as_native_int32() == (ai * bi));
+	}
+      }
+
     }
 
   }

@@ -326,6 +326,34 @@ namespace bsim {
 
     return res;
   }
+
+  template<int Width>  
+  static inline
+  bit_vector<Width>
+  mul_general_width_bv(const bit_vector<Width>& a,
+		       const bit_vector<Width>& b) {
+    bit_vector<2*Width> full_len;
+
+    for (int i = 0; i < Width; i++) {
+      if (b.get(i) == 1) {
+
+	bit_vector<2*Width> shifted_a;
+
+	for (int j = 0; j < Width; j++) {
+	  shifted_a.set(j + i, a.get(j));
+	}
+
+	full_len =
+	  add_general_width_bv(full_len, shifted_a);
+      }
+    }
+
+    bit_vector<Width> res;
+    for (int i = 0; i < Width; i++) {
+      res.set(i, full_len.get(i));
+    }
+    return res;
+  }    
   
   template<int Width>
   class signed_int_operations {
@@ -346,6 +374,23 @@ namespace bsim {
       signed_int<Width> c(bits);
       return c;
     }
+
+    static inline
+    signed_int<Width>
+    mul_general_width(const signed_int<Width>& a,
+		      const signed_int<Width>& b) {
+
+      bit_vector<Width> bits =
+	mul_general_width_bv(a.get_bits(), b.get_bits());
+
+      std::cout << "a bits     = " << a.get_bits() << std::endl;
+      std::cout << "b bits     = " << b.get_bits() << std::endl;
+      std::cout << "Added bits = " << bits << std::endl;
+
+      signed_int<Width> c(bits);
+      return c;
+    }
+
   };  
 
   template<int Width>
