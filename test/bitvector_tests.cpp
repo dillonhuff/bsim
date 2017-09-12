@@ -533,12 +533,27 @@ namespace bsim {
 	  bv_sint32 resi = res.as_native_int32();
 	  bv_sint32 int_sum = ai + bi;
 
-	  cout << "result    =    " << res << endl;
-	  cout << "resi      = " << bitset<32>(resi) << endl;
-	  cout << "int sum   = " << bitset<32>(int_sum) << endl;
-
 	  REQUIRE(res.as_native_int32() == (ai * bi));
 	}
+      }
+
+      SECTION("Subtraction") {
+	int ai = -112;
+	int bi = -984;
+
+	signed_int<13> a(ai);
+	signed_int<13> b(bi);
+
+	signed_int<13> res =
+	  signed_int_operations<13>::sub_general_width(a, b);
+
+	cout << "a   = " << a << endl;
+	cout << "b   = " << b << endl;
+	cout << "res = " << b << endl;
+
+	bv_sint32 diff = ai - bi;
+
+	REQUIRE(res.as_native_int32() == diff);
       }
 
     }
@@ -550,13 +565,13 @@ namespace bsim {
     bit_vector<29> a("00000000000000000000011101011");
     bit_vector<29> b("00000000000000011001001011010");
 
-    cout << "a = " << a << endl;
-    cout << "b = " << b << endl;
+    //cout << "a = " << a << endl;
+    //cout << "b = " << b << endl;
 
     bit_vector<29> c =
       add_general_width_bv(a, b);
 
-    cout << "c = " << c << endl;
+    //cout << "c = " << c << endl;
 
     REQUIRE(c.get(28) != 1);
   }

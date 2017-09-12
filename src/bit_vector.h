@@ -355,6 +355,49 @@ namespace bsim {
     }
     return res;
   }    
+
+  template<int Width>
+  static inline
+  bit_vector<Width>
+  sub_general_width_bv(const bit_vector<Width>& a,
+		       const bit_vector<Width>& b) {
+    bit_vector<Width> diff;
+    bit_vector<Width> a_cpy = a;
+
+    bool underflow = false;
+    for (int i = 0; i < Width; i++) {
+
+      if ((a_cpy.get(i) == 0) &&
+	  (b.get(i) == 1)) {
+
+	int j = i + 1;
+
+	diff.set(i, 1);	  
+
+	// Modify to carry
+	while ((j < Width) && (a_cpy.get(j) != 1)) {
+	  a_cpy.set(j, 1);
+	  j++;
+	}
+
+	if (j >= Width) {
+	  underflow = true;
+	} else {
+	  a_cpy.set(j, 0);
+	}
+
+      } else if (a_cpy.get(i) == b.get(i)) {
+	diff.set(i, 0);
+      } else if ((a_cpy.get(i) == 1) &&
+		 (b.get(i) == 0)) {
+	diff.set(i, 1);
+      } else {
+	assert(false);
+      }
+    }
+
+    return diff;
+  }    
   
   template<int Width>
   class signed_int_operations {
@@ -384,53 +427,24 @@ namespace bsim {
       return c;
     }
 
+    static inline
+    signed_int<Width>
+    sub_general_width(const signed_int<Width>& a,
+		      const signed_int<Width>& b) {
+
+      bit_vector<Width> bits =
+	sub_general_width_bv(a.get_bits(), b.get_bits());
+
+      signed_int<Width> c(bits);
+      return c;
+    }
+    
   };  
 
   template<int Width>
   class unsigned_int_operations {
   public:
 
-    static inline
-    unsigned_int<Width>
-    sub_general_width(const unsigned_int<Width>& a,
-		      const unsigned_int<Width>& b) {
-      unsigned_int<Width> diff;
-      unsigned_int<Width> a_cpy = a;
-
-      bool underflow = false;
-      for (int i = 0; i < Width; i++) {
-
-	if ((a_cpy.get(i) == 0) &&
-	    (b.get(i) == 1)) {
-
-	  int j = i + 1;
-
-	  diff.set(i, 1);	  
-
-	  // Modify to carry
-	  while ((j < Width) && (a_cpy.get(j) != 1)) {
-	    a_cpy.set(j, 1);
-	    j++;
-	  }
-
-	  if (j >= Width) {
-	    underflow = true;
-	  } else {
-	    a_cpy.set(j, 0);
-	  }
-
-	} else if (a_cpy.get(i) == b.get(i)) {
-	  diff.set(i, 0);
-	} else if ((a_cpy.get(i) == 1) &&
-		   (b.get(i) == 0)) {
-	  diff.set(i, 1);
-	} else {
-	  assert(false);
-	}
-      }
-
-      return diff;
-    }    
 
     template<int Q = Width>
     static inline
@@ -452,6 +466,18 @@ namespace bsim {
 
     }    
 
+    static inline
+    unsigned_int<Width>
+    sub_general_width(const unsigned_int<Width>& a,
+		      const unsigned_int<Width>& b) {
+      bit_vector<Width> bits =
+	sub_general_width_bv(a.get_bits(), b.get_bits());
+
+      unsigned_int<Width> c(bits);
+      return c;
+
+    }    
+    
     static inline
     unsigned_int<Width>
     add_general_width(const unsigned_int<Width>& a,
