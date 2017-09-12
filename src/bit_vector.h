@@ -168,8 +168,7 @@ namespace bsim {
   public:
     unsigned_int() {}
 
-    
-
+    unsigned_int(const bit_vector<N>& bits_) : bits(bits_) {}
 
     unsigned_int(const bv_uint8 val) : bits(val) {}
     unsigned_int(const bv_uint16 val) : bits(val) {}
@@ -179,6 +178,8 @@ namespace bsim {
     void set(const int ind, const unsigned char val) {
       bits.set(ind, val);
     }
+
+    bit_vector<N> get_bits() const { return bits; }    
 
     unsigned char get(const int ind) const { return bits.get(ind); }
 
@@ -367,10 +368,6 @@ namespace bsim {
       bit_vector<Width> bits =
 	add_general_width_bv(a.get_bits(), b.get_bits());
 
-      std::cout << "a bits     = " << a.get_bits() << std::endl;
-      std::cout << "b bits     = " << b.get_bits() << std::endl;
-      std::cout << "Added bits = " << bits << std::endl;
-
       signed_int<Width> c(bits);
       return c;
     }
@@ -382,10 +379,6 @@ namespace bsim {
 
       bit_vector<Width> bits =
 	mul_general_width_bv(a.get_bits(), b.get_bits());
-
-      std::cout << "a bits     = " << a.get_bits() << std::endl;
-      std::cout << "b bits     = " << b.get_bits() << std::endl;
-      std::cout << "Added bits = " << bits << std::endl;
 
       signed_int<Width> c(bits);
       return c;
@@ -451,27 +444,12 @@ namespace bsim {
     unsigned_int<Width>
     mul_general_width(const unsigned_int<Width>& a,
 		      const unsigned_int<Width>& b) {
-      unsigned_int<2*Width> full_len;
+      bit_vector<Width> bits =
+	mul_general_width_bv(a.get_bits(), b.get_bits());
 
-      for (int i = 0; i < Width; i++) {
-	if (b.get(i) == 1) {
+      unsigned_int<Width> c(bits);
+      return c;
 
-	  unsigned_int<2*Width> shifted_a;
-
-	  for (int j = 0; j < Width; j++) {
-	    shifted_a.set(j + i, a.get(j));
-	  }
-
-	  full_len =
-	    unsigned_int_operations<2*Width>::add_general_width(full_len, shifted_a);
-	}
-      }
-
-      unsigned_int<Width> res;
-      for (int i = 0; i < Width; i++) {
-	res.set(i, full_len.get(i));
-      }
-      return res;
     }    
 
     static inline
@@ -479,20 +457,26 @@ namespace bsim {
     add_general_width(const unsigned_int<Width>& a,
 		      const unsigned_int<Width>& b) {
 
-      unsigned_int<Width> res;
-      unsigned char carry = 0;
-      for (int i = 0; i < Width; i++) {
-	unsigned char sum = a.get(i) + b.get(i) + carry;
+      bit_vector<Width> bits =
+	add_general_width_bv(a.get_bits(), b.get_bits());
 
-	unsigned char z_i = sum & 0x01; //sum % 2;
-	res.set(i, z_i);
-	if (sum >= 2) {
-	  carry = 1;
-	}
+      unsigned_int<Width> c(bits);
+      return c;
+      
+      // unsigned_int<Width> res;
+      // unsigned char carry = 0;
+      // for (int i = 0; i < Width; i++) {
+      // 	unsigned char sum = a.get(i) + b.get(i) + carry;
 
-      }
+      // 	unsigned char z_i = sum & 0x01; //sum % 2;
+      // 	res.set(i, z_i);
+      // 	if (sum >= 2) {
+      // 	  carry = 1;
+      // 	}
 
-      return res;
+      // }
+
+      // return res;
     }
 
     template<int Q = Width>
