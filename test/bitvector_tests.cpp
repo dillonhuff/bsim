@@ -549,7 +549,7 @@ namespace bsim {
 
 	cout << "a   = " << a << endl;
 	cout << "b   = " << b << endl;
-	cout << "res = " << b << endl;
+	cout << "res = " << res << endl;
 
 	bv_sint32 diff = ai - bi;
 
