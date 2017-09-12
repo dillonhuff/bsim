@@ -37,7 +37,11 @@ namespace bsim {
     bit_vector(const std::string& str) {
       assert(str.size() == N);
 
-      
+      for (int i = N - 1; i >= 0; i--) {
+	unsigned char val = (str[i] == '0') ? 0 : 1;
+	int ind = N - i - 1;
+	set(ind, val);
+      }
     }
 
     bit_vector(const int val) {
