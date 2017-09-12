@@ -314,6 +314,8 @@ namespace bsim {
     for (int i = 0; i < Width; i++) {
       unsigned char sum = a.get(i) + b.get(i) + carry;
 
+      carry = 0;
+
       unsigned char z_i = sum & 0x01; //sum % 2;
       res.set(i, z_i);
       if (sum >= 2) {
