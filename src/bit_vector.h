@@ -701,6 +701,24 @@ namespace bsim {
   }
 
   template<int N>
+  static inline bool operator==(const signed_int<N>& a,
+				const signed_int<N>& b) {
+    return a.bits() == b.bits();
+  }
+
+  template<int N>
+  static inline bool operator!=(const unsigned_int<N>& a,
+				const unsigned_int<N>& b) {
+    return !(a == b);
+  }
+
+  template<int N>
+  static inline bool operator!=(const signed_int<N>& a,
+				const signed_int<N>& b) {
+    return !(a == b);
+  }
+  
+  template<int N>
   static inline std::ostream&
   operator<<(std::ostream& out, const unsigned_int<N>& a) {
     a.print(out);
