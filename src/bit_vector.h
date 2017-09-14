@@ -168,6 +168,8 @@ namespace bsim {
   public:
     unsigned_int() {}
 
+    unsigned_int(const std::string& bitstr) : bits(bitstr){}
+
     unsigned_int(const bit_vector<N>& bits_) : bits(bits_) {}
 
     unsigned_int(const bv_uint8 val) : bits(val) {}
@@ -710,6 +712,18 @@ namespace bsim {
   static inline bool operator!=(const unsigned_int<N>& a,
 				const unsigned_int<N>& b) {
     return !(a == b);
+  }
+  
+  template<int N>
+  static inline bool operator>(const unsigned_int<N>& a,
+			       const unsigned_int<N>& b) {
+    for (int i = N - 1; i >= 0; i--) {
+      if (a.get(i) > b.get(i)) {
+	return true;
+      }
+    }
+
+    return false;
   }
 
   template<int N>
