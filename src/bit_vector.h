@@ -721,9 +721,21 @@ namespace bsim {
       if (a.get(i) > b.get(i)) {
 	return true;
       }
+
+      if (a.get(i) < b.get(i)) {
+	return false;
+      }
     }
 
     return false;
+  }
+
+  template<int N>
+  static inline bool operator<(const unsigned_int<N>& a,
+			       const unsigned_int<N>& b) {
+    if (a == b) { return false; }
+
+    return !(a > b);
   }
 
   template<int N>

@@ -302,6 +302,17 @@ namespace bsim {
 	}
 
       }
+
+      SECTION("Less than") {
+
+	SECTION("18 bit numbers") {
+	  unsigned_int<17> a("01001011110101010");
+	  unsigned_int<17> b("10001001101010011");
+
+
+	  REQUIRE(a < b);
+	}
+      }
 		 
     }
 
@@ -583,13 +594,8 @@ namespace bsim {
     bit_vector<29> a("00000000000000000000011101011");
     bit_vector<29> b("00000000000000011001001011010");
 
-    //cout << "a = " << a << endl;
-    //cout << "b = " << b << endl;
-
     bit_vector<29> c =
       add_general_width_bv(a, b);
-
-    //cout << "c = " << c << endl;
 
     REQUIRE(c.get(28) != 1);
   }
