@@ -225,6 +225,8 @@ namespace bsim {
 
     signed_int(const int val) : bits(val) {}
 
+    signed_int(const std::string& bitstr) : bits(bitstr) {}
+
     signed_int(const bv_uint8 val) : bits(val) {}
     signed_int(const bv_uint16 val) : bits(val) {}
     signed_int(const bv_uint32 val) : bits(val) {}
@@ -736,6 +738,16 @@ namespace bsim {
     if (a == b) { return false; }
 
     return !(a > b);
+  }
+
+  template<int N>
+  static inline bool operator>(const signed_int<N>& a,
+			       const signed_int<N>& b) {
+    if ((a.get(N - 1) == 1) && (b.get(N - 1) == 1)) {
+      assert(false);
+    }
+
+    assert(false);
   }
 
   template<int N>

@@ -585,6 +585,13 @@ namespace bsim {
 	REQUIRE(res.as_native_int32() == diff);
       }
 
+      SECTION("Greater than") {
+	signed_int<6> a("100100");
+	signed_int<6> b("100000");
+
+	REQUIRE(a > b);
+      }
+
     }
 
   }
