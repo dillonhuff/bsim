@@ -761,6 +761,16 @@ namespace bsim {
 
     }
 
+    // a negative b non-negative
+    if (a.get(N - 1) == 1) {
+      return false;
+    }
+
+    // b negative a non-negative
+    if (b.get(N - 1) == 1) {
+      return true;
+    }
+    
     assert(false);
   }
 
