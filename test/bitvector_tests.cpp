@@ -606,7 +606,17 @@ namespace bsim {
 	  signed_int<11> b("00000000000");
 
 	  REQUIRE(b > a);
+
+	  REQUIRE(!(a > b));
 	}
+
+	SECTION("Both positive") {
+	  signed_int<12> a("011010110101");
+	  signed_int<12> b("010001001110");
+
+	  REQUIRE(a > b);
+	}
+
       }
 
     }

@@ -744,33 +744,31 @@ namespace bsim {
   static inline bool operator>(const signed_int<N>& a,
 			       const signed_int<N>& b) {
 
-    // Both negative
-    if ((a.get(N - 1) == 1) && (b.get(N - 1) == 1)) {
-
-      for (int i = N - 2; i >= 0; i--) {
-	if (a.get(i) > b.get(i)) {
-	  return true;
-	}
-
-	if (a.get(i) < b.get(i)) {
-	  return false;
-	}
-      }
-
-      return false;
-
-    }
-
     // a negative b non-negative
-    if (a.get(N - 1) == 1) {
+    if ((a.get(N - 1) == 1) && (b.get(N - 1) == 0)) {
       return false;
     }
 
     // b negative a non-negative
-    if (b.get(N - 1) == 1) {
+    if ((b.get(N - 1) == 1) && (a.get(N - 1) == 0)) {
       return true;
     }
-    
+
+    // Both negative or both non-negative
+    //if ((a.get(N - 1) == 1) && (b.get(N - 1) == 1)) {
+
+    for (int i = N - 2; i >= 0; i--) {
+      if (a.get(i) > b.get(i)) {
+	return true;
+      }
+
+      if (a.get(i) < b.get(i)) {
+	return false;
+      }
+    }
+
+    return false;
+
     assert(false);
   }
 
