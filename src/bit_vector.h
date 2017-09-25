@@ -743,8 +743,22 @@ namespace bsim {
   template<int N>
   static inline bool operator>(const signed_int<N>& a,
 			       const signed_int<N>& b) {
+
+    // Both negative
     if ((a.get(N - 1) == 1) && (b.get(N - 1) == 1)) {
-      assert(false);
+
+      for (int i = N - 2; i >= 0; i--) {
+	if (a.get(i) > b.get(i)) {
+	  return true;
+	}
+
+	if (a.get(i) < b.get(i)) {
+	  return false;
+	}
+      }
+
+      return false;
+
     }
 
     assert(false);

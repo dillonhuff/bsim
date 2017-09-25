@@ -586,10 +586,21 @@ namespace bsim {
       }
 
       SECTION("Greater than") {
-	signed_int<6> a("100100");
-	signed_int<6> b("100000");
 
-	REQUIRE(a > b);
+	SECTION("Both negative, a > b") {
+	  signed_int<6> a("100100");
+	  signed_int<6> b("100000");
+
+	  REQUIRE(a > b);
+	}
+
+	SECTION("Both negative, !(a > b)") {
+	  signed_int<6> a("100100");
+	  signed_int<6> b("110001");
+
+	  REQUIRE(!(a > b));
+	}
+
       }
 
     }
