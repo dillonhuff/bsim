@@ -776,6 +776,12 @@ namespace bsim {
 				const signed_int<N>& b) {
     return (a > b) || (a == b);
   }
+
+  template<int N>
+  static inline bool operator<=(const signed_int<N>& a,
+				const signed_int<N>& b) {
+    return !(a > b);
+  }
   
   template<int N>
   static inline bool operator!=(const signed_int<N>& a,
