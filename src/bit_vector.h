@@ -707,7 +707,7 @@ namespace bsim {
   template<int N>
   static inline bool operator==(const signed_int<N>& a,
 				const signed_int<N>& b) {
-    return a.bits() == b.bits();
+    return a.get_bits() == b.get_bits();
   }
 
   template<int N>
@@ -769,9 +769,14 @@ namespace bsim {
 
     return false;
 
-    assert(false);
   }
 
+  template<int N>
+  static inline bool operator>=(const signed_int<N>& a,
+				const signed_int<N>& b) {
+    return (a > b) || (a == b);
+  }
+  
   template<int N>
   static inline bool operator!=(const signed_int<N>& a,
 				const signed_int<N>& b) {

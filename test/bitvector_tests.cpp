@@ -619,6 +619,16 @@ namespace bsim {
 
       }
 
+      SECTION("Greater than or equal to") {
+
+	SECTION("Equal to") {
+	  signed_int<12> a("011010110101");
+
+	  REQUIRE(a >= a);
+
+	}
+      }
+
     }
 
   }
