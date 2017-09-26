@@ -262,6 +262,16 @@ namespace bsim {
       }
     }
 
+    SECTION("Unsigned division") {
+
+      SECTION("9 bit numbers") {
+	unsigned_int<9> a("000000001");
+	unsigned_int<9> b("100101001");
+
+	REQUIRE(b / a == b);
+      }
+    }
+
     SECTION("Unsigned multiplication") {
 
       SECTION("32 bit numbers") {

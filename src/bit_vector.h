@@ -705,6 +705,12 @@ namespace bsim {
   }
 
   template<int N>
+  static inline unsigned_int<N> operator/(const unsigned_int<N>& a,
+					  const unsigned_int<N>& b) {
+    return a;
+  }
+
+  template<int N>
   static inline bool operator==(const signed_int<N>& a,
 				const signed_int<N>& b) {
     return a.get_bits() == b.get_bits();
@@ -740,6 +746,12 @@ namespace bsim {
     return !(a > b);
   }
 
+  template<int N>
+  static inline bool operator<=(const unsigned_int<N>& a,
+				const unsigned_int<N>& b) {
+    return !(a > b);
+  }
+  
   template<int N>
   static inline bool operator>(const signed_int<N>& a,
 			       const signed_int<N>& b) {
@@ -782,6 +794,7 @@ namespace bsim {
 				const signed_int<N>& b) {
     return !(a > b);
   }
+
   
   template<int N>
   static inline bool operator!=(const signed_int<N>& a,
