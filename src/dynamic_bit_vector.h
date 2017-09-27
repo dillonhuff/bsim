@@ -171,7 +171,6 @@ namespace bsim {
     return a.equals(b);
   }
 
-}
   // template<int N>
   // class unsigned_int {
   // protected:
@@ -593,22 +592,20 @@ namespace bsim {
   //   return unsigned_int_operations<N>::sub(a, b);
   // }
   
-  // template<int Width>
-  // class dynamic_bit_vector_operations {
-  // public:
+  class dynamic_bit_vector_operations {
+  public:
 
-  //   template<int Q = Width>
-  //   static inline
-  //   typename std::enable_if<Q >= 65, dynamic_bit_vector<Q> >::type
-  //   land(const dynamic_bit_vector<Width>& a,
-  // 	 const dynamic_bit_vector<Width>& b) {
-  //     dynamic_bit_vector<Width> a_and_b;
-  //     for (int i = 0; i < Width; i++) {
-  // 	a_and_b.set(i, a.get(i) & b.get(i));
-  //     }
-  //     return a_and_b;
+    static inline
+    dynamic_bit_vector
+    land(const dynamic_bit_vector& a,
+  	 const dynamic_bit_vector& b) {
+      dynamic_bit_vector a_and_b(a.bitLength());
+      for (int i = 0; i < a.bitLength(); i++) {
+  	a_and_b.set(i, a.get(i) & b.get(i));
+      }
+      return a_and_b;
 
-  //   }
+    }
 
   //   template<int Q = Width>
   //   static inline
@@ -679,18 +676,17 @@ namespace bsim {
 
   //   }
     
-  // };
+  };
 
   // template<int N>
   // static inline dynamic_bit_vector<N> operator~(const dynamic_bit_vector<N>& a) {
   //   return dynamic_bit_vector_operations<N>::lnot(a);
   // }
   
-  // template<int N>
-  // static inline dynamic_bit_vector<N> operator&(const dynamic_bit_vector<N>& a,
-  // 					const dynamic_bit_vector<N>& b) {
-  //   return dynamic_bit_vector_operations<N>::land(a, b);
-  // }
+  static inline dynamic_bit_vector operator&(const dynamic_bit_vector& a,
+					     const dynamic_bit_vector& b) {
+    return dynamic_bit_vector_operations::land(a, b);
+  }
 
   // template<int N>
   // static inline dynamic_bit_vector<N> operator|(const dynamic_bit_vector<N>& a,
@@ -860,4 +856,4 @@ namespace bsim {
 
   //   return hw;
   // }
-//}
+}

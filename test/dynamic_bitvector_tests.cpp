@@ -297,180 +297,181 @@ namespace bsim {
 		 
 //     }
 
-//     SECTION("Logical and bit vectors") {
+    SECTION("Logical and bit vectors") {
 
-//       SECTION("3 bit numbers") {
-// 	bit_vector<3> a;
-// 	a.set(0, 0);
-// 	a.set(1, 1);
-// 	a.set(2, 0);
+      SECTION("3 bit numbers") {
+	dynamic_bit_vector a(3);
+	a.set(0, 0);
+	a.set(1, 1);
+	a.set(2, 0);
 
-// 	bit_vector<3> b;
-// 	b.set(0, 1);
-// 	b.set(1, 1);
-// 	b.set(2, 0);
+	dynamic_bit_vector b(3);
+	b.set(0, 1);
+	b.set(1, 1);
+	b.set(2, 0);
 
-// 	bit_vector<3> c = a & b;
+	dynamic_bit_vector c = a & b;
 
-// 	bit_vector<3> expected;
-// 	expected.set(0, 0);
-// 	expected.set(1, 1);
-// 	expected.set(2, 0);
+	dynamic_bit_vector expected(3);
+	expected.set(0, 0);
+	expected.set(1, 1);
+	expected.set(2, 0);
 
-// 	REQUIRE(c == expected);
-//       }
+	REQUIRE(c == expected);
+      }
 
-//       SECTION("13 bit numbers") {
-// 	bit_vector<13> a;
-// 	a.set(0, 0);
-// 	a.set(1, 1);
-// 	a.set(2, 0);
-// 	a.set(12, 1);
+      SECTION("13 bit numbers") {
+	dynamic_bit_vector a(13);
+	a.set(0, 0);
+	a.set(1, 1);
+	a.set(2, 0);
+	a.set(12, 1);
 
-// 	bit_vector<13> b;
-// 	b.set(0, 1);
-// 	b.set(1, 1);
-// 	b.set(2, 0);
+	dynamic_bit_vector b(13);
+	b.set(0, 1);
+	b.set(1, 1);
+	b.set(2, 0);
 
-// 	bit_vector<13> c = a & b;
+	dynamic_bit_vector c = a & b;
 
-// 	bit_vector<13> expected;
-// 	expected.set(0, 0);
-// 	expected.set(1, 1);
-// 	expected.set(2, 0);
+	dynamic_bit_vector expected(13);
+	expected.set(0, 0);
+	expected.set(1, 1);
+	expected.set(2, 0);
 
-// 	REQUIRE(c == expected);
-//       }
+	REQUIRE(c == expected);
+      }
 
-//       SECTION("32 bit numbers") {
-// 	bit_vector<32> a;
-// 	a.set(23, 1);
-// 	a.set(4, 1);
+      SECTION("32 bit numbers") {
+	dynamic_bit_vector a(32);
+	a.set(23, 1);
+	a.set(4, 1);
 
-// 	bit_vector<32> b;
-// 	b.set(4, 1);
-// 	b.set(9, 1);
+	dynamic_bit_vector b(32);
+	b.set(4, 1);
+	b.set(9, 1);
 
-// 	bit_vector<32> c = a & b;
+	dynamic_bit_vector c = a & b;
 
-// 	bit_vector<32> correct;
-// 	correct.set(4, 1);
+	dynamic_bit_vector correct(32);
+	correct.set(4, 1);
 
-// 	REQUIRE(c == correct);
-//       }
+	REQUIRE(c == correct);
+      }
 
-//       SECTION("41 bit numbers") {
-// 	bit_vector<41> a;
-// 	a.set(23, 1);
-// 	a.set(9, 1);
+      SECTION("41 bit numbers") {
+	dynamic_bit_vector a(41);
+	a.set(23, 1);
+	a.set(9, 1);
 
-// 	bit_vector<41> b;
-// 	b.set(4, 1);
-// 	b.set(9, 1);
+	dynamic_bit_vector b(41);
+	b.set(4, 1);
+	b.set(9, 1);
 
-// 	bit_vector<41> c = a & b;
+	dynamic_bit_vector c = a & b;
 
-// 	bit_vector<41> correct;
-// 	correct.set(9, 1);
+	dynamic_bit_vector correct(41);
+	correct.set(9, 1);
 
-// 	REQUIRE(c == correct);
-//       }
+	REQUIRE(c == correct);
+      }
 
-//     }
+    }
 
-//     SECTION("Logical or") {
+    // SECTION("Logical or") {
 
-//       SECTION("3 bits") {
-// 	bit_vector<3> a;
-// 	a.set(0, 1);
-// 	a.set(2, 1);
+    //   SECTION("3 bits") {
+    // 	dynamic_bit_vector<3> a;
+    // 	a.set(0, 1);
+    // 	a.set(2, 1);
 
-// 	bit_vector<3> b;
-// 	b.set(0, 1);
+    // 	dynamic_bit_vector<3> b;
+    // 	b.set(0, 1);
 
-// 	bit_vector<3> c = a | b;
+    // 	dynamic_bit_vector<3> c = a | b;
 
-// 	bit_vector<3> correct;
-// 	correct.set(0, 1);
-// 	correct.set(2, 1);
+    // 	dynamic_bit_vector<3> correct;
+    // 	correct.set(0, 1);
+    // 	correct.set(2, 1);
 
-// 	REQUIRE(c == correct);
-//       }
+    // 	REQUIRE(c == correct);
+    //   }
 
-//       SECTION("1129 bits") {
-// 	bit_vector<1129> a;
-// 	a.set(1000, 1);
-// 	a.set(932, 1);
-// 	a.set(60, 1);
+    //   SECTION("1129 bits") {
+    // 	dynamic_bit_vector<1129> a;
+    // 	a.set(1000, 1);
+    // 	a.set(932, 1);
+    // 	a.set(60, 1);
 
-// 	bit_vector<1129> b;
-// 	b.set(1001, 1);
-// 	b.set(932, 1);
-// 	b.set(287, 1);
+    // 	dynamic_bit_vector<1129> b;
+    // 	b.set(1001, 1);
+    // 	b.set(932, 1);
+    // 	b.set(287, 1);
 
-// 	bit_vector<1129> c = a | b;
+    // 	dynamic_bit_vector<1129> c = a | b;
 
-// 	bit_vector<1129> correct;
-// 	correct.set(1001, 1);
-// 	correct.set(1000, 1);
-// 	correct.set(932, 1);
-// 	correct.set(287, 1);
-// 	correct.set(60, 1);
+    // 	dynamic_bit_vector<1129> correct;
+    // 	correct.set(1001, 1);
+    // 	correct.set(1000, 1);
+    // 	correct.set(932, 1);
+    // 	correct.set(287, 1);
+    // 	correct.set(60, 1);
 
-// 	REQUIRE(c == correct);
-//       }
+    // 	REQUIRE(c == correct);
+    //   }
       
-//     }
+    // }
 
-//     SECTION("Logical XOR") {
+    // SECTION("Logical XOR") {
 
-//       SECTION("83 bit vectors") {
-// 	bit_vector<83> a;
-// 	a.set(82, 1);
-// 	a.set(60, 1);
-// 	a.set(13, 1);
+    //   SECTION("83 bit vectors") {
+    // 	dynamic_bit_vector<83> a;
+    // 	a.set(82, 1);
+    // 	a.set(60, 1);
+    // 	a.set(13, 1);
 
-// 	bit_vector<83> b;
-// 	b.set(60, 1);
+    // 	dynamic_bit_vector<83> b;
+    // 	b.set(60, 1);
 
-// 	bit_vector<83> c = a ^ b;
+    // 	dynamic_bit_vector<83> c = a ^ b;
 
-// 	bit_vector<83> correct;
-// 	correct.set(82, 1);
-// 	correct.set(13, 1);
+    // 	dynamic_bit_vector<83> correct;
+    // 	correct.set(82, 1);
+    // 	correct.set(13, 1);
 
-// 	REQUIRE(c == correct);
+    // 	REQUIRE(c == correct);
 	
-//       }
-//     }
+    //   }
+    // }
 
-//     SECTION("Logical not") {
+    // SECTION("Logical not") {
 
-//       SECTION("77 bits") {
-// 	bit_vector<77> a;
-// 	a.set(49, 1);
-// 	a.set(12, 1);
+    //   SECTION("77 bits") {
+    // 	dynamic_bit_vector<77> a;
+    // 	a.set(49, 1);
+    // 	a.set(12, 1);
 
-// 	bit_vector<77> c = ~a;
+    // 	dynamic_bit_vector<77> c = ~a;
 
-// 	bit_vector<77> correct;
-// 	for (int i = 0; i < 77; i++) {
-// 	  if ((i != 49) && (i != 12)) {
-// 	    correct.set(i, 1);
-// 	  }
-// 	}
+    // 	dynamic_bit_vector<77> correct;
+    // 	for (int i = 0; i < 77; i++) {
+    // 	  if ((i != 49) && (i != 12)) {
+    // 	    correct.set(i, 1);
+    // 	  }
+    // 	}
 
-// 	REQUIRE(c == correct);
+    // 	REQUIRE(c == correct);
 	
-//       }
-     }
+    //   }
+    //  }
+  }
 
 //   TEST_CASE("Adding bit vectors with general add") {
 
-//     bit_vector<29> a("00000000000000000000011101011");
-//     bit_vector<29> b("00000000000000011001001011010");
+//     dynamic_bit_vector<29> a("00000000000000000000011101011");
+//     dynamic_bit_vector<29> b("00000000000000011001001011010");
 
-//     bit_vector<29> c =
+//     dynamic_bit_vector<29> c =
 //       add_general_width_bv(a, b);
 
 //     REQUIRE(c.get(28) != 1);
