@@ -35,31 +35,31 @@ namespace bsim {
     }
   }
 
-//   TEST_CASE("Bitvector arithmetic") {
+  TEST_CASE("Dynamic bitvector arithmetic") {
 
-//     SECTION("Setting bit vector values") {
+    SECTION("Setting bit vector values") {
 
-//       SECTION("Length 1 vector") {
-// 	bit_vector<1> a;
-// 	a.set(0, 1);
+      SECTION("Length 1 vector") {
+	dynamic_bit_vector a(1);
+	a.set(0, 1);
 
-// 	REQUIRE(a.get(0) == 1);
-//       }
+	REQUIRE(a.get(0) == 1);
+      }
 
-//       SECTION("Length 37 vector") {
-// 	bit_vector<37> a;
-// 	a.set(14, 0);
-// 	a.set(17, 1);
-// 	a.set(36, 1);
-// 	a.set(2, 0);
+      SECTION("Length 37 vector") {
+	dynamic_bit_vector a(37);
+	a.set(14, 0);
+	a.set(17, 1);
+	a.set(36, 1);
+	a.set(2, 0);
 
-// 	REQUIRE(a.get(14) == 0);
-// 	REQUIRE(a.get(17) == 1);
-// 	REQUIRE(a.get(36) == 1);
-// 	REQUIRE(a.get(2) == 0);
-//       }
+	REQUIRE(a.get(14) == 0);
+	REQUIRE(a.get(17) == 1);
+	REQUIRE(a.get(36) == 1);
+	REQUIRE(a.get(2) == 0);
+      }
       
-//     }
+    }
 
 //     SECTION("Subtracting unsigned numbers") {
 
@@ -463,7 +463,7 @@ namespace bsim {
 // 	REQUIRE(c == correct);
 	
 //       }
-//     }
+     }
 
 //   TEST_CASE("Adding bit vectors with general add") {
 
