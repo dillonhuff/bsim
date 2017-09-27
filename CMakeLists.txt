@@ -10,6 +10,7 @@ SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${EXTRA_CXX_COMPILE_FLAGS}")
 
 INCLUDE_DIRECTORIES(./src/)
 
-SET(TEST_FILES ./test/bitvector_tests.cpp)
+SET(TEST_FILES ./test/bitvector_tests.cpp
+	       ./test/dynamic_bitvector_tests.cpp)
 
 add_executable(all-tests ${TEST_FILES})

@@ -270,6 +270,18 @@ namespace bsim {
 
 	REQUIRE(b / a == b);
       }
+
+      SECTION("22 bit numbers") {
+	unsigned_int<22> a((bv_uint32) 2345);
+	unsigned_int<22> b((bv_uint32) 5);
+
+	unsigned_int<22> expected((bv_uint32) 2345 / 5);
+
+	cout << "Expected = " << expected << endl;
+	cout << "Actual   = " << (b / a) << endl;
+
+	REQUIRE(b / a == expected);
+      }
     }
 
     SECTION("Unsigned multiplication") {
