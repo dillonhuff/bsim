@@ -262,27 +262,27 @@ namespace bsim {
       }
     }
 
-    SECTION("Unsigned division") {
+    // SECTION("Unsigned division") {
 
-      SECTION("9 bit numbers") {
-	unsigned_int<9> a("000000001");
-	unsigned_int<9> b("100101001");
+    //   SECTION("9 bit numbers") {
+    // 	unsigned_int<9> a("000000001");
+    // 	unsigned_int<9> b("100101001");
 
-	REQUIRE(b / a == b);
-      }
+    // 	REQUIRE(b / a == b);
+    //   }
 
-      SECTION("22 bit numbers") {
-	unsigned_int<22> a((bv_uint32) 2345);
-	unsigned_int<22> b((bv_uint32) 5);
+    //   SECTION("22 bit numbers") {
+    // 	unsigned_int<22> a((bv_uint32) 2345);
+    // 	unsigned_int<22> b((bv_uint32) 5);
 
-	unsigned_int<22> expected((bv_uint32) 2345 / 5);
+    // 	unsigned_int<22> expected((bv_uint32) 2345 / 5);
 
-	cout << "Expected = " << expected << endl;
-	cout << "Actual   = " << (b / a) << endl;
+    // 	cout << "Expected = " << expected << endl;
+    // 	cout << "Actual   = " << (b / a) << endl;
 
-	REQUIRE(b / a == expected);
-      }
-    }
+    // 	REQUIRE(b / a == expected);
+    //   }
+    // }
 
     SECTION("Unsigned multiplication") {
 

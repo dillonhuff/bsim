@@ -1,51 +1,10 @@
-// #define CATCH_CONFIG_MAIN
+#include "catch.hpp"
 
-// #include "catch.hpp"
+#include "dynamic_bit_vector.h"
 
-// #include "dynamic_bit_vector.h"
+using namespace std;
 
-// using namespace std;
-
-// namespace bsim {
-
-//   TEST_CASE("Num bytes test") {
-    
-//     SECTION("1 byte to store 1 bit") {
-//       REQUIRE(NUM_BYTES(1) == 1);
-//     }
-
-//     SECTION("1 byte to store 8 bits") {
-//       REQUIRE(NUM_BYTES(8) == 1);
-//     }
-
-//     SECTION("2 bytes to store 13 bits") {
-//       REQUIRE(NUM_BYTES(13) == 2);
-//     }
-    
-//     SECTION("2 bytes to store 16 bits") {
-//       REQUIRE(NUM_BYTES(16) == 2);
-//     }
-
-//     SECTION("4 bytes to store 17 bits") {
-//       REQUIRE(NUM_BYTES(16) == 2);
-//     }
-    
-//     SECTION("4 bytes to store 32 bits") {
-//       REQUIRE(NUM_BYTES(32) == 4);
-//     }
-
-//     SECTION("8 bytes to store 33 bits") {
-//       REQUIRE(NUM_BYTES(33) == 8);
-//     }
-    
-//     SECTION("8 bytes to store 64 bits") {
-//       REQUIRE(NUM_BYTES(64) == 8);
-//     }
-
-//     SECTION("9 bytes to store 65 bits") {
-//       REQUIRE(NUM_BYTES(65) == 9);
-//     }
-//   }
+namespace bsim {
 
 //   TEST_CASE("Bit vector comparison") {
 
@@ -506,155 +465,6 @@
 //       }
 //     }
 
-//     SECTION("Signed numbers") {
-
-//       SECTION("Construct from signed integer") {
-// 	bv_sint32 s = -230;
-
-// 	signed_int<32> a(s);
-
-// 	REQUIRE(a.as_native_int32() == s);
-//       }
-
-//       SECTION("Construct with sign extension") {
-// 	bv_sint32 s = -230;
-
-// 	signed_int<12> a(s);
-
-// 	REQUIRE(a.as_native_int32() == s);
-//       }
-
-//       SECTION("Sign extending negative 6 bit number") {
-// 	signed_int<6> a;
-// 	a.set(0, 1);
-// 	a.set(2, 1);
-// 	a.set(5, 1);
-
-// 	signed_int<8> b = sign_extend<6, 8>(a);
-
-// 	REQUIRE(b.get(7) == 1);
-	
-//       }
-
-//       SECTION("Sign extending positive 6 bit number") {
-// 	signed_int<6> a;
-// 	a.set(0, 1);
-// 	a.set(2, 1);
-
-// 	signed_int<8> b = sign_extend<6, 8>(a);
-
-// 	REQUIRE(b.get(7) == 0);
-//       }
-      
-//       SECTION("Addition") {
-
-// 	SECTION("29 bit numbers") {
-// 	  int ai = 235;
-// 	  int bi = 12890;
-
-// 	  signed_int<29> a(ai);
-// 	  signed_int<29> b(bi);
-
-// 	  signed_int<29> res =
-// 	    signed_int_operations<29>::add_general_width(a, b);
-
-// 	  bv_sint32 resi = res.as_native_int32();
-// 	  bv_sint32 int_sum = ai + bi;
-
-// 	  cout << "result    =    " << res << endl;
-// 	  cout << "resi      = " << bitset<32>(resi) << endl;
-// 	  cout << "int sum   = " << bitset<32>(int_sum) << endl;
-
-// 	  REQUIRE(res.as_native_int32() == (ai + bi));
-// 	}
-//       }
-
-//       SECTION("Multiplication") {
-
-// 	SECTION("29 bit numbers") {
-// 	  int ai = 235;
-// 	  int bi = -54;
-
-// 	  signed_int<29> a(ai);
-// 	  signed_int<29> b(bi);
-
-// 	  signed_int<29> res =
-// 	    signed_int_operations<29>::mul_general_width(a, b);
-
-// 	  bv_sint32 resi = res.as_native_int32();
-// 	  bv_sint32 int_sum = ai + bi;
-
-// 	  REQUIRE(res.as_native_int32() == (ai * bi));
-// 	}
-//       }
-
-//       SECTION("Subtraction") {
-// 	int ai = -112;
-// 	int bi = -984;
-
-// 	signed_int<13> a(ai);
-// 	signed_int<13> b(bi);
-
-// 	signed_int<13> res =
-// 	  signed_int_operations<13>::sub_general_width(a, b);
-
-// 	cout << "a   = " << a << endl;
-// 	cout << "b   = " << b << endl;
-// 	cout << "res = " << res << endl;
-
-// 	bv_sint32 diff = ai - bi;
-
-// 	REQUIRE(res.as_native_int32() == diff);
-//       }
-
-//       SECTION("Greater than") {
-
-// 	SECTION("Both negative, a > b") {
-// 	  signed_int<6> a("100100");
-// 	  signed_int<6> b("100000");
-
-// 	  REQUIRE(a > b);
-// 	}
-
-// 	SECTION("Both negative, !(a > b)") {
-// 	  signed_int<6> a("100100");
-// 	  signed_int<6> b("110001");
-
-// 	  REQUIRE(!(a > b));
-// 	}
-
-// 	SECTION("One negative and one positive") {
-// 	  signed_int<11> a("10001010101");
-// 	  signed_int<11> b("00000000000");
-
-// 	  REQUIRE(b > a);
-
-// 	  REQUIRE(!(a > b));
-// 	}
-
-// 	SECTION("Both positive") {
-// 	  signed_int<12> a("011010110101");
-// 	  signed_int<12> b("010001001110");
-
-// 	  REQUIRE(a > b);
-// 	}
-
-//       }
-
-//       SECTION("Greater than or equal to") {
-
-// 	SECTION("Equal to") {
-// 	  signed_int<12> a("011010110101");
-
-// 	  REQUIRE(a >= a);
-
-// 	}
-//       }
-
-//     }
-
-//   }
-
 //   TEST_CASE("Adding bit vectors with general add") {
 
 //     bit_vector<29> a("00000000000000000000011101011");
@@ -666,4 +476,4 @@
 //     REQUIRE(c.get(28) != 1);
 //   }
 
-// }
+}

@@ -25,20 +25,22 @@ namespace bsim {
 
   class dynamic_bit_vector {
     std::vector<unsigned char> bits;
-    const int numBits;
+    int N;
     //unsigned char bits[NUM_BYTES(N)];
     
 
   public:
-    dynamic_bit_vector(const int N) : numBits(N) {
-      bits.allocate(NUM_BYTS(N));
+    dynamic_bit_vector(const int N_) : N(N_) {
+      bits.resize(NUM_BYTES(N));
       for (int i = 0; i < N; i++) {
 	set(i, 0);
       }
     }
 
-    dynamic_bit_vector(const int N, const std::string& str) : numBits(N) {
+    dynamic_bit_vector(const int N_, const std::string& str) : N(N_) {
       assert(str.size() == N);
+
+      bits.resize(NUM_BYTES(N));
 
       for (int i = N - 1; i >= 0; i--) {
 	unsigned char val = (str[i] == '0') ? 0 : 1;
@@ -47,33 +49,33 @@ namespace bsim {
       }
     }
 
-    dynamic_bit_vector(const int val) {
-      *((int*) (&bits)) = val;
+    dynamic_bit_vector(const int N, const int val) {
+      //*((int*) (&bits)) = val;
     }
 
-    dynamic_bit_vector(const bv_uint64 val) {
-      *((bv_uint64*)(&bits)) = val;
-    }
+    // dynamic_bit_vector(const bv_uint64 val) {
+    //   *((bv_uint64*)(&bits)) = val;
+    // }
     
-    dynamic_bit_vector(const bv_uint32 val) {
-      *((bv_uint32*)(&bits)) = val;
-    }
+    // dynamic_bit_vector(const bv_uint32 val) {
+    //   *((bv_uint32*)(&bits)) = val;
+    // }
 
-    dynamic_bit_vector(const bv_uint16 val) {
-      *((bv_uint16*)(&bits)) = val;
-    }
+    // dynamic_bit_vector(const bv_uint16 val) {
+    //   *((bv_uint16*)(&bits)) = val;
+    // }
 
-    dynamic_bit_vector(const bv_uint8 val) {
-      *((bv_uint8*)(&bits)) = val;
-    }
+    // dynamic_bit_vector(const bv_uint8 val) {
+    //   *((bv_uint8*)(&bits)) = val;
+    // }
     
-    dynamic_bit_vector(const dynamic_bit_vector<N>& other) {
+    dynamic_bit_vector(const dynamic_bit_vector& other) {
       for (int i = 0; i < NUM_BYTES(N); i++) {
 	bits[i] = other.bits[i];
       }
     }
 
-    dynamic_bit_vector<N>& operator=(const dynamic_bit_vector<N>& other) {
+    dynamic_bit_vector& operator=(const dynamic_bit_vector& other) {
       if (&other == this) {
     	return *this;
       }
@@ -104,7 +106,7 @@ namespace bsim {
       return 0x01 & (target_byte >> bit_num);
     }
 
-    inline bool equals(const dynamic_bit_vector<N>& other) const {
+    inline bool equals(const dynamic_bit_vector& other) const {
 
       for (int i = 0; i < N; i++) {
 	if (get(i) != other.get(i)) {
@@ -141,7 +143,7 @@ namespace bsim {
     }
 
     inline int bitLength() const {
-      return numBits;
+      return N;
     }
     
   };
