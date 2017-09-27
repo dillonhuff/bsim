@@ -378,49 +378,49 @@ namespace bsim {
 
     }
 
-    // SECTION("Logical or") {
+    SECTION("Logical or") {
 
-    //   SECTION("3 bits") {
-    // 	dynamic_bit_vector<3> a;
-    // 	a.set(0, 1);
-    // 	a.set(2, 1);
+      SECTION("3 bits") {
+    	dynamic_bit_vector a(3);
+    	a.set(0, 1);
+    	a.set(2, 1);
 
-    // 	dynamic_bit_vector<3> b;
-    // 	b.set(0, 1);
+    	dynamic_bit_vector b(3);
+    	b.set(0, 1);
 
-    // 	dynamic_bit_vector<3> c = a | b;
+    	dynamic_bit_vector c = a | b;
 
-    // 	dynamic_bit_vector<3> correct;
-    // 	correct.set(0, 1);
-    // 	correct.set(2, 1);
+    	dynamic_bit_vector correct(3);
+    	correct.set(0, 1);
+    	correct.set(2, 1);
 
-    // 	REQUIRE(c == correct);
-    //   }
+    	REQUIRE(c == correct);
+      }
 
-    //   SECTION("1129 bits") {
-    // 	dynamic_bit_vector<1129> a;
-    // 	a.set(1000, 1);
-    // 	a.set(932, 1);
-    // 	a.set(60, 1);
+      SECTION("1129 bits") {
+    	dynamic_bit_vector a(1129);
+    	a.set(1000, 1);
+    	a.set(932, 1);
+    	a.set(60, 1);
 
-    // 	dynamic_bit_vector<1129> b;
-    // 	b.set(1001, 1);
-    // 	b.set(932, 1);
-    // 	b.set(287, 1);
+    	dynamic_bit_vector b(1129);
+    	b.set(1001, 1);
+    	b.set(932, 1);
+    	b.set(287, 1);
 
-    // 	dynamic_bit_vector<1129> c = a | b;
+    	dynamic_bit_vector c = a | b;
 
-    // 	dynamic_bit_vector<1129> correct;
-    // 	correct.set(1001, 1);
-    // 	correct.set(1000, 1);
-    // 	correct.set(932, 1);
-    // 	correct.set(287, 1);
-    // 	correct.set(60, 1);
+    	dynamic_bit_vector correct(1129);
+    	correct.set(1001, 1);
+    	correct.set(1000, 1);
+    	correct.set(932, 1);
+    	correct.set(287, 1);
+    	correct.set(60, 1);
 
-    // 	REQUIRE(c == correct);
-    //   }
+    	REQUIRE(c == correct);
+      }
       
-    // }
+    }
 
     // SECTION("Logical XOR") {
 

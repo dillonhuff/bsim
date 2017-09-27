@@ -654,15 +654,14 @@ namespace bsim {
 
   //   }
       
-  //   static inline dynamic_bit_vector<Width> lor(const dynamic_bit_vector<Width>& a,
-  // 					const dynamic_bit_vector<Width>& b) {
-  //     dynamic_bit_vector<Width> a_or_b;
-  //     for (int i = 0; i < Width; i++) {
-  // 	a_or_b.set(i, a.get(i) | b.get(i));
-  //     }
-  //     return a_or_b;
-
-  //   }
+    static inline dynamic_bit_vector lor(const dynamic_bit_vector& a,
+					 const dynamic_bit_vector& b) {
+      dynamic_bit_vector a_or_b(a.bitLength());
+      for (int i = 0; i < a.bitLength(); i++) {
+  	a_or_b.set(i, a.get(i) | b.get(i));
+      }
+      return a_or_b;
+    }
 
   //   static inline
   //   dynamic_bit_vector<Width>
@@ -688,11 +687,10 @@ namespace bsim {
     return dynamic_bit_vector_operations::land(a, b);
   }
 
-  // template<int N>
-  // static inline dynamic_bit_vector<N> operator|(const dynamic_bit_vector<N>& a,
-  // 					const dynamic_bit_vector<N>& b) {
-  //   return dynamic_bit_vector_operations<N>::lor(a, b);
-  // }
+  static inline dynamic_bit_vector operator|(const dynamic_bit_vector& a,
+					     const dynamic_bit_vector& b) {
+    return dynamic_bit_vector_operations::lor(a, b);
+  }
 
   // template<int N>
   // static inline dynamic_bit_vector<N> operator^(const dynamic_bit_vector<N>& a,
