@@ -422,48 +422,48 @@ namespace bsim {
       
     }
 
-    // SECTION("Logical XOR") {
+    SECTION("Logical XOR") {
 
-    //   SECTION("83 bit vectors") {
-    // 	dynamic_bit_vector<83> a;
-    // 	a.set(82, 1);
-    // 	a.set(60, 1);
-    // 	a.set(13, 1);
+      SECTION("83 bit vectors") {
+    	dynamic_bit_vector a(83);
+    	a.set(82, 1);
+    	a.set(60, 1);
+    	a.set(13, 1);
 
-    // 	dynamic_bit_vector<83> b;
-    // 	b.set(60, 1);
+    	dynamic_bit_vector b(83);
+    	b.set(60, 1);
 
-    // 	dynamic_bit_vector<83> c = a ^ b;
+    	dynamic_bit_vector c = a ^ b;
 
-    // 	dynamic_bit_vector<83> correct;
-    // 	correct.set(82, 1);
-    // 	correct.set(13, 1);
+    	dynamic_bit_vector correct(83);
+    	correct.set(82, 1);
+    	correct.set(13, 1);
 
-    // 	REQUIRE(c == correct);
+    	REQUIRE(c == correct);
 	
-    //   }
-    // }
+      }
+    }
 
-    // SECTION("Logical not") {
+    SECTION("Logical not") {
 
-    //   SECTION("77 bits") {
-    // 	dynamic_bit_vector<77> a;
-    // 	a.set(49, 1);
-    // 	a.set(12, 1);
+      SECTION("77 bits") {
+    	dynamic_bit_vector a(77);
+    	a.set(49, 1);
+    	a.set(12, 1);
 
-    // 	dynamic_bit_vector<77> c = ~a;
+    	dynamic_bit_vector c = ~a;
 
-    // 	dynamic_bit_vector<77> correct;
-    // 	for (int i = 0; i < 77; i++) {
-    // 	  if ((i != 49) && (i != 12)) {
-    // 	    correct.set(i, 1);
-    // 	  }
-    // 	}
+    	dynamic_bit_vector correct(77);
+    	for (int i = 0; i < 77; i++) {
+    	  if ((i != 49) && (i != 12)) {
+    	    correct.set(i, 1);
+    	  }
+    	}
 
-    // 	REQUIRE(c == correct);
+    	REQUIRE(c == correct);
 	
-    //   }
-    //  }
+      }
+     }
   }
 
 //   TEST_CASE("Adding bit vectors with general add") {

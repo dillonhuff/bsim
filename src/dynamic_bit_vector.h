@@ -26,8 +26,6 @@ namespace bsim {
   class dynamic_bit_vector {
     std::vector<unsigned char> bits;
     int N;
-    //unsigned char bits[NUM_BYTES(N)];
-    
 
   public:
     dynamic_bit_vector(const int N_) : N(N_) {
@@ -645,14 +643,14 @@ namespace bsim {
 
 
 
-  //   static inline dynamic_bit_vector<Width> lnot(const dynamic_bit_vector<Width>& a) {
-  //     dynamic_bit_vector<Width> not_a;
-  //     for (int i = 0; i < Width; i++) {
-  // 	not_a.set(i, ~a.get(i));
-  //     }
-  //     return not_a;
+    static inline dynamic_bit_vector lnot(const dynamic_bit_vector& a) {
+      dynamic_bit_vector not_a(a.bitLength());
+      for (int i = 0; i < a.bitLength(); i++) {
+  	not_a.set(i, ~a.get(i));
+      }
+      return not_a;
 
-  //   }
+    }
       
     static inline dynamic_bit_vector lor(const dynamic_bit_vector& a,
 					 const dynamic_bit_vector& b) {
@@ -663,24 +661,23 @@ namespace bsim {
       return a_or_b;
     }
 
-  //   static inline
-  //   dynamic_bit_vector<Width>
-  //   lxor(const dynamic_bit_vector<Width>& a,
-  // 	 const dynamic_bit_vector<Width>& b) {
-  //     dynamic_bit_vector<Width> a_or_b;
-  //     for (int i = 0; i < Width; i++) {
-  // 	a_or_b.set(i, a.get(i) ^ b.get(i));
-  //     }
-  //     return a_or_b;
+    static inline
+    dynamic_bit_vector
+    lxor(const dynamic_bit_vector& a,
+  	 const dynamic_bit_vector& b) {
+      dynamic_bit_vector a_or_b(a.bitLength());
+      for (int i = 0; i < a.bitLength(); i++) {
+  	a_or_b.set(i, a.get(i) ^ b.get(i));
+      }
+      return a_or_b;
 
-  //   }
+    }
     
   };
 
-  // template<int N>
-  // static inline dynamic_bit_vector<N> operator~(const dynamic_bit_vector<N>& a) {
-  //   return dynamic_bit_vector_operations<N>::lnot(a);
-  // }
+  static inline dynamic_bit_vector operator~(const dynamic_bit_vector& a) {
+    return dynamic_bit_vector_operations::lnot(a);
+  }
   
   static inline dynamic_bit_vector operator&(const dynamic_bit_vector& a,
 					     const dynamic_bit_vector& b) {
@@ -692,11 +689,10 @@ namespace bsim {
     return dynamic_bit_vector_operations::lor(a, b);
   }
 
-  // template<int N>
-  // static inline dynamic_bit_vector<N> operator^(const dynamic_bit_vector<N>& a,
-  // 					const dynamic_bit_vector<N>& b) {
-  //   return dynamic_bit_vector_operations<N>::lxor(a, b);
-  // }
+  static inline dynamic_bit_vector operator^(const dynamic_bit_vector& a,
+					     const dynamic_bit_vector& b) {
+    return dynamic_bit_vector_operations::lxor(a, b);
+  }
 
   // template<int N>
   // static inline bool operator!=(const dynamic_bit_vector<N>& a,
