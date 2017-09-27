@@ -6,34 +6,34 @@ using namespace std;
 
 namespace bsim {
 
-//   TEST_CASE("Bit vector comparison") {
+  TEST_CASE("Dynamic vector comparison") {
 
-//     SECTION("3 bits") {
-//       unsigned_int<3> b;
-//       b.set(0, 1);
+    SECTION("3 bits") {
+      dynamic_bit_vector b(3);
+      b.set(0, 1);
 
-//       SECTION("Copy construct") {
-// 	unsigned_int<3> b_cpy(b);
+      SECTION("Copy construct") {
+	dynamic_bit_vector b_cpy(b);
 
-// 	REQUIRE(b == b_cpy);
-//       }
+	REQUIRE(b == b_cpy);
+      }
 
-//       SECTION("Copy assign") {
-// 	unsigned_int<3> b_cpy = b;
+      SECTION("Copy assign") {
+	dynamic_bit_vector b_cpy = b;
 
-// 	REQUIRE(b == b_cpy);
-//       }
+	REQUIRE(b == b_cpy);
+      }
 
-//       SECTION("bit by bit copy") {
-// 	unsigned_int<3> b_cpy(b);
-// 	for (int i = 0; i < 3; i++) {
-// 	  b_cpy.set(i, b.get(i));
-// 	}
+      SECTION("bit by bit copy") {
+	dynamic_bit_vector b_cpy(b);
+	for (int i = 0; i < 3; i++) {
+	  b_cpy.set(i, b.get(i));
+	}
 
-// 	REQUIRE(b == b_cpy);
-//       }
-//     }
-//   }
+	REQUIRE(b == b_cpy);
+      }
+    }
+  }
 
 //   TEST_CASE("Bitvector arithmetic") {
 
