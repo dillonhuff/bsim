@@ -266,37 +266,6 @@ namespace bsim {
 // 	REQUIRE(c == unsigned_int<32>(cn));
 //       }
 
-//       SECTION("Greater than") {
-
-// 	SECTION("7 bit numbers") {
-// 	  unsigned_int<7> a("0101000");
-// 	  unsigned_int<7> b("1101000");
-
-// 	  REQUIRE(b > a);
-// 	}
-
-// 	SECTION("9 bit numbers") {
-// 	  unsigned_int<9> a("100101010");
-// 	  unsigned_int<9> b("100101000");
-
-// 	  REQUIRE(!(b > a));
-// 	}
-
-//       }
-
-//       SECTION("Less than") {
-
-// 	SECTION("18 bit numbers") {
-// 	  unsigned_int<17> a("01001011110101010");
-// 	  unsigned_int<17> b("10001001101010011");
-
-
-// 	  REQUIRE(a < b);
-// 	}
-//       }
-		 
-//     }
-
     SECTION("Logical and bit vectors") {
 
       SECTION("3 bit numbers") {
@@ -463,8 +432,44 @@ namespace bsim {
     	REQUIRE(c == correct);
 	
       }
-     }
+    }
   }
+
+  TEST_CASE("Comparison") {
+
+    SECTION("Greater than") {
+
+      SECTION("7 bit numbers") {
+	dynamic_bit_vector a(7, "0101000");
+	dynamic_bit_vector b(7, "1101000");
+
+	REQUIRE(b > a);
+      }
+
+      SECTION("9 bit numbers") {
+	dynamic_bit_vector a(9, "100101010");
+	dynamic_bit_vector b(9, "100101000");
+
+	REQUIRE(!(b > a));
+      }
+
+    }
+
+    SECTION("Less than") {
+
+      SECTION("18 bit numbers") {
+	dynamic_bit_vector a(17, "01001011110101010");
+	dynamic_bit_vector b(17, "10001001101010011");
+
+
+	REQUIRE(a < b);
+      }
+    }
+		 
+  }
+
+}
+    
 
 //   TEST_CASE("Adding bit vectors with general add") {
 
@@ -477,4 +482,3 @@ namespace bsim {
 //     REQUIRE(c.get(28) != 1);
 //   }
 
-}

@@ -718,29 +718,28 @@ namespace bsim {
   //   return !(a == b);
   // }
   
-  // template<int N>
-  // static inline bool operator>(const unsigned_int<N>& a,
-  // 			       const unsigned_int<N>& b) {
-  //   for (int i = N - 1; i >= 0; i--) {
-  //     if (a.get(i) > b.get(i)) {
-  // 	return true;
-  //     }
+  static inline bool operator>(const dynamic_bit_vector& a,
+  			       const dynamic_bit_vector& b) {
+    int N = a.bitLength();
+    for (int i = N - 1; i >= 0; i--) {
+      if (a.get(i) > b.get(i)) {
+  	return true;
+      }
 
-  //     if (a.get(i) < b.get(i)) {
-  // 	return false;
-  //     }
-  //   }
+      if (a.get(i) < b.get(i)) {
+  	return false;
+      }
+    }
 
-  //   return false;
-  // }
+    return false;
+  }
 
-  // template<int N>
-  // static inline bool operator<(const unsigned_int<N>& a,
-  // 			       const unsigned_int<N>& b) {
-  //   if (a == b) { return false; }
+  static inline bool operator<(const dynamic_bit_vector& a,
+  			       const dynamic_bit_vector& b) {
+    if (a == b) { return false; }
 
-  //   return !(a > b);
-  // }
+    return !(a > b);
+  }
 
   // template<int N>
   // static inline bool operator<=(const unsigned_int<N>& a,
