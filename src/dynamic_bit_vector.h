@@ -48,7 +48,8 @@ namespace bsim {
     }
 
     dynamic_bit_vector(const int N, const int val) {
-      //*((int*) (&bits)) = val;
+      bits.resize(NUM_BYTES(N));
+      *((int*) (&(bits[0]))) = val;
     }
 
     // dynamic_bit_vector(const bv_uint64 val) {
@@ -119,7 +120,7 @@ namespace bsim {
 
     template<typename ConvType>
     ConvType to_type() const {
-      return *((ConvType*) (&bits));
+      return *((ConvType*) (&(bits[0])));
     }
 
     inline bv_uint64 as_native_int32() const {

@@ -35,6 +35,26 @@ namespace bsim {
     }
   }
 
+  TEST_CASE("Dynamic bitvector initialization") {
+    SECTION("Default initialization is zero") {
+      int i = 23;
+
+      dynamic_bit_vector a(i);
+
+      REQUIRE(a.to_type<int>() == 0);
+    }
+
+    SECTION("Default initialization is zero") {
+      int i = 23;
+      int len = 30;
+
+      dynamic_bit_vector a(len, i);
+
+      REQUIRE(a.to_type<int>() == i);
+    }
+
+  }
+
   TEST_CASE("Dynamic bitvector arithmetic") {
 
     SECTION("Setting bit vector values") {
