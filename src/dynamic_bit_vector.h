@@ -695,11 +695,10 @@ namespace bsim {
     return dynamic_bit_vector_operations::lxor(a, b);
   }
 
-  // template<int N>
-  // static inline bool operator!=(const dynamic_bit_vector<N>& a,
-  // 				const dynamic_bit_vector<N>& b) {
-  //   return !a.equals(b);
-  // }
+  static inline bool operator!=(const dynamic_bit_vector& a,
+  				const dynamic_bit_vector& b) {
+    return !a.equals(b);
+  }
 
   // template<int N>
   // static inline bool operator==(const unsigned_int<N>& a,

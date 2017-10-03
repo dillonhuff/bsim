@@ -457,6 +457,17 @@ namespace bsim {
 
   TEST_CASE("Comparison") {
 
+    SECTION("Equal") {
+      SECTION("23 bit numbers") {
+	dynamic_bit_vector a(23, "01010010101010101111001");
+	dynamic_bit_vector b(23, "01010010101010101111001");
+	dynamic_bit_vector c(23, "11010010101110101111001");
+
+	REQUIRE(a == b);
+	REQUIRE(a != c);
+      }
+    }
+
     SECTION("Greater than") {
 
       SECTION("7 bit numbers") {
