@@ -53,6 +53,40 @@ namespace bsim {
       REQUIRE(a.to_type<int>() == i);
     }
 
+    SECTION("construct from uint8") {
+      bv_uint8 i = 4;
+      dynamic_bit_vector a(3, i);
+
+      REQUIRE(a.to_type<bv_uint8>() == 4);
+    }
+
+    SECTION("Copy constructor") {
+      int i = 4;
+      dynamic_bit_vector a(20, i);
+      dynamic_bit_vector b(a);
+
+      REQUIRE(b.bitLength() == 20);
+      REQUIRE(b.to_type<int>() == 4);
+    }
+
+    SECTION("Assign from another bit vector") {
+      int i = 4;
+      dynamic_bit_vector a(20, i);
+      dynamic_bit_vector b = a;
+
+      cout << "b = " << b << endl;
+
+      REQUIRE(b.bitLength() == 20);
+      REQUIRE(b.to_type<int>() == 4);
+
+      int j = i + 12;
+      dynamic_bit_vector c(23, j);
+
+      b = c;
+
+      REQUIRE(b.bitLength() == 23);
+    }
+
   }
 
   TEST_CASE("Dynamic bitvector arithmetic") {
@@ -457,7 +491,7 @@ namespace bsim {
 
   TEST_CASE("Comparison") {
 
-    SECTION("Equal") {
+    SECTION("Equal and not equal") {
       SECTION("23 bit numbers") {
 	dynamic_bit_vector a(23, "01010010101010101111001");
 	dynamic_bit_vector b(23, "01010010101010101111001");

@@ -47,7 +47,7 @@ namespace bsim {
       }
     }
 
-    dynamic_bit_vector(const int N, const int val) {
+    dynamic_bit_vector(const int N_, const int val) : N(N_) {
       bits.resize(NUM_BYTES(N));
       *((int*) (&(bits[0]))) = val;
     }
@@ -64,9 +64,9 @@ namespace bsim {
     //   *((bv_uint16*)(&bits)) = val;
     // }
 
-    // dynamic_bit_vector(const bv_uint8 val) {
-    //   *((bv_uint8*)(&bits)) = val;
-    // }
+    dynamic_bit_vector(const bv_uint8 val) {
+      *((bv_uint8*)(&bits)) = val;
+    }
     
     dynamic_bit_vector(const dynamic_bit_vector& other) {
       bits.resize(other.bits.size());
@@ -81,9 +81,13 @@ namespace bsim {
     	return *this;
       }
 
+      N = other.bitLength();
+      bits.resize(N);
+
       for (int i = 0; i < N; i++) {
     	set(i, other.get(i));
       }
+
 
       return *this;
     }
