@@ -322,6 +322,29 @@ namespace bsim {
     
   // };
 
+  static inline
+  dynamic_bit_vector
+  add_general_width_bv(const dynamic_bit_vector& a,
+  		       const dynamic_bit_vector& b) {
+
+    dynamic_bit_vector res(a.bitLength());
+    unsigned char carry = 0;
+    for (int i = 0; i < a.bitLength(); i++) {
+      unsigned char sum = a.get(i) + b.get(i) + carry;
+
+      carry = 0;
+
+      unsigned char z_i = sum & 0x01; //sum % 2;
+      res.set(i, z_i);
+      if (sum >= 2) {
+  	carry = 1;
+      }
+
+    }
+
+    return res;
+  }
+  
   // template<int Width>
   // static inline
   // dynamic_bit_vector<Width>

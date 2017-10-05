@@ -401,6 +401,14 @@ namespace bsim {
 
     }
 
+    SECTION("Addition") {
+      dynamic_bit_vector a(33, 10);
+      dynamic_bit_vector b(33, 23);
+
+      REQUIRE(add_general_width_bv(a, b) == dynamic_bit_vector(33, 33));
+      
+    }
+
     SECTION("Logical or") {
 
       SECTION("3 bits") {
