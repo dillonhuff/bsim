@@ -786,7 +786,9 @@ namespace bsim {
       assert(a_high >= b_high);
 
       int shift_amount = a_high - b_high;
+
       bit_vector<N> shifted = left_shift(b.get_bits(), shift_amount);
+
       val = val - unsigned_int<N>(shifted);
     }
 
