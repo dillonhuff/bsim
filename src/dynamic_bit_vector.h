@@ -831,36 +831,40 @@ namespace bsim {
   //   return quotient;
   // }
 
-  // template<int N>
-  // static inline bool operator>(const signed_int<N>& a,
-  // 			       const signed_int<N>& b) {
+  static inline bool
+  signed_gt(const dynamic_bit_vector& a,
+	    const dynamic_bit_vector& b) {
 
-  //   // a negative b non-negative
-  //   if ((a.get(N - 1) == 1) && (b.get(N - 1) == 0)) {
-  //     return false;
-  //   }
+    assert(a.bitLength() == b.bitLength());
 
-  //   // b negative a non-negative
-  //   if ((b.get(N - 1) == 1) && (a.get(N - 1) == 0)) {
-  //     return true;
-  //   }
+    int N = a.bitLength();
 
-  //   // Both negative or both non-negative
-  //   //if ((a.get(N - 1) == 1) && (b.get(N - 1) == 1)) {
+    // a negative b non-negative
+    if ((a.get(N - 1) == 1) && (b.get(N - 1) == 0)) {
+      return false;
+    }
 
-  //   for (int i = N - 2; i >= 0; i--) {
-  //     if (a.get(i) > b.get(i)) {
-  // 	return true;
-  //     }
+    // b negative a non-negative
+    if ((b.get(N - 1) == 1) && (a.get(N - 1) == 0)) {
+      return true;
+    }
 
-  //     if (a.get(i) < b.get(i)) {
-  // 	return false;
-  //     }
-  //   }
+    // Both negative or both non-negative
+    //if ((a.get(N - 1) == 1) && (b.get(N - 1) == 1)) {
 
-  //   return false;
+    for (int i = N - 2; i >= 0; i--) {
+      if (a.get(i) > b.get(i)) {
+  	return true;
+      }
 
-  // }
+      if (a.get(i) < b.get(i)) {
+  	return false;
+      }
+    }
+
+    return false;
+
+  }
 
   // template<int N>
   // static inline bool operator>=(const signed_int<N>& a,

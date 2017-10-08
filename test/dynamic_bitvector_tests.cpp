@@ -593,6 +593,58 @@ namespace bsim {
 
   }
 
+  TEST_CASE("Signed comparison") {
+
+    SECTION("Greater than") {
+
+      SECTION("Both negative, a > b") {
+	dbv a(6, "100100");
+	dbv b(6, "100000");
+
+	REQUIRE(signed_gt(a, b));
+      }
+
+      SECTION("Both negative, !(a > b)") {
+	dbv a(6, "100100");
+	dbv b(6, "110001");
+
+	//REQUIRE(!(a > b));
+	REQUIRE(!signed_gt(a, b));
+      }
+
+      SECTION("One negative and one positive") {
+	dbv a(11, "10001010101");
+	dbv b(11, "00000000000");
+
+	//REQUIRE(b > a);
+	REQUIRE(signed_gt(b, a));
+
+	//REQUIRE(!(a > b));
+	REQUIRE(!signed_gt(a, b));
+      }
+
+      SECTION("Both positive") {
+	dbv a(12, "011010110101");
+	dbv b(12, "010001001110");
+
+	//REQUIRE(a > b);
+	REQUIRE(signed_gt(a, b));
+      }
+
+    }
+
+    SECTION("Greater than or equal to") {
+
+      SECTION("Equal to") {
+	dbv a(12, "011010110101");
+
+	//REQUIRE(a >= a);
+
+      }
+    }
+    
+  }
+
 }
     
 
