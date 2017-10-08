@@ -638,7 +638,7 @@ namespace bsim {
       SECTION("Equal to") {
 	dbv a(12, "011010110101");
 
-	//REQUIRE(a >= a);
+	REQUIRE(signed_gte(a, a));
 
       }
     }

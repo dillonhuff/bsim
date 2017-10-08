@@ -866,11 +866,10 @@ namespace bsim {
 
   }
 
-  // template<int N>
-  // static inline bool operator>=(const signed_int<N>& a,
-  // 				const signed_int<N>& b) {
-  //   return (a > b) || (a == b);
-  // }
+  static inline bool signed_gte(const dynamic_bit_vector& a,
+  				const dynamic_bit_vector& b) {
+    return (signed_gt(a, b)) || (a == b);
+  }
 
   // template<int N>
   // static inline bool operator<=(const signed_int<N>& a,
