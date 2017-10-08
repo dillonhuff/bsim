@@ -6,6 +6,8 @@ using namespace std;
 
 namespace bsim {
 
+  typedef dynamic_bit_vector dbv;
+
   TEST_CASE("Dynamic vector comparison") {
 
     SECTION("3 bits") {
@@ -539,6 +541,42 @@ namespace bsim {
       }
     }
 		 
+  }
+
+  TEST_CASE("Reduction operations") {
+
+    SECTION("andr") {
+
+      SECTION("All ones gives one") {
+	dbv a(5, "11111");
+
+	REQUIRE(andr(a) == dbv(1, "1"));
+      }
+
+      SECTION("Not all ones gives zero") {
+	dbv a(7, "1101101");
+
+	REQUIRE(andr(a) == dbv(1, "0"));
+      }
+
+    }
+
+    SECTION("orr") {
+
+      SECTION("All zeroes gives zero") {
+	dbv a(5, "00000");
+
+	REQUIRE(orr(a) == dbv(1, "0"));
+      }
+
+      SECTION("Not all zero gives one") {
+	dbv a(7, "0001100");
+
+	REQUIRE(orr(a) == dbv(1, "1"));
+      }
+
+    }
+
   }
 
 }
