@@ -753,14 +753,33 @@ namespace bsim {
   }
 
   template<int N>
+  static inline int top_bit_position(const bit_vector<N>& a) {
+    int top_pos = a.bitLength() - 1;
+    while (top_pos >= 0) {
+      if (a.get(top_pos) == 1) {
+	return top_pos;
+      }
+      top_pos--;
+    }
+
+    return top_pos;
+  }
+
+  template<int N>
   static inline unsigned_int<N> operator/(const unsigned_int<N>& a,
 					  const unsigned_int<N>& b) {
     unsigned_int<N> quotient;
     unsigned_int<N> val = a;
 
-    // while (b <= val) {
-    //   val = val - 
-    // }
+    while (b <= val) {
+      int a_high = top_bit_position(a.get_bits());
+      int b_high = top_bit_position(a.get_bits());
+
+      assert(a_high >= b_high);
+
+      int shift_amount = a_high - b_high;
+      val = val - left_shift(b, shift_amount);
+    }
 
     return quotient;
   }
