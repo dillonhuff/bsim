@@ -577,6 +577,20 @@ namespace bsim {
 
     }
 
+    SECTION("xorr") {
+
+      SECTION("Even number of zeros gives zero") {
+	dbv a(6, "111010");
+	REQUIRE(xorr(a) == dbv(1, "0"));
+      }
+
+      SECTION("Odd number of zeros gives zero") {
+	dbv a(9, "111010010");
+	REQUIRE(xorr(a) == dbv(1, "1"));
+      }
+
+    }
+
   }
 
 }

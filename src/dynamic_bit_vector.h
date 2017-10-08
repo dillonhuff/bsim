@@ -789,6 +789,22 @@ namespace bsim {
 
     return dynamic_bit_vector(1, "0");
   }
+
+  static inline dynamic_bit_vector
+  xorr(const dynamic_bit_vector& a) {
+    int numSet = 0;
+    for (int i = 0; i < a.bitLength(); i++) {
+      if (a.get(i) == 1) {
+	numSet++;
+      }
+    }
+
+    if ((numSet % 2) == 0) {
+      return dynamic_bit_vector(1, "0");
+    }
+
+    return dynamic_bit_vector(1, "1");
+  }
   
   // template<int N>
   // static inline bool operator<=(const unsigned_int<N>& a,
