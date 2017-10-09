@@ -30,11 +30,11 @@ namespace bsim {
   public:
     dynamic_bit_vector(const int N_) : N(N_) {
       bits.resize(NUM_BYTES(N));
-      for (int i = 0; i < bits.size(); i++) {
+      for (uint i = 0; i < bits.size(); i++) {
 	bits[i] = 0;
       }
       
-      for (int i = 0; i < N; i++) {
+      for (uint i = 0; i < N; i++) {
 	set(i, 0);
       }
     }
@@ -43,7 +43,7 @@ namespace bsim {
       assert(str.size() == N);
 
       bits.resize(NUM_BYTES(N));
-      for (int i = 0; i < bits.size(); i++) {
+      for (uint i = 0; i < bits.size(); i++) {
 	bits[i] = 0;
       }
 
@@ -66,7 +66,7 @@ namespace bsim {
     dynamic_bit_vector(const dynamic_bit_vector& other) {
       bits.resize(other.bits.size());
       N = other.bitLength();
-      for (int i = 0; i < NUM_BYTES(N); i++) {
+      for (uint i = 0; i < NUM_BYTES(N); i++) {
 	bits[i] = other.bits[i];
       }
     }
@@ -79,7 +79,7 @@ namespace bsim {
       N = other.bitLength();
       bits.resize(N);
 
-      for (int i = 0; i < N; i++) {
+      for (uint i = 0; i < N; i++) {
     	set(i, other.get(i));
       }
 
@@ -119,7 +119,7 @@ namespace bsim {
 
     template<typename ConvType>
     ConvType to_type() const {
-      return *((ConvType*) (&(bits[0])));
+      return *(const_cast<ConvType*>((const ConvType*) (&(bits[0]))));
     }
 
     inline bv_uint64 as_native_int32() const {
