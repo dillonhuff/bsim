@@ -30,6 +30,10 @@ namespace bsim {
   public:
     dynamic_bit_vector(const int N_) : N(N_) {
       bits.resize(NUM_BYTES(N));
+      for (int i = 0; i < bits.size(); i++) {
+	bits[i] = 0;
+      }
+      
       for (int i = 0; i < N; i++) {
 	set(i, 0);
       }
@@ -39,6 +43,9 @@ namespace bsim {
       assert(str.size() == N);
 
       bits.resize(NUM_BYTES(N));
+      for (int i = 0; i < bits.size(); i++) {
+	bits[i] = 0;
+      }
 
       for (int i = N - 1; i >= 0; i--) {
 	unsigned char val = (str[i] == '0') ? 0 : 1;
@@ -52,20 +59,8 @@ namespace bsim {
       *((int*) (&(bits[0]))) = val;
     }
 
-    // dynamic_bit_vector(const bv_uint64 val) {
-    //   *((bv_uint64*)(&bits)) = val;
-    // }
-    
-    // dynamic_bit_vector(const bv_uint32 val) {
-    //   *((bv_uint32*)(&bits)) = val;
-    // }
-
-    // dynamic_bit_vector(const bv_uint16 val) {
-    //   *((bv_uint16*)(&bits)) = val;
-    // }
-
     dynamic_bit_vector(const bv_uint8 val) {
-      *((bv_uint8*)(&bits)) = val;
+      *((bv_uint8*)(&(bits[0]))) = val;
     }
     
     dynamic_bit_vector(const dynamic_bit_vector& other) {
@@ -128,23 +123,23 @@ namespace bsim {
     }
 
     inline bv_uint64 as_native_int32() const {
-      return *((bv_sint32*) (&bits));
+      return to_type<bv_sint32>();
     }
     
     inline bv_uint64 as_native_uint64() const {
-      return *((bv_uint64*) (&bits));
+      return to_type<bv_uint64>();
     }
 
     inline bv_uint32 as_native_uint32() const {
-      return *((bv_uint32*) (&bits));
+      return to_type<bv_uint32>();
     }
 
     inline bv_uint16 as_native_uint16() const {
-      return *((bv_uint16*) (&bits));
+      return to_type<bv_uint16>();
     }
 
     inline bv_uint8 as_native_uint8() const {
-      return *((bv_uint8*) (&bits));
+      return to_type<bv_uint8>();
     }
 
     inline int bitLength() const {
@@ -877,7 +872,6 @@ namespace bsim {
   //   return !(a > b);
   // }
 
-  
   // template<int N>
   // static inline bool operator!=(const signed_int<N>& a,
   // 				const signed_int<N>& b) {

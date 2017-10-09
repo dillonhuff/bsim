@@ -645,6 +645,36 @@ namespace bsim {
     
   }
 
+  TEST_CASE("casting") {
+    int j = 3;
+    dbv a(65, j);
+
+    SECTION("uint 8") {
+      auto i = a.as_native_uint8();
+
+      REQUIRE(i == 3);
+    }
+    
+    SECTION("uint 16") {
+      auto i = a.as_native_uint16();
+
+      REQUIRE(i == 3);
+    }
+    
+    SECTION("uint 32") {
+      auto i = a.as_native_uint32();
+
+      REQUIRE(i == 3);
+    }
+
+    SECTION("uint 64") {
+      auto i = a.as_native_uint64();
+
+      REQUIRE(i == 3);
+    }
+
+  }
+
 }
     
 
