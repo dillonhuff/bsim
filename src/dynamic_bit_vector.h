@@ -877,18 +877,18 @@ namespace bsim {
       assert(false);
     }
 
-    else if (shift_amount > 32) {
+    else if (shift_amount.bitLength() > 32) {
       shift_int = shift_amount.to_type<bv_uint64>();
     }
 
-    else if (shift_amount > 16) {
+    else if (shift_amount.bitLength() > 16) {
       shift_int = (bv_uint64) (shift_amount.to_type<bv_uint32>());
     }
 
-    else if (shift_amount > 8) {
+    else if (shift_amount.bitLength() > 8) {
       shift_int = (bv_uint64) (shift_amount.to_type<bv_uint16>());
     } else {
-      shift_int = (bv_uint64) (shift_amount._type<bv_uint8>());
+      shift_int = (bv_uint64) (shift_amount.to_type<bv_uint8>());
     }
 
     std::cout << "shift_int = " << shift_int << std::endl;
