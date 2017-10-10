@@ -703,6 +703,22 @@ namespace bsim {
       REQUIRE(res == dbv(12, "000001000010"));
     }
 
+    SECTION("Logical shift right with one") {
+      dbv a(12, "100000100000");
+      dbv shift(5, "00011");
+      dbv res = lshr(a, shift);
+
+      REQUIRE(res == dbv(12, "000100000100"));
+    }
+
+    SECTION("Logical shift right with one") {
+      dbv a(12, "010000100000");
+      dbv shift(5, "00100");
+      dbv res = lshr(a, shift);
+
+      REQUIRE(res == dbv(12, "000001000010"));
+    }
+    
   }
 
 }

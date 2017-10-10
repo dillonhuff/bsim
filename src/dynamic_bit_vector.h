@@ -893,6 +893,25 @@ namespace bsim {
     return shift_int;
   }
 
+  static inline dynamic_bit_vector
+  lshr(const dynamic_bit_vector& a,
+       const dynamic_bit_vector& shift_amount) {
+    dynamic_bit_vector res(a.bitLength());
+
+    bv_uint64 shift_int = get_shift_int(shift_amount);
+
+    unsigned char sign_bit = a.get(a.bitLength() - 1);
+    for (int i = a.bitLength() - 1; i >= shift_int; i--) {
+      res.set(i - shift_int, a.get(i));
+    }
+
+    for (int i = a.bitLength() - 1; i >= (a.bitLength() - shift_int); i--) {
+      res.set(i, 0);
+    }
+
+    return res;
+  }
+
   // Arithmetic shift right
   static inline
   dynamic_bit_vector
