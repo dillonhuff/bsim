@@ -675,6 +675,19 @@ namespace bsim {
 
   }
 
+  TEST_CASE("Shifting") {
+    dbv a(9, "001010110");
+
+    // shift amount is 5
+    dbv shift_amount(3, "101");
+
+    SECTION("Shift left") {
+      dbv res = shl(a, shift_amount);
+
+      REQUIRE(res == dbv(9, "011000000"));
+    }
+  }
+
 }
     
 

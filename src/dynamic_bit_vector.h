@@ -866,6 +866,42 @@ namespace bsim {
     return (signed_gt(a, b)) || (a == b);
   }
 
+  static inline
+  dynamic_bit_vector
+  shl(const dynamic_bit_vector& a,
+      const dynamic_bit_vector& shift_amount) {
+    dynamic_bit_vector res(a.bitLength());
+
+    bv_uint64 shift_int = 0;
+    if (shift_amount.bitLength() > 64) {
+      assert(false);
+    }
+
+    else if (shift_amount > 32) {
+      shift_int = a.to_type<bv_uint64>();
+    }
+
+    else if (shift_amount > 16) {
+      shift_int = (bv_uint64) (a.to_type<bv_uint32>());
+    }
+
+    else if (shift_amount > 8) {
+      shift_int = (bv_uint64) (a.to_type<bv_uint16>());
+    } else {
+      shift_int = (bv_uint64) (a.to_type<bv_uint8>());
+    }
+
+    std::cout << "shift_int = " << shift_int << std::endl;
+
+    assert(shift_int < 65);
+
+    for (int i = shift_int; i < a.bitLength(); i++) {
+      res.set(i, a.get(i - shift_int));
+    }
+
+    return res;
+  }
+
   // template<int N>
   // static inline bool operator<=(const signed_int<N>& a,
   // 				const signed_int<N>& b) {
