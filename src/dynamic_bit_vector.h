@@ -867,11 +867,7 @@ namespace bsim {
   }
 
   static inline
-  dynamic_bit_vector
-  shl(const dynamic_bit_vector& a,
-      const dynamic_bit_vector& shift_amount) {
-    dynamic_bit_vector res(a.bitLength());
-
+  bv_uint64 get_shift_int(const dynamic_bit_vector& shift_amount) {
     bv_uint64 shift_int = 0;
     if (shift_amount.bitLength() > 64) {
       assert(false);
@@ -891,10 +887,40 @@ namespace bsim {
       shift_int = (bv_uint64) (shift_amount.to_type<bv_uint8>());
     }
 
-    std::cout << "shift_int = " << shift_int << std::endl;
-
+    //std::cout << "shift_int = " << shift_int << std::endl;
     assert(shift_int < 65);
 
+    return shift_int;
+  }
+
+  // Arithmetic shift right
+  static inline
+  dynamic_bit_vector
+  ashr(const dynamic_bit_vector& a,
+       const dynamic_bit_vector& shift_amount) {
+    dynamic_bit_vector res(a.bitLength());
+
+    bv_uint64 shift_int = get_shift_int(shift_amount);
+
+    unsigned char sign_bit = a.get(a.bitLength() - 1);
+    for (int i = a.bitLength() - 1; i >= shift_int; i--) {
+      res.set(i - shift_int, a.get(i));
+    }
+
+    for (int i = a.bitLength() - 1; i >= (a.bitLength() - shift_int); i--) {
+      res.set(i, sign_bit);
+    }
+
+    return res;
+  }
+  
+  static inline
+  dynamic_bit_vector
+  shl(const dynamic_bit_vector& a,
+      const dynamic_bit_vector& shift_amount) {
+    dynamic_bit_vector res(a.bitLength());
+
+    bv_uint64 shift_int = get_shift_int(shift_amount);    
     for (int i = shift_int; i < a.bitLength(); i++) {
       res.set(i, a.get(i - shift_int));
     }
