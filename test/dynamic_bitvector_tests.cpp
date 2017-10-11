@@ -129,47 +129,48 @@ namespace bsim {
       
     }
 
-//     SECTION("Subtracting unsigned numbers") {
+    SECTION("Subtracting unsigned numbers") {
 
-//       SECTION("3 bit numbers") {
-// 	unsigned_int<3> a;
-// 	a.set(2, 1);
+      SECTION("3 bit numbers") {
+	dynamic_bit_vector a(3);
+	a.set(2, 1);
 	
-// 	unsigned_int<3> b;
-// 	b.set(0, 1);
+	dynamic_bit_vector b(3);
+	b.set(0, 1);
 
-// 	unsigned_int<3> correct;
-// 	correct.set(0, 1);
-// 	correct.set(1, 1);
+	dynamic_bit_vector correct(3);
+	correct.set(0, 1);
+	correct.set(1, 1);
 
-// 	auto c =
-// 	  unsigned_int_operations<3>::sub_general_width(a, b);
+	auto c =
+	  sub_general_width_bv(a, b);
 
-// 	REQUIRE(c == correct);
-//       }
+	REQUIRE(c == correct);
+      }
 
-//       SECTION("8 bit case with overflow") {
-// 	unsigned_int<8> a;
-// 	a.set(7, 1);
+      SECTION("8 bit case with overflow") {
+	dynamic_bit_vector a(8);
+	a.set(7, 1);
 
-// 	unsigned_int<8> b;
-// 	b.set(7, 1);
-// 	b.set(0, 1);
+	dynamic_bit_vector b(8);
+	b.set(7, 1);
+	b.set(0, 1);
 
-// 	unsigned_int<8> c =
-// 	  unsigned_int_operations<8>::sub_general_width(a, b);
+	dynamic_bit_vector c =
+	  sub_general_width_bv(a, b);
 
-// 	bv_uint8 ac = 128;
-// 	bv_uint8 bc = 129;
+	bv_uint8 ac = 128;
+	bv_uint8 bc = 129;
 
-// 	bv_uint8 res = ac - bc;
+	bv_uint8 res = ac - bc;
 
-// 	REQUIRE(res == c.as_native_uint8());
+	REQUIRE(res == c.as_native_uint8());
 	
-//       }
+      }
+    }
 
 //       SECTION("Testing plus operator") {
-// 	unsigned_int<230> a;
+// 	dynamic_bit_vector<230> a;
 // 	a.set(220, 1);
 // 	a.set(23, 1);
 // 	a.set(3, 1);
