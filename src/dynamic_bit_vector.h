@@ -40,17 +40,17 @@ namespace bsim {
     }
 
     dynamic_bit_vector(const int N_, const std::string& str) : N(N_) {
-      assert(str.size() == N);
-
+      int len = str.size();
+      assert(len <= N);
+      
       bits.resize(NUM_BYTES(N));
-      for (uint i = 0; i < bits.size(); i++) {
-	bits[i] = 0;
+      for (int i = len - 1; i >= 0; i--) {
+        unsigned char val = (str[i] == '0') ? 0 : 1;
+        int ind = len - i - 1;
+        set(ind, val);
       }
-
-      for (int i = N - 1; i >= 0; i--) {
-	unsigned char val = (str[i] == '0') ? 0 : 1;
-	int ind = N - i - 1;
-	set(ind, val);
+      for (int i = N-1; i>=len; i--) {
+        set(i,0);
       }
     }
 
@@ -900,7 +900,7 @@ namespace bsim {
 
     bv_uint64 shift_int = get_shift_int(shift_amount);
 
-    unsigned char sign_bit = a.get(a.bitLength() - 1);
+    //unsigned char sign_bit = a.get(a.bitLength() - 1);
     for (int i = a.bitLength() - 1; i >= shift_int; i--) {
       res.set(i - shift_int, a.get(i));
     }
