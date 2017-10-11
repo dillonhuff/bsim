@@ -770,7 +770,12 @@ namespace bsim {
   static inline bit_vector<N>
   left_shift(const bit_vector<N>& a,
 	     const int shift_val) {
-    return a;
+    bit_vector<N> res;
+    for (int i = shift_val; i < N; i++) {
+      res.set(i, a.get(i - shift_val));
+    }
+
+    return res;
   }
 
   template<int N>
@@ -790,6 +795,7 @@ namespace bsim {
       bit_vector<N> shifted = left_shift(b.get_bits(), shift_amount);
 
       val = val - unsigned_int<N>(shifted);
+      quotient = quotient + unsigned_int<N>(left_shift(bit_vector<N>(1), shift_amount));
     }
 
     return quotient;
