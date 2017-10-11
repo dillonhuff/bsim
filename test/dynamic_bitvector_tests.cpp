@@ -6,6 +6,8 @@ using namespace std;
 
 namespace bsim {
 
+  typedef dynamic_bit_vector dbv;
+
   TEST_CASE("Dynamic vector comparison") {
 
     SECTION("3 bits") {
@@ -413,6 +415,14 @@ namespace bsim {
 
     }
 
+    SECTION("Addition") {
+      dynamic_bit_vector a(33, 10);
+      dynamic_bit_vector b(33, 23);
+
+      REQUIRE(add_general_width_bv(a, b) == dynamic_bit_vector(33, 33));
+      
+    }
+
     SECTION("Logical or") {
 
       SECTION("3 bits") {
@@ -543,6 +553,184 @@ namespace bsim {
       }
     }
 		 
+  }
+
+  TEST_CASE("Reduction operations") {
+
+    SECTION("andr") {
+
+      SECTION("All ones gives one") {
+	dbv a(5, "11111");
+
+	REQUIRE(andr(a) == dbv(1, "1"));
+      }
+
+      SECTION("Not all ones gives zero") {
+	dbv a(7, "1101101");
+
+	REQUIRE(andr(a) == dbv(1, "0"));
+      }
+
+    }
+
+    SECTION("orr") {
+
+      SECTION("All zeroes gives zero") {
+	dbv a(5, "00000");
+
+	REQUIRE(orr(a) == dbv(1, "0"));
+      }
+
+      SECTION("Not all zero gives one") {
+	dbv a(7, "0001100");
+
+	REQUIRE(orr(a) == dbv(1, "1"));
+      }
+
+    }
+
+    SECTION("xorr") {
+
+      SECTION("Even number of zeros gives zero") {
+	dbv a(6, "111010");
+	REQUIRE(xorr(a) == dbv(1, "0"));
+      }
+
+      SECTION("Odd number of zeros gives zero") {
+	dbv a(9, "111010010");
+	REQUIRE(xorr(a) == dbv(1, "1"));
+      }
+
+    }
+
+  }
+
+  TEST_CASE("Signed comparison") {
+
+    SECTION("Greater than") {
+
+      SECTION("Both negative, a > b") {
+	dbv a(6, "100100");
+	dbv b(6, "100000");
+
+	REQUIRE(signed_gt(a, b));
+      }
+
+      SECTION("Both negative, !(a > b)") {
+	dbv a(6, "100100");
+	dbv b(6, "110001");
+
+	//REQUIRE(!(a > b));
+	REQUIRE(!signed_gt(a, b));
+      }
+
+      SECTION("One negative and one positive") {
+	dbv a(11, "10001010101");
+	dbv b(11, "00000000000");
+
+	//REQUIRE(b > a);
+	REQUIRE(signed_gt(b, a));
+
+	//REQUIRE(!(a > b));
+	REQUIRE(!signed_gt(a, b));
+      }
+
+      SECTION("Both positive") {
+	dbv a(12, "011010110101");
+	dbv b(12, "010001001110");
+
+	//REQUIRE(a > b);
+	REQUIRE(signed_gt(a, b));
+      }
+
+    }
+
+    SECTION("Greater than or equal to") {
+
+      SECTION("Equal to") {
+	dbv a(12, "011010110101");
+
+	REQUIRE(signed_gte(a, a));
+
+      }
+    }
+    
+  }
+
+  TEST_CASE("casting") {
+    int j = 3;
+    dbv a(65, j);
+
+    SECTION("uint 8") {
+      auto i = a.as_native_uint8();
+
+      REQUIRE(i == 3);
+    }
+    
+    SECTION("uint 16") {
+      auto i = a.as_native_uint16();
+
+      REQUIRE(i == 3);
+    }
+    
+    SECTION("uint 32") {
+      auto i = a.as_native_uint32();
+
+      REQUIRE(i == 3);
+    }
+
+    SECTION("uint 64") {
+      auto i = a.as_native_uint64();
+
+      REQUIRE(i == 3);
+    }
+
+  }
+
+  TEST_CASE("Shifting") {
+    dbv a(9, "001010110");
+
+    // shift amount is 5
+    dbv shift_amount(3, "101");
+
+    SECTION("Shift left") {
+      dbv res = shl(a, shift_amount);
+
+      REQUIRE(res == dbv(9, "011000000"));
+    }
+
+    SECTION("Arithmetic shift right with one") {
+      dbv a(12, "100000100000");
+      dbv shift(5, "00011");
+      dbv res = ashr(a, shift);
+
+      REQUIRE(res == dbv(12, "111100000100"));
+    }
+
+    SECTION("Arithmetic shift right with one") {
+      dbv a(12, "010000100000");
+      dbv shift(5, "00100");
+      dbv res = ashr(a, shift);
+
+      REQUIRE(res == dbv(12, "000001000010"));
+    }
+
+    SECTION("Logical shift right with one") {
+      dbv a(12, "100000100000");
+      dbv shift(5, "00011");
+      dbv res = lshr(a, shift);
+
+      REQUIRE(res == dbv(12, "000100000100"));
+    }
+
+    SECTION("Logical shift right with one") {
+      dbv a(12, "010000100000");
+      dbv shift(5, "00100");
+      dbv res = lshr(a, shift);
+
+      REQUIRE(res == dbv(12, "000001000010"));
+    }
+    
   }
 
 }

@@ -452,7 +452,8 @@ namespace bsim {
 
     template<int Q = Width>
     static inline
-    typename std::enable_if<Q >= 65, unsigned_int<Q> >::type
+    //typename std::enable_if<Q >= 65, unsigned_int<Q> >::type
+    unsigned_int<Q>
     sub(const unsigned_int<Width>& a,
 	const unsigned_int<Width>& b) {
       return sub_general_width(a, b);
@@ -753,14 +754,43 @@ namespace bsim {
   }
 
   template<int N>
+  static inline int top_bit_position(const bit_vector<N>& a) {
+    int top_pos = N;
+    while (top_pos >= 0) {
+      if (a.get(top_pos) == 1) {
+	return top_pos;
+      }
+      top_pos--;
+    }
+
+    return top_pos;
+  }
+
+  template<int N>
+  static inline bit_vector<N>
+  left_shift(const bit_vector<N>& a,
+	     const int shift_val) {
+    return a;
+  }
+
+  template<int N>
   static inline unsigned_int<N> operator/(const unsigned_int<N>& a,
 					  const unsigned_int<N>& b) {
     unsigned_int<N> quotient;
     unsigned_int<N> val = a;
 
-    // while (b <= val) {
-    //   val = val - 
-    // }
+    while (b <= val) {
+      int a_high = top_bit_position(a.get_bits());
+      int b_high = top_bit_position(a.get_bits());
+
+      assert(a_high >= b_high);
+
+      int shift_amount = a_high - b_high;
+
+      bit_vector<N> shifted = left_shift(b.get_bits(), shift_amount);
+
+      val = val - unsigned_int<N>(shifted);
+    }
 
     return quotient;
   }
