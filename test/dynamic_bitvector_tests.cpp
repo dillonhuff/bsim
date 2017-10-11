@@ -59,6 +59,18 @@ namespace bsim {
 
       REQUIRE(a.to_type<bv_uint8>() == 4);
     }
+    SECTION("construct from full binary string") {
+      string s = "101";
+      dynamic_bit_vector a(3, s);
+
+      REQUIRE(a.to_type<bv_uint8>() == 5);
+    }
+    SECTION("construct from partial binary string") {
+      string s = "101";
+      dynamic_bit_vector a(10, s);
+
+      REQUIRE(a.to_type<bv_uint8>() == 5);
+    }
 
     SECTION("Copy constructor") {
       int i = 4;
