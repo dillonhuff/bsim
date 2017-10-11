@@ -312,28 +312,29 @@ namespace bsim {
 //       }
 //     }
 
-//     SECTION("Unsigned multiplication") {
+    SECTION("Unsigned multiplication") {
 
-//       SECTION("32 bit numbers") {
-// 	unsigned_int<32> a;
-// 	a.set(1, 1);
-// 	a.set(7, 1);
-// 	a.set(23, 1);
+      SECTION("32 bit numbers") {
+	dynamic_bit_vector a(32);
+	a.set(1, 1);
+	a.set(7, 1);
+	a.set(23, 1);
 
-// 	unsigned_int<32> b;
-// 	b.set(1, 1);
-// 	b.set(8, 1);
-// 	b.set(24, 1);
+	dynamic_bit_vector b(32);
+	b.set(1, 1);
+	b.set(8, 1);
+	b.set(24, 1);
 
-// 	unsigned_int<32> c =
-// 	  unsigned_int_operations<32>::mul_general_width(a, b);
+	dynamic_bit_vector c =
+	  mul_general_width_bv(a, b);
 
-// 	bv_uint32 an = a.as_native_uint32();
-// 	bv_uint32 bn = b.as_native_uint32();
-// 	bv_uint32 cn = an * bn;
+	bv_uint32 an = a.as_native_uint32();
+	bv_uint32 bn = b.as_native_uint32();
+	bv_uint32 cn = an * bn;
 
-// 	REQUIRE(c == unsigned_int<32>(cn));
-//       }
+	REQUIRE(c == dynamic_bit_vector(32, cn));
+      }
+    }
 
     SECTION("Logical and bit vectors") {
 
