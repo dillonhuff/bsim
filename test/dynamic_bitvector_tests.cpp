@@ -51,8 +51,10 @@ namespace bsim {
       int len = 30;
 
       dynamic_bit_vector a(len, i);
+      dynamic_bit_vector b = a;
 
       REQUIRE(a.to_type<int>() == i);
+      REQUIRE(b.to_type<int>() == i);
     }
 
     SECTION("construct from uint8") {
