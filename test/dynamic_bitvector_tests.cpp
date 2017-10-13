@@ -45,6 +45,12 @@ namespace bsim {
 
       REQUIRE(a.to_type<int>() == 0);
     }
+    SECTION("1 initialization is zero") {
+      int i = 1;
+
+      dynamic_bit_vector a(16,5);
+      REQUIRE(a.to_type<uint64_t>() == 5);
+    }
 
     SECTION("Default initialization is zero") {
       int i = 23;
