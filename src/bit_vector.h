@@ -581,6 +581,18 @@ namespace bsim {
 					  const unsigned_int<N>& b) {
     return unsigned_int_operations<N>::sub(a, b);
   }
+
+  template<int N>
+  static inline signed_int<N> operator+(const signed_int<N>& a,
+					const signed_int<N>& b) {
+    return signed_int_operations<N>::add_general_width(a, b);
+  }
+  
+  template<int N>
+  static inline signed_int<N> operator-(const signed_int<N>& a,
+					const signed_int<N>& b) {
+    return signed_int_operations<N>::sub_general_width(a, b);
+  }
   
   template<int Width>
   class bit_vector_operations {
@@ -800,6 +812,30 @@ namespace bsim {
 
     return quotient;
   }
+
+  template<int N>
+  static inline signed_int<N> operator/(const signed_int<N>& a,
+					const signed_int<N>& b) {
+
+    signed_int<N> quotient;
+    signed_int<N> val = a;
+
+    while (b <= val) {
+      int a_high = top_bit_position(a.get_bits());
+      int b_high = top_bit_position(a.get_bits());
+
+      assert(a_high >= b_high);
+
+      int shift_amount = a_high - b_high;
+
+      bit_vector<N> shifted = left_shift(b.get_bits(), shift_amount);
+
+      val = val - signed_int<N>(shifted);
+      quotient = quotient + signed_int<N>(left_shift(bit_vector<N>(1), shift_amount));
+    }
+
+    return quotient;
+  }  
 
   template<int N>
   static inline bool operator>(const signed_int<N>& a,
