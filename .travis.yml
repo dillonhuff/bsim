@@ -4,8 +4,10 @@ sudo: false
 
 addons:
   apt:
+    sources:
+    - ubuntu-toolchain-r-test
     packages:
-      - g++-4.9
+    - g++-4.9
 
 before_install:
   - export COREIRCONFIG="g++-4.9";
