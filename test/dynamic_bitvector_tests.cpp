@@ -759,15 +759,20 @@ namespace bsim {
   TEST_CASE("Floating point add / subtract") {
 
     SECTION("32 bit IEEE add 1 + 1 = 2") {
-      dbv a(32, "0_00000001_00000000000000000000000");
+      dbv a  (32, "0_00000001_00000000000000000000000");
+      dbv res(32, "0_00000010_00000000000000000000000");
 
-      bv_uint32 uval = a.to_type<bv_uint32>();
-      cout << "uval = " << uval << endl;
-      float* f = (float*) (&uval);
-      cout << "f = " << *f << endl;
+      cout << "a = " << a << endl;
+
+      // bv_uint32 uval = a.to_type<bv_uint32>();
+      // cout << "uval = " << uval << endl;
+      // cout << "uval bits = " << bitset<32>(uval) << endl;
+      // float* f = (float*) (&uval);
+      // cout << "f = " << *f << endl;
+      // cout << "f bits = " << bitset<32>(*f) << endl;
       //dbv res = exact_float(0, 2, 1, 23, 8);
 
-      //REQUIRE(floating_point_add(a, a, 23, 8) == res);
+      REQUIRE(floating_point_add(a, a, 23, 8) == res);
     }
 
   }

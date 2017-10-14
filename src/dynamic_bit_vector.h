@@ -940,11 +940,61 @@ namespace bsim {
 
   static inline
   dynamic_bit_vector
+  concat(const dynamic_bit_vector& a,
+	 const dynamic_bit_vector& b) {
+    dynamic_bit_vector res(a.bitLength() + b.bitLength());
+    for (int i = 0; i < a.bitLength(); i++) {
+      res.set(i, a.get(i));
+    }
+    for (int i = 0; i < b.bitLength(); i++) {
+      res.set(i + a.bitLength(), b.get(i));
+    }
+
+    return res;
+  }
+  
+  static inline
+  dynamic_bit_vector
+  slice(const dynamic_bit_vector& a,
+	const int start,
+	const int end) {
+    dynamic_bit_vector res(end - start);
+
+    for (int i = 0; i < res.bitLength(); i++) {
+      res.set(i, a.get(i + start));
+    }
+    return res;
+  }
+  
+
+  static inline
+  dynamic_bit_vector
   floating_point_add(const dynamic_bit_vector& a,
 		     const dynamic_bit_vector& b,
 		     const unsigned precision_width,
 		     const unsigned exp_width) {
-    return a;
+    unsigned width = 1 + precision_width + exp_width;
+    assert(a.bitLength() == width);
+    assert(b.bitLength() == width);
+
+    dynamic_bit_vector a_exp = slice(a,
+				     precision_width,
+				     precision_width + exp_width);
+
+    dynamic_bit_vector b_exp = slice(b,
+				     precision_width,
+				     precision_width + exp_width);
+    
+    assert(a_exp.bitLength() == exp_width);
+    assert(b_exp.bitLength() == exp_width);
+
+    dynamic_bit_vector sign_bit(1);
+    sign_bit.set(0, 0);
+
+    dynamic_bit_vector res_exp = add_general_width_bv(a_exp, b_exp);
+    dynamic_bit_vector res_prec(precision_width);
+
+    return concat(res_prec, concat(res_exp, sign_bit));
   }
 
   // template<int N>
