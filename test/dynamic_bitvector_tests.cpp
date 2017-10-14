@@ -750,16 +750,24 @@ namespace bsim {
 	      const unsigned precision_width,
 	      const unsigned exp_width) {
     unsigned width = 1 + precision_width + exp_width;
-    return dbv(width);
+    dbv val(width);
+    //val.setSlice();
+
+    return val;
   }
 
   TEST_CASE("Floating point add / subtract") {
 
     SECTION("32 bit IEEE add 1 + 1 = 2") {
-      dbv a = exact_float(0, 1, 1, 23, 8);
-      dbv res = exact_float(0, 2, 1, 23, 8);
+      dbv a(32, "0_00000001_00000000000000000000000");
 
-      REQUIRE(floating_point_add(a, a, 23, 8) == res);
+      bv_uint32 uval = a.to_type<bv_uint32>();
+      cout << "uval = " << uval << endl;
+      float* f = (float*) (&uval);
+      cout << "f = " << *f << endl;
+      //dbv res = exact_float(0, 2, 1, 23, 8);
+
+      //REQUIRE(floating_point_add(a, a, 23, 8) == res);
     }
 
   }

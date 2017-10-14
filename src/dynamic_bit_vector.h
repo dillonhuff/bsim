@@ -39,10 +39,21 @@ namespace bsim {
       }
     }
 
-    dynamic_bit_vector(const int N_, const std::string& str) : N(N_) {
-      int len = str.size();
-      assert(len <= N);
-      
+    dynamic_bit_vector(const int N_, const std::string& str_raw) : N(N_) {
+
+      int num_digits = 0;
+      std::string str;
+      for (int i = 0; i < str_raw.size(); i++) {
+	if (isdigit(str_raw[i])) {
+	  num_digits++;
+	  str += str_raw[i];
+	} else {
+	  assert(str_raw[i] == '_');
+	}
+      }
+      assert(num_digits <= N);
+
+      int len = str.size();      
       bits.resize(NUM_BYTES(N));
       for (int i = len - 1; i >= 0; i--) {
         unsigned char val = (str[i] == '0') ? 0 : 1;
