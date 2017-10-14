@@ -757,7 +757,11 @@ namespace bsim {
 
     SECTION("32 bit IEEE add 1 + 1 = 2") {
       dbv a = exact_float(0, 1, 1, 23, 8);
+      dbv res = exact_float(0, 2, 1, 23, 8);
+
+      REQUIRE(floating_point_add(a, a, 23, 8) == res);
     }
+
   }
 
 }
