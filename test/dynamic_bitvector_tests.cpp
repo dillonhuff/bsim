@@ -758,7 +758,8 @@ namespace bsim {
 
   void print_float_bits(float f) {
     char* bits = reinterpret_cast<char*>(&f);
-    for(std::size_t n = 0; n < sizeof(f); ++n) {
+    //for(std::size_t n = 0; n < sizeof(f); ++n) {
+    for(int n = sizeof(f) - 1; n >= 0; n--) {
       std::cout << std::bitset<8>(bits[n]);
     }
     std::cout << '\n';
@@ -767,13 +768,13 @@ namespace bsim {
   TEST_CASE("Floating point add / subtract") {
 
     SECTION("Check equivalence") {
-      float f = 2.0;
-      cout << "Values = ";
-      print_float_bits(f);
-
-      cout << "Values = ";
-      float g = 1.0;
-      print_float_bits(g);
+      cout << "Powers of 2" << endl;
+      for (int i = 0; i < 8; i++) {
+	float f = -1*pow(2.0, i);
+	cout << f << " as float = " << endl;
+	print_float_bits(f);
+	cout << endl;
+      }
 
     }
 
