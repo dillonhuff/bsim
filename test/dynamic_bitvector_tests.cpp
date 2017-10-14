@@ -756,12 +756,24 @@ namespace bsim {
     return val;
   }
 
-  void print_float_bits(float f) {
+  string float_string(float f) {
+
     char* bits = reinterpret_cast<char*>(&f);
-    //for(std::size_t n = 0; n < sizeof(f); ++n) {
+
+    stringstream ss;
     for(int n = sizeof(f) - 1; n >= 0; n--) {
-      std::cout << std::bitset<8>(bits[n]);
+      ss << std::bitset<8>(bits[n]);
     }
+
+    return ss.str();
+  }
+  void print_float_bits(float f) {
+    cout << float_string(f);
+    // char* bits = reinterpret_cast<char*>(&f);
+    // //for(std::size_t n = 0; n < sizeof(f); ++n) {
+    // for(int n = sizeof(f) - 1; n >= 0; n--) {
+    //   std::cout << std::bitset<8>(bits[n]);
+    // }
     std::cout << '\n';
   }
 
