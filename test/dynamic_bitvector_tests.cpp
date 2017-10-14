@@ -756,7 +756,7 @@ namespace bsim {
     return val;
   }
 
-  string float_string(float f) {
+  string float_bit_string(float f) {
 
     char* bits = reinterpret_cast<char*>(&f);
 
@@ -768,7 +768,7 @@ namespace bsim {
     return ss.str();
   }
   void print_float_bits(float f) {
-    cout << float_string(f);
+    cout << float_bit_string(f);
     // char* bits = reinterpret_cast<char*>(&f);
     // //for(std::size_t n = 0; n < sizeof(f); ++n) {
     // for(int n = sizeof(f) - 1; n >= 0; n--) {
@@ -791,8 +791,11 @@ namespace bsim {
     }
 
     SECTION("32 bit IEEE add 1 + 1 = 2") {
-      dbv a  (32, "0_00000001_00000000000000000000000");
-      dbv res(32, "0_00000010_00000000000000000000000");
+      float one = 1.0;
+      float two = 2.0;
+      dbv a(32, float_bit_string(one));
+      //dbv a  (32, "0_00000001_00000000000000000000000");
+      dbv res(32, float_bit_string(two)); //"0_00000010_00000000000000000000000");
 
       cout << "a = " << a << endl;
 
