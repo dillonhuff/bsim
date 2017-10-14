@@ -756,7 +756,26 @@ namespace bsim {
     return val;
   }
 
+  void print_float_bits(float f) {
+    char* bits = reinterpret_cast<char*>(&f);
+    for(std::size_t n = 0; n < sizeof(f); ++n) {
+      std::cout << std::bitset<8>(bits[n]);
+    }
+    std::cout << '\n';
+  }
+
   TEST_CASE("Floating point add / subtract") {
+
+    SECTION("Check equivalence") {
+      float f = 2.0;
+      cout << "Values = ";
+      print_float_bits(f);
+
+      cout << "Values = ";
+      float g = 1.0;
+      print_float_bits(g);
+
+    }
 
     SECTION("32 bit IEEE add 1 + 1 = 2") {
       dbv a  (32, "0_00000001_00000000000000000000000");
