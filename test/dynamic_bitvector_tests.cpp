@@ -743,6 +743,23 @@ namespace bsim {
     
   }
 
+  dynamic_bit_vector
+  exact_float(const unsigned char sign,
+	      const unsigned abs_value,
+	      const unsigned exp,
+	      const unsigned precision_width,
+	      const unsigned exp_width) {
+    unsigned width = 1 + precision_width + exp_width;
+    return dbv(width);
+  }
+
+  TEST_CASE("Floating point add / subtract") {
+
+    SECTION("32 bit IEEE add 1 + 1 = 2") {
+      dbv a = exact_float(0, 1, 1, 23, 8);
+    }
+  }
+
 }
     
 
