@@ -794,18 +794,9 @@ namespace bsim {
       float one = 1.0;
       float two = 2.0;
       dbv a(32, float_bit_string(one));
-      //dbv a  (32, "0_00000001_00000000000000000000000");
-      dbv res(32, float_bit_string(two)); //"0_00000010_00000000000000000000000");
+      dbv res(32, float_bit_string(two));
 
       cout << "a = " << a << endl;
-
-      // bv_uint32 uval = a.to_type<bv_uint32>();
-      // cout << "uval = " << uval << endl;
-      // cout << "uval bits = " << bitset<32>(uval) << endl;
-      // float* f = (float*) (&uval);
-      // cout << "f = " << *f << endl;
-      // cout << "f bits = " << bitset<32>(*f) << endl;
-      //dbv res = exact_float(0, 2, 1, 23, 8);
 
       REQUIRE(floating_point_add(a, a, 23, 8) == res);
     }

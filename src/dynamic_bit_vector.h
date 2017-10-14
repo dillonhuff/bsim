@@ -969,6 +969,17 @@ namespace bsim {
 
   static inline
   dynamic_bit_vector
+  extend(const dynamic_bit_vector& a, const int extra_bits) {
+    dynamic_bit_vector res(a.bitLength() + extra_bits);
+    for (uint i = 0; i < a.bitLength(); i++) {
+      res.set(i, a.get(i));
+    }
+
+    return res;
+  }
+
+  static inline
+  dynamic_bit_vector
   floating_point_add(const dynamic_bit_vector& a,
 		     const dynamic_bit_vector& b,
 		     const unsigned precision_width,
@@ -977,6 +988,31 @@ namespace bsim {
     assert(a.bitLength() == width);
     assert(b.bitLength() == width);
 
+    dynamic_bit_vector a_mant = slice(a, 0, precision_width);
+    dynamic_bit_vector b_mant = slice(b, 0, precision_width);
+
+    assert(a_mant.bitLength() == precision_width);
+    assert(b_mant.bitLength() == precision_width);
+
+    // TODO: Check normalization
+    auto a_ext = extend(a_mant, 2);
+    a_ext.set(precision_width, 1);
+    auto b_ext = extend(b_mant, 2);
+    b_ext.set(precision_width, 1);
+
+    // Check sign bits
+    auto sum = add_general_width_bv(a_ext , b_ext);
+
+    bool overflow = sum.get(sum.bitLength() - 1) == 1;
+
+    auto sliced_sum = slice(sum, 0, sum.bitLength() - 2);
+    std::cout << "sliced_sum     = " << sliced_sum << std::endl;
+    std::cout << "sliced_sum len = " << sliced_sum.bitLength() << std::endl;
+    
+    assert(sliced_sum.bitLength() == precision_width);
+
+    std::cout << "sum = " << sum << std::endl;
+    
     dynamic_bit_vector a_exp = slice(a,
 				     precision_width,
 				     precision_width + exp_width);
@@ -984,17 +1020,31 @@ namespace bsim {
     dynamic_bit_vector b_exp = slice(b,
 				     precision_width,
 				     precision_width + exp_width);
-    
+
     assert(a_exp.bitLength() == exp_width);
     assert(b_exp.bitLength() == exp_width);
 
+    dynamic_bit_vector tentative_exp(exp_width);
+    if (a_exp > b_exp) {
+      tentative_exp = a_exp;
+    } else {
+      tentative_exp = b_exp;
+    }
+
+    if (overflow) {
+      dynamic_bit_vector one(exp_width, 1);
+      tentative_exp = add_general_width_bv(tentative_exp, one);
+    }
     dynamic_bit_vector sign_bit(1);
     sign_bit.set(0, 0);
 
-    dynamic_bit_vector res_exp = add_general_width_bv(a_exp, b_exp);
-    dynamic_bit_vector res_prec(precision_width);
+    //dynamic_bit_vector res_prec(precision_width);
 
-    return concat(res_prec, concat(res_exp, sign_bit));
+    auto res = concat(sliced_sum, concat(tentative_exp, sign_bit));
+
+    assert(res.bitLength() == width);
+
+    return res;
   }
 
   // template<int N>
