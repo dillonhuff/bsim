@@ -709,6 +709,24 @@ namespace bsim {
       REQUIRE(res == dbv(9, "011000000"));
     }
 
+    SECTION("Shift left zeros at end") {
+      dbv b_man(23, "11001111111111000010001");
+
+      cout << "b_man = " << b_man << endl;
+
+      auto b_ext = extend(b_man, 4);
+
+      cout << "b_ext = " << b_ext << endl;
+
+      b_ext = shl(b_ext, dynamic_bit_vector(10, 3));
+
+      cout << "b_ext = " << b_ext << endl;
+
+      REQUIRE(b_ext.get(0) == 0);
+      
+      //	b_ext      = 010011001111111111000010001
+    }
+
     SECTION("Arithmetic shift right with one") {
       dbv a(12, "100000100000");
       dbv shift(5, "00011");
@@ -864,12 +882,13 @@ namespace bsim {
       REQUIRE(float_add(a, b) == res);
     }
 
-    // SECTION("Rounding example") {
-    //   dbv a = float_bv(2.37139e+08);
-    //   dbv b = float_bv(3.9856e+12);
+    SECTION("Rounding example") {
+      // NOTE: These are decimal powers!!!
+      dbv a = float_bv(2.37139e+08);
+      dbv b = float_bv(3.9856e+12);
 
-    //   REQUIRE(float_add(a, b) == float_bv(2.37139e+08 + 3.9856e+12));
-    // }
+      REQUIRE(float_add(a, b) == float_bv(2.37139e+08 + 3.9856e+12));
+    }
 
     // SECTION("Fuzz test") {
     //   float X = 3030e10;
