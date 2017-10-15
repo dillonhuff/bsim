@@ -1156,7 +1156,10 @@ namespace bsim {
       if (overflow) {
 	dynamic_bit_vector one(exp_width, 1);
 	tentative_exp = add_general_width_bv(tentative_exp, one);
-	sliced_sum = lshr(sliced_sum, one);
+	//sliced_sum = lshr(sliced_sum, one);
+	auto shift_sum = lshr(sum, one);
+	sliced_sum = slice(sum, 2, sum.bitLength() - 2);
+	std::cout << "sss =   " << sliced_sum << std::endl;
       }
 
     }

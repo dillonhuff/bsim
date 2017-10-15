@@ -890,24 +890,25 @@ namespace bsim {
       REQUIRE(float_add(a, b) == float_bv(2.37139e+08 + 3.9856e+12));
     }
 
-    // SECTION("Fuzz test") {
-    //   float X = 3030e10;
+    SECTION("Fuzz test") {
+      float X = 3030e10;
 
-    //   for (int i = 0; i < 100; i++) {
-    // 	float r1 = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/X));
-    // 	float r2 = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/X));
+      for (int i = 0; i < 100; i++) {
+    	float r1 = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/X));
+    	float r2 = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/X));
 
-    // 	dbv a = float_bv(r1);
-    // 	dbv b = float_bv(r2);
+    	dbv a = float_bv(r1);
+    	dbv b = float_bv(r2);
 
-    // 	cout << "r1 = " << r1 << endl;
-    // 	cout << "r2 = " << r2 << endl;
-    // 	cout << "a  = " << a << endl;
-    // 	cout << "b  = " << b << endl;
+	cout << "i  = " << i << endl;
+    	cout << "r1 = " << r1 << endl;
+    	cout << "r2 = " << r2 << endl;
+    	cout << "a  = " << a << endl;
+    	cout << "b  = " << b << endl;
 
-    // 	REQUIRE(float_add(a, b) == float_bv(r1 + r2));
-    //   }
-    // }
+    	REQUIRE(float_add(a, b) == float_bv(r1 + r2));
+      }
+    }
 
   }
 
