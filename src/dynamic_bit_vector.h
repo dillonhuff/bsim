@@ -1140,35 +1140,41 @@ namespace bsim {
 
     dynamic_bit_vector final_sum(precision_width);
 
-    sum = ieee_round(sum);    
-
     if ((highBit(a) == 0) && (highBit(b) == 1)) {
+
+      sum = ieee_round(sum);      
 
       dynamic_bit_vector sliced_sum(sum.bitLength() - 2);
       sliced_sum = slice(sum, 2, sum.bitLength() - 2);
 
       assert(sliced_sum.bitLength() == precision_width);
 
-      
       tentative_exp = renormalize_zeros(sliced_sum, tentative_exp, width);
 
       final_sum = sliced_sum;
 
     } else {
 
-      dynamic_bit_vector sliced_sum(sum.bitLength() - 2);
-      sliced_sum = slice(sum, 2, sum.bitLength() - 2);
-      
       if (overflow) {
+	//sum = ieee_round(sum);
+
 	dynamic_bit_vector one(exp_width, 1);
 	tentative_exp = add_general_width_bv(tentative_exp, one);
-	//sliced_sum = lshr(sliced_sum, one);
-	auto shift_sum = lshr(sum, one);
-	sliced_sum = slice(shift_sum, 2, sum.bitLength() - 2);
-	std::cout << "sss =   " << sliced_sum << std::endl;
+
+	auto shift_sum = ieee_round(lshr(sum, one));
+	final_sum = slice(shift_sum, 2, sum.bitLength() - 2);
+
+	std::cout << "sss =   " << final_sum << std::endl;
+      } else {
+
+	sum = ieee_round(sum);
+	dynamic_bit_vector sliced_sum(sum.bitLength() - 2);
+	sliced_sum = slice(sum, 2, sum.bitLength() - 2);
+
+	assert(sliced_sum.bitLength() == precision_width);
+	final_sum = sliced_sum;      
       }
 
-      final_sum = sliced_sum;      
     }
 
 
