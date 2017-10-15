@@ -1017,11 +1017,19 @@ namespace bsim {
 
     dynamic_bit_vector tentative_exp(exp_width);
 
-    auto a_ext = extend(a_mant, 2);
-    a_ext.set(precision_width, 1);
-    auto b_ext = extend(b_mant, 2);
-    b_ext.set(precision_width, 1);
+    // auto a_ext = extend(a_mant, 2);
+    // a_ext.set(precision_width, 1);
+    // auto b_ext = extend(b_mant, 2);
+    // b_ext.set(precision_width, 1);
 
+    auto a_ext = extend(a_mant, 4);
+    a_ext = shl(a_ext, 2);
+    a_ext.set(precision_width + 2, 1);
+
+    auto b_ext = extend(b_mant, 4);
+    b_ext = shl(b_ext, 2);
+    b_ext.set(precision_width + 2, 1);
+    
     std::cout << "a_ext      = " << a_ext << std::endl;
     std::cout << "b_ext      = " << b_ext << std::endl;
     
@@ -1068,7 +1076,8 @@ namespace bsim {
 
 
     dynamic_bit_vector sliced_sum(sum.bitLength() - 2);    
-    sliced_sum = slice(sum, 0, sum.bitLength() - 2);
+    //sliced_sum = slice(sum, 0, sum.bitLength() - 2);
+    sliced_sum = slice(sum, 2, sum.bitLength() - 2);
 
     assert(sliced_sum.bitLength() == precision_width);
     
