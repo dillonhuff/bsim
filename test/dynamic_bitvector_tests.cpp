@@ -808,14 +808,18 @@ namespace bsim {
       REQUIRE(floating_point_add(a, a, 23, 8) == res);
     }
 
-    SECTION("Adding 1 and 0.0") {
+    SECTION("Adding 1 and 0.5") {
       float one = 1.0;
       float p5 = 0.5;
 
       dbv a(32, float_bit_string(one));
       dbv b(32, float_bit_string(p5));
 
+      dbv neg_a(32, float_bit_string(-1*one));
+      dbv neg_b(32, float_bit_string(-1*p5));
+
       dbv res(32, float_bit_string(one + p5));
+      dbv neg_res(32, float_bit_string(-1*(one + p5)));
 
       SECTION("1 + 0.5 = 1.5") {
 	REQUIRE(floating_point_add(a, b, 23, 8) == res);
@@ -824,7 +828,12 @@ namespace bsim {
       SECTION("0.5 + 1 = 1.5") {
 	REQUIRE(floating_point_add(b, a, 23, 8) == res);
       }
-      
+
+      SECTION("1 - 0.5 = 0.5") {
+	REQUIRE(floating_point_add(a, neg_b, 23, 8) ==
+		dbv(32, float_bit_string(one - p5)));
+      }
+
       
     }
 

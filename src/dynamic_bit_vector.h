@@ -1026,37 +1026,22 @@ namespace bsim {
     if (a_exp > b_exp) {
       tentative_exp = a_exp;
 
-      // 1.0 + 0.5
       auto diff = sub_general_width_bv(a_exp, b_exp);
 
-      std::cout << "diff = " << diff << std::endl;
-
       auto shift_b = lshr(b_ext, diff);
-
-      std::cout << "shift_b = " << shift_b << std::endl;
 
       a_op = a_ext;
       b_op = shift_b;
 
-      std::cout << "a_op = " << a_op << std::endl;
-      std::cout << "b_op = " << b_op << std::endl;
-      
     } else {
       tentative_exp = b_exp;
 
-      std::cout << "Subtracting\n" << b_exp << "\nfrom\n" << a_exp << std::endl;
       auto diff = sub_general_width_bv(b_exp, a_exp);
 
-      std::cout << "Shifting\n" << a_ext << "\nby\n" << diff << std::endl;
-      std::cout << "Done subtracting, now shifting" << std::endl;
       auto shift_a = lshr(a_ext, diff);
-
-      std::cout << "done shifting" << std::endl;
 
       a_op = shift_a;
       b_op = b_ext;
-      // a_op = a_ext;
-      // b_op = b_ext;
 
     }
 
