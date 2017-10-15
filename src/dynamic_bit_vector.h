@@ -1001,19 +1001,6 @@ namespace bsim {
     auto b_ext = extend(b_mant, 2);
     b_ext.set(precision_width, 1);
 
-    // Check sign bits
-    auto sum = add_general_width_bv(a_ext , b_ext);
-
-    bool overflow = sum.get(sum.bitLength() - 1) == 1;
-
-    auto sliced_sum = slice(sum, 0, sum.bitLength() - 2);
-    std::cout << "sliced_sum     = " << sliced_sum << std::endl;
-    std::cout << "sliced_sum len = " << sliced_sum.bitLength() << std::endl;
-
-    assert(sliced_sum.bitLength() == precision_width);
-
-    std::cout << "sum = " << sum << std::endl;
-
     dynamic_bit_vector a_exp = slice(a,
 				     precision_width,
 				     precision_width + exp_width);
@@ -1026,12 +1013,41 @@ namespace bsim {
     assert(b_exp.bitLength() == exp_width);
 
     dynamic_bit_vector tentative_exp(exp_width);
+
+    // Check sign bits
+
+    dynamic_bit_vector a_op(a_ext.bitLength());
+    dynamic_bit_vector b_op(b_ext.bitLength());
+
     if (a_exp > b_exp) {
       tentative_exp = a_exp;
+
+      // 1.0 + 0.5
+      auto diff = sub_general_width_bv(a_exp, b_exp);
+      auto shift_b = lshr(b_exp, diff);
+
+      a_op = a_ext;
+      b_op = shift_b;
+      
     } else {
       tentative_exp = b_exp;
+
+      a_op = a_ext;
+      b_op = b_ext;
+
     }
 
+    auto sum = add_general_width_bv(a_op , b_op);
+
+    bool overflow = sum.get(sum.bitLength() - 1) == 1;
+
+    std::cout << "sum = " << sum << std::endl;
+    
+    dynamic_bit_vector sliced_sum(sum.bitLength() - 2);    
+    sliced_sum = slice(sum, 0, sum.bitLength() - 2);
+
+    assert(sliced_sum.bitLength() == precision_width);
+    
     if (overflow) {
       dynamic_bit_vector one(exp_width, 1);
       tentative_exp = add_general_width_bv(tentative_exp, one);
