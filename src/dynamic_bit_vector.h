@@ -1060,7 +1060,7 @@ namespace bsim {
     dynamic_bit_vector upper(2, "10");
 
     if (guards >= upper) {
-      dynamic_bit_vector app(sum.bitLength(), "100");
+      dynamic_bit_vector app(sum.bitLength(), "10");
       return add_general_width_bv(sum, app);
     }
 
