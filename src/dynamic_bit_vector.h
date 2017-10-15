@@ -986,6 +986,21 @@ namespace bsim {
     return res;
   }
 
+  struct fp_num {
+    dynamic_bit_vector sign_bit;
+    dynamic_bit_vector exp;
+    dynamic_bit_vector mnt;
+
+    dynamic_bit_vector mantissa() {
+      return mnt;
+    }
+
+    dynamic_bit_vector exponent() {
+      return exp;
+    }
+
+  };
+
   dynamic_bit_vector
   set_ops(const dynamic_bit_vector& a_exp,
 	  const dynamic_bit_vector& b_exp,
@@ -1020,7 +1035,32 @@ namespace bsim {
 
     return tentative_exp;
   }
-  
+
+  dynamic_bit_vector
+  renormalize_zeros(dynamic_bit_vector& sliced_sum,
+		    const dynamic_bit_vector& tentative_exp,
+		    const int width) {
+
+    dynamic_bit_vector new_exp(tentative_exp.bitLength());
+
+    int num_leading_zeros = 0;
+    for (int i = sliced_sum.bitLength(); i >= 0; i--) {
+      if (sliced_sum.get(i) == 1) {
+	break;
+      }
+
+      num_leading_zeros++;
+    }
+
+    dynamic_bit_vector shift_w(width, num_leading_zeros);
+    sliced_sum = shl(sliced_sum, shift_w);
+    new_exp = sub_general_width_bv(tentative_exp, shift_w);
+
+    std::cout << "Sum after shifting " << num_leading_zeros << " = " << sliced_sum << std::endl;
+
+    return new_exp;
+  }  
+
   static inline
   dynamic_bit_vector
   floating_point_add(const dynamic_bit_vector& a,
@@ -1075,28 +1115,6 @@ namespace bsim {
 				 a_ext, b_ext,
 				 a_op, b_op);
 
-    // if (a_exp > b_exp) {
-    //   tentative_exp = a_exp;
-
-    //   auto diff = sub_general_width_bv(a_exp, b_exp);
-
-    //   auto shift_b = lshr(b_ext, diff);
-
-    //   a_op = a_ext;
-    //   b_op = shift_b;
-
-    // } else {
-    //   tentative_exp = b_exp;
-
-    //   auto diff = sub_general_width_bv(b_exp, a_exp);
-
-    //   auto shift_a = lshr(a_ext, diff);
-
-    //   a_op = shift_a;
-    //   b_op = b_ext;
-
-    // }
-
     std::cout << "a_op       = " << a_op << std::endl;
     std::cout << "b_op       = " << b_op << std::endl;
     
@@ -1121,20 +1139,23 @@ namespace bsim {
     assert(sliced_sum.bitLength() == precision_width);
     
     if ((highBit(a) == 0) && (highBit(b) == 1)) {
-      int num_leading_zeros = 0;
-      for (int i = sliced_sum.bitLength(); i >= 0; i--) {
-	if (sliced_sum.get(i) == 1) {
-	  break;
-	}
 
-	num_leading_zeros++;
-      }
+      tentative_exp = renormalize_zeros(sliced_sum, tentative_exp, width);
 
-      dynamic_bit_vector shift_w(width, num_leading_zeros);
-      sliced_sum = shl(sliced_sum, shift_w);
-      tentative_exp = sub_general_width_bv(tentative_exp, shift_w);
+      // int num_leading_zeros = 0;
+      // for (int i = sliced_sum.bitLength(); i >= 0; i--) {
+      // 	if (sliced_sum.get(i) == 1) {
+      // 	  break;
+      // 	}
 
-      std::cout << "Sum after shifting " << num_leading_zeros << " = " << sliced_sum << std::endl;
+      // 	num_leading_zeros++;
+      // }
+
+      // dynamic_bit_vector shift_w(width, num_leading_zeros);
+      // sliced_sum = shl(sliced_sum, shift_w);
+      // tentative_exp = sub_general_width_bv(tentative_exp, shift_w);
+
+      // std::cout << "Sum after shifting " << num_leading_zeros << " = " << sliced_sum << std::endl;
     } else {
 
       if (overflow) {
