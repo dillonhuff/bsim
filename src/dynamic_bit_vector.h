@@ -184,6 +184,10 @@ namespace bsim {
     return a.equals(b);
   }
 
+  static inline unsigned char highBit(const dynamic_bit_vector& a) {
+    return a.get(a.bitLength() - 1);
+  }
+
   // template<int N>
   // class unsigned_int {
   // protected:
@@ -1045,8 +1049,15 @@ namespace bsim {
 
     }
 
-    std::cout << "Adding" << std::endl;
-    auto sum = add_general_width_bv(a_op , b_op);
+    std::cout << "Operating" << std::endl;
+
+    
+    dynamic_bit_vector sum(a_op.bitLength());
+    if ((highBit(a) == 0) && (highBit(b) == 1)) {
+      sum = sub_general_width_bv(a_op , b_op);
+    } else {
+      sum = add_general_width_bv(a_op , b_op);
+    }
 
     bool overflow = sum.get(sum.bitLength() - 1) == 1;
 
