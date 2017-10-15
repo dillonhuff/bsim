@@ -834,6 +834,17 @@ namespace bsim {
 		dbv(32, float_bit_string(one - p5)));
       }
 
+    }
+
+    SECTION("Adding 128.5 and 0.25") {
+
+      dbv a(32, float_bit_string(128.5));
+      dbv b(32, float_bit_string(0.25));
+
+      SECTION("128.5 + 0.25 = 128.75") {
+	REQUIRE(floating_point_add(a, b, 23, 8) ==
+		dbv(32, float_bit_string(128.5 + 0.25)));
+      }
       
     }
 
