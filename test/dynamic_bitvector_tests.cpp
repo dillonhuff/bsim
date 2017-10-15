@@ -801,7 +801,7 @@ namespace bsim {
       REQUIRE(floating_point_add(a, a, 23, 8) == res);
     }
 
-    SECTION("1 + 0.5 = 1.5") {
+    SECTION("Adding 1 and 0.0") {
       float one = 1.0;
       float p5 = 0.5;
 
@@ -810,7 +810,15 @@ namespace bsim {
 
       dbv res(32, float_bit_string(one + p5));
 
-      REQUIRE(floating_point_add(a, b, 23, 8) == res);
+      SECTION("1 + 0.5 = 1.5") {
+	REQUIRE(floating_point_add(a, b, 23, 8) == res);
+      }
+
+      SECTION("0.5 + 1 = 1.5") {
+	REQUIRE(floating_point_add(b, a, 23, 8) == res);
+      }
+      
+      
     }
 
   }

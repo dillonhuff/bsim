@@ -1024,19 +1024,36 @@ namespace bsim {
 
       // 1.0 + 0.5
       auto diff = sub_general_width_bv(a_exp, b_exp);
-      auto shift_b = lshr(b_exp, diff);
+
+      std::cout << "diff = " << diff << std::endl;
+
+      auto shift_b = lshr(b_ext, diff);
+
+      std::cout << "shift_b = " << shift_b << std::endl;
 
       a_op = a_ext;
       b_op = shift_b;
+
+      std::cout << "a_op = " << a_op << std::endl;
+      std::cout << "b_op = " << b_op << std::endl;
       
     } else {
       tentative_exp = b_exp;
 
+      // std::cout << "Subtracting\n" << b_exp << "\nfrom\n" << a_exp << std::endl;
+      // auto diff = sub_general_width_bv(b_exp, a_exp);
+
+      // std::cout << "Done subtracting, now shifting" << std::endl;
+      // auto shift_a = lshr(a_ext, diff);
+
+      // a_op = shift_a;
+      // b_op = b_ext;
       a_op = a_ext;
       b_op = b_ext;
 
     }
 
+    std::cout << "Adding" << std::endl;
     auto sum = add_general_width_bv(a_op , b_op);
 
     bool overflow = sum.get(sum.bitLength() - 1) == 1;
@@ -1054,8 +1071,6 @@ namespace bsim {
     }
     dynamic_bit_vector sign_bit(1);
     sign_bit.set(0, 0);
-
-    //dynamic_bit_vector res_prec(precision_width);
 
     auto res = concat(sliced_sum, concat(tentative_exp, sign_bit));
 
