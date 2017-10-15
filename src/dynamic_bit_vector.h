@@ -1138,36 +1138,45 @@ namespace bsim {
 
     std::cout << "sum = " << sum << std::endl;
 
-    sum = ieee_round(sum);
-    dynamic_bit_vector sliced_sum(sum.bitLength() - 2);
-    //sliced_sum = slice(sum, 0, sum.bitLength() - 2);
-    sliced_sum = slice(sum, 2, sum.bitLength() - 2);
+    dynamic_bit_vector final_sum(precision_width);
 
-    std::cout << "sls =   " << sliced_sum << std::endl;
+    sum = ieee_round(sum);    
 
-    assert(sliced_sum.bitLength() == precision_width);
-    
     if ((highBit(a) == 0) && (highBit(b) == 1)) {
 
+      dynamic_bit_vector sliced_sum(sum.bitLength() - 2);
+      sliced_sum = slice(sum, 2, sum.bitLength() - 2);
+
+      assert(sliced_sum.bitLength() == precision_width);
+
+      
       tentative_exp = renormalize_zeros(sliced_sum, tentative_exp, width);
+
+      final_sum = sliced_sum;
 
     } else {
 
+      dynamic_bit_vector sliced_sum(sum.bitLength() - 2);
+      sliced_sum = slice(sum, 2, sum.bitLength() - 2);
+      
       if (overflow) {
 	dynamic_bit_vector one(exp_width, 1);
 	tentative_exp = add_general_width_bv(tentative_exp, one);
 	//sliced_sum = lshr(sliced_sum, one);
 	auto shift_sum = lshr(sum, one);
-	sliced_sum = slice(sum, 2, sum.bitLength() - 2);
+	sliced_sum = slice(shift_sum, 2, sum.bitLength() - 2);
 	std::cout << "sss =   " << sliced_sum << std::endl;
       }
 
+      final_sum = sliced_sum;      
     }
+
+
 
     dynamic_bit_vector sign_bit(1);
     sign_bit.set(0, 0);
 
-    auto res = concat(sliced_sum, concat(tentative_exp, sign_bit));
+    auto res = concat(final_sum, concat(tentative_exp, sign_bit));
 
     assert(res.bitLength() == width);
 
