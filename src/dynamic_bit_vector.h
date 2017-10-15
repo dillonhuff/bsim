@@ -1088,6 +1088,7 @@ namespace bsim {
       if (overflow) {
 	dynamic_bit_vector one(exp_width, 1);
 	tentative_exp = add_general_width_bv(tentative_exp, one);
+	sliced_sum = lshr(sliced_sum, one);
       }
 
     }
