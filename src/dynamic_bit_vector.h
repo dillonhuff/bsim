@@ -985,6 +985,7 @@ namespace bsim {
 		     const unsigned precision_width,
 		     const unsigned exp_width) {
     unsigned width = 1 + precision_width + exp_width;
+
     assert(a.bitLength() == width);
     assert(b.bitLength() == width);
 
@@ -1008,11 +1009,11 @@ namespace bsim {
     auto sliced_sum = slice(sum, 0, sum.bitLength() - 2);
     std::cout << "sliced_sum     = " << sliced_sum << std::endl;
     std::cout << "sliced_sum len = " << sliced_sum.bitLength() << std::endl;
-    
+
     assert(sliced_sum.bitLength() == precision_width);
 
     std::cout << "sum = " << sum << std::endl;
-    
+
     dynamic_bit_vector a_exp = slice(a,
 				     precision_width,
 				     precision_width + exp_width);

@@ -801,6 +801,18 @@ namespace bsim {
       REQUIRE(floating_point_add(a, a, 23, 8) == res);
     }
 
+    SECTION("1 + 0.5 = 1.5") {
+      float one = 1.0;
+      float p5 = 0.5;
+
+      dbv a(32, float_bit_string(one));
+      dbv b(32, float_bit_string(p5));
+
+      dbv res(32, float_bit_string(one + p5));
+
+      REQUIRE(floating_point_add(a, b, 23, 8) == res);
+    }
+
   }
 
 }
