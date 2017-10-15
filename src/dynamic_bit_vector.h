@@ -1051,7 +1051,6 @@ namespace bsim {
 
     std::cout << "Operating" << std::endl;
 
-    
     dynamic_bit_vector sum(a_op.bitLength());
     if ((highBit(a) == 0) && (highBit(b) == 1)) {
       sum = sub_general_width_bv(a_op , b_op);
