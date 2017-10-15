@@ -751,6 +751,11 @@ namespace bsim {
     return false;
   }
 
+  static inline bool operator>=(const dynamic_bit_vector& a,
+				const dynamic_bit_vector& b) {
+    return (a > b) || (a == b);
+  }
+  
   static inline bool operator<(const dynamic_bit_vector& a,
   			       const dynamic_bit_vector& b) {
     if (a == b) { return false; }
@@ -986,21 +991,7 @@ namespace bsim {
     return res;
   }
 
-  struct fp_num {
-    dynamic_bit_vector sign_bit;
-    dynamic_bit_vector exp;
-    dynamic_bit_vector mnt;
-
-    dynamic_bit_vector mantissa() {
-      return mnt;
-    }
-
-    dynamic_bit_vector exponent() {
-      return exp;
-    }
-
-  };
-
+  static inline
   dynamic_bit_vector
   set_ops(const dynamic_bit_vector& a_exp,
 	  const dynamic_bit_vector& b_exp,
@@ -1036,6 +1027,7 @@ namespace bsim {
     return tentative_exp;
   }
 
+  static inline
   dynamic_bit_vector
   renormalize_zeros(dynamic_bit_vector& sliced_sum,
 		    const dynamic_bit_vector& tentative_exp,
@@ -1060,6 +1052,20 @@ namespace bsim {
 
     return new_exp;
   }  
+
+  static inline
+  dynamic_bit_vector
+  ieee_round(const dynamic_bit_vector& sum) {
+    dynamic_bit_vector guards = slice(sum, 0, 2);
+    dynamic_bit_vector upper(2, "10");
+
+    if (guards >= upper) {
+      dynamic_bit_vector app(sum.bitLength(), "100");
+      return add_general_width_bv(sum, app);
+    }
+
+    return sum;
+  }
 
   static inline
   dynamic_bit_vector
@@ -1132,12 +1138,12 @@ namespace bsim {
 
     std::cout << "sum = " << sum << std::endl;
 
-
-    dynamic_bit_vector sliced_sum(sum.bitLength() - 2);    
+    sum = ieee_round(sum);
+    dynamic_bit_vector sliced_sum(sum.bitLength() - 2);
     //sliced_sum = slice(sum, 0, sum.bitLength() - 2);
     sliced_sum = slice(sum, 2, sum.bitLength() - 2);
 
-    std::cout << "sls = " << sliced_sum << std::endl;
+    std::cout << "sls =   " << sliced_sum << std::endl;
 
     assert(sliced_sum.bitLength() == precision_width);
     
