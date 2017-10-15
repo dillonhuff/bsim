@@ -1004,11 +1004,6 @@ namespace bsim {
     assert(b_mant.bitLength() == precision_width);
 
     // TODO: Check normalization
-    auto a_ext = extend(a_mant, 2);
-    a_ext.set(precision_width, 1);
-    auto b_ext = extend(b_mant, 2);
-    b_ext.set(precision_width, 1);
-
     dynamic_bit_vector a_exp = slice(a,
 				     precision_width,
 				     precision_width + exp_width);
@@ -1022,8 +1017,14 @@ namespace bsim {
 
     dynamic_bit_vector tentative_exp(exp_width);
 
-    // Check sign bits
+    auto a_ext = extend(a_mant, 2);
+    a_ext.set(precision_width, 1);
+    auto b_ext = extend(b_mant, 2);
+    b_ext.set(precision_width, 1);
 
+    std::cout << "a_ext      = " << a_ext << std::endl;
+    std::cout << "b_ext      = " << b_ext << std::endl;
+    
     dynamic_bit_vector a_op(a_ext.bitLength());
     dynamic_bit_vector b_op(b_ext.bitLength());
 
@@ -1049,6 +1050,9 @@ namespace bsim {
 
     }
 
+    std::cout << "a_op       = " << a_op << std::endl;
+    std::cout << "b_op       = " << b_op << std::endl;
+    
     std::cout << "Operating" << std::endl;
 
     dynamic_bit_vector sum(a_op.bitLength());
