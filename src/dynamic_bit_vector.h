@@ -986,6 +986,41 @@ namespace bsim {
     return res;
   }
 
+  dynamic_bit_vector
+  set_ops(const dynamic_bit_vector& a_exp,
+	  const dynamic_bit_vector& b_exp,
+	  const dynamic_bit_vector& a_ext,
+	  const dynamic_bit_vector& b_ext,	  
+	  dynamic_bit_vector& a_op,
+	  dynamic_bit_vector& b_op) {
+
+    dynamic_bit_vector tentative_exp(a_exp.bitLength()); //exp_width);    
+
+    if (a_exp > b_exp) {
+      tentative_exp = a_exp;
+
+      auto diff = sub_general_width_bv(a_exp, b_exp);
+
+      auto shift_b = lshr(b_ext, diff);
+
+      a_op = a_ext;
+      b_op = shift_b;
+
+    } else {
+      tentative_exp = b_exp;
+
+      auto diff = sub_general_width_bv(b_exp, a_exp);
+
+      auto shift_a = lshr(a_ext, diff);
+
+      a_op = shift_a;
+      b_op = b_ext;
+
+    }
+
+    return tentative_exp;
+  }
+  
   static inline
   dynamic_bit_vector
   floating_point_add(const dynamic_bit_vector& a,
@@ -1015,20 +1050,20 @@ namespace bsim {
     assert(a_exp.bitLength() == exp_width);
     assert(b_exp.bitLength() == exp_width);
 
-    dynamic_bit_vector tentative_exp(exp_width);
+    //dynamic_bit_vector tentative_exp(exp_width);
 
-    // auto a_ext = extend(a_mant, 2);
-    // a_ext.set(precision_width, 1);
-    // auto b_ext = extend(b_mant, 2);
-    // b_ext.set(precision_width, 1);
+    auto a_ext = extend(a_mant, 2);
+    a_ext.set(precision_width, 1);
+    auto b_ext = extend(b_mant, 2);
+    b_ext.set(precision_width, 1);
 
-    auto a_ext = extend(a_mant, 4);
-    a_ext = shl(a_ext, 2);
-    a_ext.set(precision_width + 2, 1);
+    // auto a_ext = extend(a_mant, 4);
+    // a_ext = shl(a_ext, 2);
+    // a_ext.set(precision_width + 2, 1);
 
-    auto b_ext = extend(b_mant, 4);
-    b_ext = shl(b_ext, 2);
-    b_ext.set(precision_width + 2, 1);
+    // auto b_ext = extend(b_mant, 4);
+    // b_ext = shl(b_ext, 2);
+    // b_ext.set(precision_width + 2, 1);
     
     std::cout << "a_ext      = " << a_ext << std::endl;
     std::cout << "b_ext      = " << b_ext << std::endl;
@@ -1036,27 +1071,31 @@ namespace bsim {
     dynamic_bit_vector a_op(a_ext.bitLength());
     dynamic_bit_vector b_op(b_ext.bitLength());
 
-    if (a_exp > b_exp) {
-      tentative_exp = a_exp;
+    auto tentative_exp = set_ops(a_exp, b_exp,
+				 a_ext, b_ext,
+				 a_op, b_op);
 
-      auto diff = sub_general_width_bv(a_exp, b_exp);
+    // if (a_exp > b_exp) {
+    //   tentative_exp = a_exp;
 
-      auto shift_b = lshr(b_ext, diff);
+    //   auto diff = sub_general_width_bv(a_exp, b_exp);
 
-      a_op = a_ext;
-      b_op = shift_b;
+    //   auto shift_b = lshr(b_ext, diff);
 
-    } else {
-      tentative_exp = b_exp;
+    //   a_op = a_ext;
+    //   b_op = shift_b;
 
-      auto diff = sub_general_width_bv(b_exp, a_exp);
+    // } else {
+    //   tentative_exp = b_exp;
 
-      auto shift_a = lshr(a_ext, diff);
+    //   auto diff = sub_general_width_bv(b_exp, a_exp);
 
-      a_op = shift_a;
-      b_op = b_ext;
+    //   auto shift_a = lshr(a_ext, diff);
 
-    }
+    //   a_op = shift_a;
+    //   b_op = b_ext;
+
+    // }
 
     std::cout << "a_op       = " << a_op << std::endl;
     std::cout << "b_op       = " << b_op << std::endl;
@@ -1076,8 +1115,8 @@ namespace bsim {
 
 
     dynamic_bit_vector sliced_sum(sum.bitLength() - 2);    
-    //sliced_sum = slice(sum, 0, sum.bitLength() - 2);
-    sliced_sum = slice(sum, 2, sum.bitLength() - 2);
+    sliced_sum = slice(sum, 0, sum.bitLength() - 2);
+    //sliced_sum = slice(sum, 2, sum.bitLength() - 2);
 
     assert(sliced_sum.bitLength() == precision_width);
     
