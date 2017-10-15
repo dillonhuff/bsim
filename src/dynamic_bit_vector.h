@@ -1053,10 +1053,10 @@ namespace bsim {
 
       std::cout << "done shifting" << std::endl;
 
-      // a_op = shift_a;
-      // b_op = b_ext;
-      a_op = a_ext;
+      a_op = shift_a;
       b_op = b_ext;
+      // a_op = a_ext;
+      // b_op = b_ext;
 
     }
 
