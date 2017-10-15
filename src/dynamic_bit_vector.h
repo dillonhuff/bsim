@@ -1062,16 +1062,37 @@ namespace bsim {
     bool overflow = sum.get(sum.bitLength() - 1) == 1;
 
     std::cout << "sum = " << sum << std::endl;
-    
+
+
     dynamic_bit_vector sliced_sum(sum.bitLength() - 2);    
     sliced_sum = slice(sum, 0, sum.bitLength() - 2);
 
     assert(sliced_sum.bitLength() == precision_width);
     
-    if (overflow) {
-      dynamic_bit_vector one(exp_width, 1);
-      tentative_exp = add_general_width_bv(tentative_exp, one);
+    if ((highBit(a) == 0) && (highBit(b) == 1)) {
+      int num_leading_zeros = 0;
+      for (int i = sliced_sum.bitLength(); i >= 0; i--) {
+	if (sliced_sum.get(i) == 1) {
+	  break;
+	}
+
+	num_leading_zeros++;
+      }
+
+      dynamic_bit_vector shift_w(width, num_leading_zeros);
+      sliced_sum = shl(sliced_sum, shift_w);
+      tentative_exp = sub_general_width_bv(tentative_exp, shift_w);
+
+      std::cout << "Sum after shifting " << num_leading_zeros << " = " << sliced_sum << std::endl;
+    } else {
+
+      if (overflow) {
+	dynamic_bit_vector one(exp_width, 1);
+	tentative_exp = add_general_width_bv(tentative_exp, one);
+      }
+
     }
+
     dynamic_bit_vector sign_bit(1);
     sign_bit.set(0, 0);
 
