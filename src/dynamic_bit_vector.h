@@ -891,6 +891,10 @@ namespace bsim {
 
     bv_uint64 shift_int = get_shift_int(shift_amount);
 
+    if (shift_int == 0) {
+      return a;
+    }
+
     //unsigned char sign_bit = a.get(a.bitLength() - 1);
     for (uint i = a.bitLength() - 1; i >= shift_int; i--) {
       res.set(i - shift_int, a.get(i));
@@ -1040,11 +1044,14 @@ namespace bsim {
     } else {
       tentative_exp = b_exp;
 
-      // std::cout << "Subtracting\n" << b_exp << "\nfrom\n" << a_exp << std::endl;
-      // auto diff = sub_general_width_bv(b_exp, a_exp);
+      std::cout << "Subtracting\n" << b_exp << "\nfrom\n" << a_exp << std::endl;
+      auto diff = sub_general_width_bv(b_exp, a_exp);
 
-      // std::cout << "Done subtracting, now shifting" << std::endl;
-      // auto shift_a = lshr(a_ext, diff);
+      std::cout << "Shifting\n" << a_ext << "\nby\n" << diff << std::endl;
+      std::cout << "Done subtracting, now shifting" << std::endl;
+      auto shift_a = lshr(a_ext, diff);
+
+      std::cout << "done shifting" << std::endl;
 
       // a_op = shift_a;
       // b_op = b_ext;
