@@ -774,14 +774,22 @@ namespace bsim {
 
     return ss.str();
   }
+
   void print_float_bits(float f) {
     cout << float_bit_string(f);
-    // char* bits = reinterpret_cast<char*>(&f);
-    // //for(std::size_t n = 0; n < sizeof(f); ++n) {
-    // for(int n = sizeof(f) - 1; n >= 0; n--) {
-    //   std::cout << std::bitset<8>(bits[n]);
-    // }
+
     std::cout << '\n';
+  }
+
+  dbv float_add(const dbv& a, const dbv& b) {
+    assert(a.bitLength() == 32);
+    assert(b.bitLength() == 32);
+
+    return floating_point_add(a, b, 23, 8);
+  }
+
+  dbv float_bv(const float f) {
+    return dbv(32, float_bit_string(f));
   }
 
   TEST_CASE("Floating point add / subtract") {
@@ -845,7 +853,15 @@ namespace bsim {
 	REQUIRE(floating_point_add(a, b, 23, 8) ==
 		dbv(32, float_bit_string(128.5 + 0.25)));
       }
-      
+    }
+
+    SECTION("Adding 1/3 and 1/4") {
+
+      dbv a = float_bv(1.0 / 3.0);
+      dbv b = float_bv(1.0 / 4.0);
+      dbv res = float_bv(1.0/3.0 + 1.0/4.0);
+
+      REQUIRE(float_add(a, b) == res);
     }
 
   }
