@@ -873,14 +873,14 @@ namespace bsim {
       }
     }
 
-    SECTION("Adding 1/3 and 1/4") {
+    // SECTION("Adding 1/3 and 1/4") {
 
-      dbv a = float_bv(1.0 / 3.0);
-      dbv b = float_bv(1.0 / 4.0);
-      dbv res = float_bv(1.0/3.0 + 1.0/4.0);
+    //   dbv a = float_bv(1.0 / 3.0);
+    //   dbv b = float_bv(1.0 / 4.0);
+    //   dbv res = float_bv(1.0/3.0 + 1.0/4.0);
 
-      REQUIRE(float_add(a, b) == res);
-    }
+    //   REQUIRE(float_add(a, b) == res);
+    // }
 
     SECTION("Rounding example") {
       // NOTE: These are decimal powers!!!
