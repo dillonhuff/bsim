@@ -1189,6 +1189,50 @@ namespace bsim {
     return res;
   }
 
+  
+  static inline
+  bool
+  floating_point_gt(const dynamic_bit_vector& a,
+		    const dynamic_bit_vector& b,
+		    const unsigned precision_width,
+		    const unsigned exp_width) {
+
+    unsigned width = 1 + precision_width + exp_width;
+
+    assert(a.bitLength() == width);
+    assert(b.bitLength() == width);
+
+    dynamic_bit_vector a_mant = slice(a, 0, precision_width);
+    dynamic_bit_vector b_mant = slice(b, 0, precision_width);
+
+    assert(a_mant.bitLength() == precision_width);
+    assert(b_mant.bitLength() == precision_width);
+
+    // TODO: Check normalization
+    dynamic_bit_vector a_exp = slice(a,
+				     precision_width,
+				     precision_width + exp_width);
+
+    dynamic_bit_vector b_exp = slice(b,
+				     precision_width,
+				     precision_width + exp_width);
+
+    assert(a_exp.bitLength() == exp_width);
+    assert(b_exp.bitLength() == exp_width);
+
+    if (a_exp > b_exp) {
+      return true;
+    }
+
+    if (b_exp > a_exp) {
+      return false;
+    }
+    
+
+    assert(b_exp == a_exp);
+
+    return a_mant > b_mant;
+  }
   // template<int N>
   // static inline bool operator<=(const signed_int<N>& a,
   // 				const signed_int<N>& b) {

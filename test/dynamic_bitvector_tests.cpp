@@ -806,8 +806,19 @@ namespace bsim {
     return floating_point_add(a, b, 23, 8);
   }
 
+  bool float_gt(const dbv& a, const dbv& b) {
+    assert(a.bitLength() == 32);
+    assert(b.bitLength() == 32);
+
+    return floating_point_gt(a, b, 23, 8);
+  }
+  
   dbv float_bv(const float f) {
     return dbv(32, float_bit_string(f));
+  }
+
+  float rand_float(const float max) {
+    return static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/max));
   }
 
   TEST_CASE("Floating point add / subtract") {
@@ -918,6 +929,54 @@ namespace bsim {
 
     // 	REQUIRE(float_add(a, b) == float_bv(r1 + r2));
     //   }
+  }
+
+  TEST_CASE("Floating point greater than") {
+
+    SECTION("r1 less than r2, different exponents") {
+      float r1 = 2.37139e+08;
+      float r2 = 3.9856e+12;
+
+      dbv a = float_bv(r1);
+      dbv b = float_bv(r2);
+
+      REQUIRE(!float_gt(a, b));
+    }
+
+    SECTION("r1 less than r2, sam exponents") {
+      float r1 = 2.05827e+13;
+      float r2 = 2.83212e+13;
+
+      dbv a = float_bv(r1);
+      dbv b = float_bv(r2);
+
+      REQUIRE(!float_gt(a, b));
+    }
+    
+    SECTION("Fuzz test") {
+      float X = 3030e10;
+      for (int i = 0; i < 100; i++) {
+	float r1 = rand_float(X);
+	float r2 = rand_float(X);
+
+    	dbv a = float_bv(r1);
+    	dbv b = float_bv(r2);
+
+    	cout << "i  = " << i << endl;
+    	cout << "r1 = " << r1 << endl;
+    	cout << "r2 = " << r2 << endl;
+    	cout << "a  = " << a << endl;
+    	cout << "b  = " << b << endl;
+
+	bool val = r1 > r2;
+	bool res = float_gt(a, b);
+
+	cout << "r1 > r2 = " << val << endl;
+	cout << "res     = " << val << endl;
+
+    	REQUIRE(res == val);
+      }
+    }
   }
 
 }
