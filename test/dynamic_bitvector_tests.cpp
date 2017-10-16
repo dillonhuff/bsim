@@ -969,10 +969,11 @@ namespace bsim {
     }
     
     SECTION("Fuzz test") {
-      float X = 3030e10;
-      for (int i = 0; i < 100; i++) {
-	float r1 = rand_float_signed(X);
-	float r2 = rand_float_signed(X);
+      float X1 = 3030e7;
+      float X2 = 3030e7;
+      for (int i = 0; i < 1000; i++) {
+	float r1 = rand_float_signed(X1);
+	float r2 = rand_float_signed(X2);
 
     	dbv a = float_bv(r1);
     	dbv b = float_bv(r2);
