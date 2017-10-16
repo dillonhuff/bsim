@@ -1221,7 +1221,7 @@ namespace bsim {
     assert(b_exp.bitLength() == exp_width);
 
     bool a_pos = highBit(a) == 0;
-    bool b_pos = highBit(a) == 0;
+    bool b_pos = highBit(b) == 0;
 
     if (a_pos && b_pos) {
 

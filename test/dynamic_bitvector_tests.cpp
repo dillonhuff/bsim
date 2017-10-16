@@ -987,7 +987,7 @@ namespace bsim {
 	bool res = float_gt(a, b);
 
 	cout << "r1 > r2 = " << val << endl;
-	cout << "res     = " << val << endl;
+	cout << "res     = " << res << endl;
 
     	REQUIRE(res == val);
       }
