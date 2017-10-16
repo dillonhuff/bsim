@@ -821,6 +821,11 @@ namespace bsim {
     return static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/max));
   }
 
+  float rand_float_signed(const float max) {
+    float sgn = ((rand() % 2) > 0.5) ? 1.0 : -1.0;
+    return static_cast <float>( (sgn*rand()) / (static_cast <float> (RAND_MAX/max)) );
+  }
+  
   TEST_CASE("Floating point add / subtract") {
 
     SECTION("Check equivalence") {
@@ -943,7 +948,7 @@ namespace bsim {
       REQUIRE(!float_gt(a, b));
     }
 
-    SECTION("r1 less than r2, sam exponents") {
+    SECTION("r1 less than r2, same exponents") {
       float r1 = 2.05827e+13;
       float r2 = 2.83212e+13;
 
@@ -952,12 +957,22 @@ namespace bsim {
 
       REQUIRE(!float_gt(a, b));
     }
+
+    SECTION("r1 > r2, both negative exponents") {
+      float r1 = -3.9856e+12;
+      float r2 = -1.38971e+13;
+
+      dbv a = float_bv(r1);
+      dbv b = float_bv(r2);
+
+      REQUIRE(float_gt(a, b));
+    }
     
     SECTION("Fuzz test") {
       float X = 3030e10;
       for (int i = 0; i < 100; i++) {
-	float r1 = rand_float(X);
-	float r2 = rand_float(X);
+	float r1 = rand_float_signed(X);
+	float r2 = rand_float_signed(X);
 
     	dbv a = float_bv(r1);
     	dbv b = float_bv(r2);

@@ -1220,18 +1220,42 @@ namespace bsim {
     assert(a_exp.bitLength() == exp_width);
     assert(b_exp.bitLength() == exp_width);
 
-    if (a_exp > b_exp) {
-      return true;
-    }
+    bool a_pos = highBit(a) == 0;
+    bool b_pos = highBit(a) == 0;
 
-    if (b_exp > a_exp) {
-      return false;
-    }
+    if (a_pos && b_pos) {
+
+      if (a_exp > b_exp) {
+	return true;
+      }
+
+      if (b_exp > a_exp) {
+	return false;
+      }
     
 
-    assert(b_exp == a_exp);
+      assert(b_exp == a_exp);
 
-    return a_mant > b_mant;
+      return a_mant > b_mant;
+    } else if (!a_pos && !b_pos) {
+      if (a_exp > b_exp) {
+	return false;
+      }
+
+      if (b_exp > a_exp) {
+	return true;
+      }
+
+      assert(b_exp == a_exp);
+
+      return a_mant < b_mant;
+    } else if (!a_pos && b_pos) {
+      return false;
+    } else if (a_pos && !b_pos) {
+      return true;
+    } else {
+      assert(false);
+    }
   }
   // template<int N>
   // static inline bool operator<=(const signed_int<N>& a,
