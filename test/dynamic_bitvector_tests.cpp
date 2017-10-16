@@ -958,6 +958,21 @@ namespace bsim {
       REQUIRE(!float_gt(a, b));
     }
 
+    SECTION("r1 > r2, positive and negative zero") {
+      float r1 = 0;
+      float r2 = -0;
+
+      cout << "r1 bits = " << float_bit_string(r1) << endl;
+      cout << "r2 bits = " << float_bit_string(r2) << endl;
+
+      dbv a = float_bv(r1);
+      dbv b = float_bv(r2);
+
+      REQUIRE(float_gt(a, b) == (0 > -0));
+      REQUIRE(float_gt(b, a) == (-0 > 0));
+    }
+    
+    
     SECTION("r1 > r2, both negative exponents") {
       float r1 = -3.9856e+12;
       float r2 = -1.38971e+13;
@@ -971,7 +986,7 @@ namespace bsim {
     SECTION("Fuzz test") {
       float X1 = 3030e7;
       float X2 = 3030e7;
-      for (int i = 0; i < 1000; i++) {
+      for (int i = 0; i < 100; i++) {
 	float r1 = rand_float_signed(X1);
 	float r2 = rand_float_signed(X2);
 
