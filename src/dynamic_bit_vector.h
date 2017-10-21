@@ -1053,18 +1053,38 @@ namespace bsim {
     return new_exp;
   }  
 
+  // NOTE: This should implement "round to nearest even"
   static inline
   dynamic_bit_vector
   ieee_round(const dynamic_bit_vector& sum) {
     dynamic_bit_vector guards = slice(sum, 0, 2);
+    dynamic_bit_vector last_three = slice(sum, 0, 3);
+
+    std::cout << "to round       = " << sum << std::endl;
+    std::cout << "last 3 digits  = " << last_three << std::endl;
+
+    std::cout << "guards         =  " << guards << std::endl;
+
     dynamic_bit_vector upper(2, "10");
 
-    if (guards >= upper) {
-      dynamic_bit_vector app(sum.bitLength(), "10");
-      return add_general_width_bv(sum, app);
+    dynamic_bit_vector res = sum;
+    dynamic_bit_vector app(sum.bitLength(), "10");
+    if (guards > upper) {
+      res = add_general_width_bv(sum, app);
+    } else if (guards == upper) {
+      if (sum.get(2) == 0) {
+	res = sub_general_width_bv(sum, app);
+      } else {
+	assert(sum.get(2) == 1);
+	res = add_general_width_bv(sum, app);
+      }
     }
 
-    return sum;
+    auto rnd_last_3 = slice(res, 0, 3);
+    std::cout << "rounded last 3 = " << rnd_last_3 << std::endl;
+    std::cout << "res      = " << res << std::endl;
+
+    return res;
   }
 
   static inline
@@ -1136,7 +1156,7 @@ namespace bsim {
 
     bool overflow = sum.get(sum.bitLength() - 1) == 1;
 
-    std::cout << "sum = " << sum << std::endl;
+    std::cout << "sum =    " << sum << std::endl;
 
     dynamic_bit_vector final_sum(precision_width);
 

@@ -889,14 +889,14 @@ namespace bsim {
       }
     }
 
-    // SECTION("Adding 1/3 and 1/4") {
+    SECTION("Adding 1/3 and 1/4") {
 
-    //   dbv a = float_bv(1.0 / 3.0);
-    //   dbv b = float_bv(1.0 / 4.0);
-    //   dbv res = float_bv(1.0/3.0 + 1.0/4.0);
+      dbv a = float_bv(1.0 / 3.0);
+      dbv b = float_bv(1.0 / 4.0);
+      dbv res = float_bv(1.0/3.0 + 1.0/4.0);
 
-    //   REQUIRE(float_add(a, b) == res);
-    // }
+      REQUIRE(float_add(a, b) == res);
+    }
 
     SECTION("Rounding example") {
       // NOTE: These are decimal powers!!!
@@ -916,24 +916,30 @@ namespace bsim {
       REQUIRE(float_add(a, b) == float_bv(r1 + r2));
     }
 
-    // SECTION("Fuzz test") {
-    //   float X = 3030e10;
+    SECTION("Fuzz test") {
+      float X = 3030e10;
 
-    //   for (int i = 0; i < 100; i++) {
-    // 	float r1 = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/X));
-    // 	float r2 = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/X));
+      for (int i = 0; i < 100; i++) {
+    	float r1 = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/X));
+    	float r2 = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/X));
 
-    // 	dbv a = float_bv(r1);
-    // 	dbv b = float_bv(r2);
+    	dbv a = float_bv(r1);
+    	dbv b = float_bv(r2);
 
-    // 	cout << "i  = " << i << endl;
-    // 	cout << "r1 = " << r1 << endl;
-    // 	cout << "r2 = " << r2 << endl;
-    // 	cout << "a  = " << a << endl;
-    // 	cout << "b  = " << b << endl;
+    	cout << "i  = " << i << endl;
+    	cout << "r1 = " << r1 << endl;
+    	cout << "r2 = " << r2 << endl;
+    	cout << "a  = " << a << endl;
+    	cout << "b  = " << b << endl;
 
-    // 	REQUIRE(float_add(a, b) == float_bv(r1 + r2));
-    //   }
+	auto res_bv = float_bv(r1 + r2);
+	auto actual = float_add(a, b);
+    	if (actual != res_bv) {
+	  cout << "actual   = " << actual << endl;
+	  cout << "expected = " << res_bv << endl;
+	}
+      }
+    }
   }
 
   TEST_CASE("Floating point greater than") {
@@ -986,6 +992,7 @@ namespace bsim {
     SECTION("Fuzz test") {
       float X1 = 3030e7;
       float X2 = 3030e7;
+
       for (int i = 0; i < 100; i++) {
 	float r1 = rand_float_signed(X1);
 	float r2 = rand_float_signed(X2);
@@ -993,17 +1000,17 @@ namespace bsim {
     	dbv a = float_bv(r1);
     	dbv b = float_bv(r2);
 
-    	cout << "i  = " << i << endl;
-    	cout << "r1 = " << r1 << endl;
-    	cout << "r2 = " << r2 << endl;
-    	cout << "a  = " << a << endl;
-    	cout << "b  = " << b << endl;
+    	// cout << "i  = " << i << endl;
+    	// cout << "r1 = " << r1 << endl;
+    	// cout << "r2 = " << r2 << endl;
+    	// cout << "a  = " << a << endl;
+    	// cout << "b  = " << b << endl;
 
 	bool val = r1 > r2;
 	bool res = float_gt(a, b);
 
-	cout << "r1 > r2 = " << val << endl;
-	cout << "res     = " << res << endl;
+	// cout << "r1 > r2 = " << val << endl;
+	// cout << "res     = " << res << endl;
 
     	REQUIRE(res == val);
       }
