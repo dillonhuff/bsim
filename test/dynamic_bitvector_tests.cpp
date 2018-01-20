@@ -735,6 +735,17 @@ namespace bsim {
       REQUIRE(res == dbv(12, "111100000100"));
     }
 
+    SECTION("Arithmetic shift right by zero") {
+      dbv a(33, "000000000000000000000000000000000");
+      dbv b(33, "000000000000000000000000000000000");
+
+      dbv res = ashr(a, b);
+
+      REQUIRE(res == a);
+    }
+
+
+
     SECTION("Arithmetic shift right with one") {
       dbv a(12, "010000100000");
       dbv shift(5, "00100");
@@ -826,196 +837,196 @@ namespace bsim {
     return static_cast <float>( (sgn*rand()) / (static_cast <float> (RAND_MAX/max)) );
   }
   
-  TEST_CASE("Floating point add / subtract") {
+  // TEST_CASE("Floating point add / subtract") {
 
-    SECTION("Check equivalence") {
-      cout << "Powers of 2" << endl;
-      for (int i = 0; i < 8; i++) {
-	float f = -1*pow(2.0, i);
-	cout << f << " as float = " << endl;
-	print_float_bits(f);
-	cout << endl;
-      }
+  //   SECTION("Check equivalence") {
+  //     cout << "Powers of 2" << endl;
+  //     for (int i = 0; i < 8; i++) {
+  //       float f = -1*pow(2.0, i);
+  //       cout << f << " as float = " << endl;
+  //       print_float_bits(f);
+  //       cout << endl;
+  //     }
 
-    }
+  //   }
 
-    SECTION("32 bit IEEE add 1 + 1 = 2") {
-      float one = 1.0;
-      float two = 2.0;
-      dbv a(32, float_bit_string(one));
-      dbv res(32, float_bit_string(two));
+  //   SECTION("32 bit IEEE add 1 + 1 = 2") {
+  //     float one = 1.0;
+  //     float two = 2.0;
+  //     dbv a(32, float_bit_string(one));
+  //     dbv res(32, float_bit_string(two));
 
-      cout << "a = " << a << endl;
+  //     cout << "a = " << a << endl;
 
-      REQUIRE(floating_point_add(a, a, 23, 8) == res);
-    }
+  //     REQUIRE(floating_point_add(a, a, 23, 8) == res);
+  //   }
 
-    SECTION("Adding 1 and 0.5") {
-      float one = 1.0;
-      float p5 = 0.5;
+  //   SECTION("Adding 1 and 0.5") {
+  //     float one = 1.0;
+  //     float p5 = 0.5;
 
-      dbv a(32, float_bit_string(one));
-      dbv b(32, float_bit_string(p5));
+  //     dbv a(32, float_bit_string(one));
+  //     dbv b(32, float_bit_string(p5));
 
-      dbv neg_a(32, float_bit_string(-1*one));
-      dbv neg_b(32, float_bit_string(-1*p5));
+  //     dbv neg_a(32, float_bit_string(-1*one));
+  //     dbv neg_b(32, float_bit_string(-1*p5));
 
-      dbv res(32, float_bit_string(one + p5));
-      dbv neg_res(32, float_bit_string(-1*(one + p5)));
+  //     dbv res(32, float_bit_string(one + p5));
+  //     dbv neg_res(32, float_bit_string(-1*(one + p5)));
 
-      SECTION("1 + 0.5 = 1.5") {
-	REQUIRE(floating_point_add(a, b, 23, 8) == res);
-      }
+  //     SECTION("1 + 0.5 = 1.5") {
+  //       REQUIRE(floating_point_add(a, b, 23, 8) == res);
+  //     }
 
-      SECTION("0.5 + 1 = 1.5") {
-	REQUIRE(floating_point_add(b, a, 23, 8) == res);
-      }
+  //     SECTION("0.5 + 1 = 1.5") {
+  //       REQUIRE(floating_point_add(b, a, 23, 8) == res);
+  //     }
 
-      SECTION("1 - 0.5 = 0.5") {
-	REQUIRE(floating_point_add(a, neg_b, 23, 8) ==
-		dbv(32, float_bit_string(one - p5)));
-      }
+  //     SECTION("1 - 0.5 = 0.5") {
+  //       REQUIRE(floating_point_add(a, neg_b, 23, 8) ==
+  //       	dbv(32, float_bit_string(one - p5)));
+  //     }
 
-    }
+  //   }
 
-    SECTION("Adding 128.5 and 0.25") {
+  //   SECTION("Adding 128.5 and 0.25") {
 
-      dbv a(32, float_bit_string(128.5));
-      dbv b(32, float_bit_string(0.25));
+  //     dbv a(32, float_bit_string(128.5));
+  //     dbv b(32, float_bit_string(0.25));
 
-      SECTION("128.5 + 0.25 = 128.75") {
-	REQUIRE(floating_point_add(a, b, 23, 8) ==
-		dbv(32, float_bit_string(128.5 + 0.25)));
-      }
-    }
+  //     SECTION("128.5 + 0.25 = 128.75") {
+  //       REQUIRE(floating_point_add(a, b, 23, 8) ==
+  //       	dbv(32, float_bit_string(128.5 + 0.25)));
+  //     }
+  //   }
 
-    SECTION("Adding 1/3 and 1/4") {
+  //   SECTION("Adding 1/3 and 1/4") {
 
-      dbv a = float_bv(1.0 / 3.0);
-      dbv b = float_bv(1.0 / 4.0);
-      dbv res = float_bv(1.0/3.0 + 1.0/4.0);
+  //     dbv a = float_bv(1.0 / 3.0);
+  //     dbv b = float_bv(1.0 / 4.0);
+  //     dbv res = float_bv(1.0/3.0 + 1.0/4.0);
 
-      REQUIRE(float_add(a, b) == res);
-    }
+  //     REQUIRE(float_add(a, b) == res);
+  //   }
 
-    SECTION("Rounding example") {
-      // NOTE: These are decimal powers!!!
-      dbv a = float_bv(2.37139e+08);
-      dbv b = float_bv(3.9856e+12);
+  //   SECTION("Rounding example") {
+  //     // NOTE: These are decimal powers!!!
+  //     dbv a = float_bv(2.37139e+08);
+  //     dbv b = float_bv(3.9856e+12);
 
-      REQUIRE(float_add(a, b) == float_bv(2.37139e+08 + 3.9856e+12));
-    }
+  //     REQUIRE(float_add(a, b) == float_bv(2.37139e+08 + 3.9856e+12));
+  //   }
 
-    SECTION("Renormalize and round") {
-      float r1 = 1.16201e+13;
-      float r2 = 1.57383e+13;
+  //   SECTION("Renormalize and round") {
+  //     float r1 = 1.16201e+13;
+  //     float r2 = 1.57383e+13;
 
-      dbv a = float_bv(r1);
-      dbv b = float_bv(r2);
+  //     dbv a = float_bv(r1);
+  //     dbv b = float_bv(r2);
 
-      REQUIRE(float_add(a, b) == float_bv(r1 + r2));
-    }
+  //     REQUIRE(float_add(a, b) == float_bv(r1 + r2));
+  //   }
 
-    SECTION("Fuzz test") {
-      float X = 3030e10;
+  //   SECTION("Fuzz test") {
+  //     float X = 3030e10;
 
-      for (int i = 0; i < 100; i++) {
-    	float r1 = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/X));
-    	float r2 = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/X));
+  //     for (int i = 0; i < 100; i++) {
+  //   	float r1 = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/X));
+  //   	float r2 = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/X));
 
-    	dbv a = float_bv(r1);
-    	dbv b = float_bv(r2);
+  //   	dbv a = float_bv(r1);
+  //   	dbv b = float_bv(r2);
 
-    	cout << "i  = " << i << endl;
-    	cout << "r1 = " << r1 << endl;
-    	cout << "r2 = " << r2 << endl;
-    	cout << "a  = " << a << endl;
-    	cout << "b  = " << b << endl;
+  //   	cout << "i  = " << i << endl;
+  //   	cout << "r1 = " << r1 << endl;
+  //   	cout << "r2 = " << r2 << endl;
+  //   	cout << "a  = " << a << endl;
+  //   	cout << "b  = " << b << endl;
 
-	auto res_bv = float_bv(r1 + r2);
-	auto actual = float_add(a, b);
-    	if (actual != res_bv) {
-	  cout << "actual   = " << actual << endl;
-	  cout << "expected = " << res_bv << endl;
-	}
-      }
-    }
-  }
+  //       auto res_bv = float_bv(r1 + r2);
+  //       auto actual = float_add(a, b);
+  //   	if (actual != res_bv) {
+  //         cout << "actual   = " << actual << endl;
+  //         cout << "expected = " << res_bv << endl;
+  //       }
+  //     }
+  //   }
+  // }
 
-  TEST_CASE("Floating point greater than") {
+  // TEST_CASE("Floating point greater than") {
 
-    SECTION("r1 less than r2, different exponents") {
-      float r1 = 2.37139e+08;
-      float r2 = 3.9856e+12;
+  //   SECTION("r1 less than r2, different exponents") {
+  //     float r1 = 2.37139e+08;
+  //     float r2 = 3.9856e+12;
 
-      dbv a = float_bv(r1);
-      dbv b = float_bv(r2);
+  //     dbv a = float_bv(r1);
+  //     dbv b = float_bv(r2);
 
-      REQUIRE(!float_gt(a, b));
-    }
+  //     REQUIRE(!float_gt(a, b));
+  //   }
 
-    SECTION("r1 less than r2, same exponents") {
-      float r1 = 2.05827e+13;
-      float r2 = 2.83212e+13;
+  //   SECTION("r1 less than r2, same exponents") {
+  //     float r1 = 2.05827e+13;
+  //     float r2 = 2.83212e+13;
 
-      dbv a = float_bv(r1);
-      dbv b = float_bv(r2);
+  //     dbv a = float_bv(r1);
+  //     dbv b = float_bv(r2);
 
-      REQUIRE(!float_gt(a, b));
-    }
+  //     REQUIRE(!float_gt(a, b));
+  //   }
 
-    SECTION("r1 > r2, positive and negative zero") {
-      float r1 = 0;
-      float r2 = -0;
+  //   SECTION("r1 > r2, positive and negative zero") {
+  //     float r1 = 0;
+  //     float r2 = -0;
 
-      cout << "r1 bits = " << float_bit_string(r1) << endl;
-      cout << "r2 bits = " << float_bit_string(r2) << endl;
+  //     cout << "r1 bits = " << float_bit_string(r1) << endl;
+  //     cout << "r2 bits = " << float_bit_string(r2) << endl;
 
-      dbv a = float_bv(r1);
-      dbv b = float_bv(r2);
+  //     dbv a = float_bv(r1);
+  //     dbv b = float_bv(r2);
 
-      REQUIRE(float_gt(a, b) == (0 > -0));
-      REQUIRE(float_gt(b, a) == (-0 > 0));
-    }
+  //     REQUIRE(float_gt(a, b) == (0 > -0));
+  //     REQUIRE(float_gt(b, a) == (-0 > 0));
+  //   }
     
     
-    SECTION("r1 > r2, both negative exponents") {
-      float r1 = -3.9856e+12;
-      float r2 = -1.38971e+13;
+  //   SECTION("r1 > r2, both negative exponents") {
+  //     float r1 = -3.9856e+12;
+  //     float r2 = -1.38971e+13;
 
-      dbv a = float_bv(r1);
-      dbv b = float_bv(r2);
+  //     dbv a = float_bv(r1);
+  //     dbv b = float_bv(r2);
 
-      REQUIRE(float_gt(a, b));
-    }
+  //     REQUIRE(float_gt(a, b));
+  //   }
     
-    SECTION("Fuzz test") {
-      float X1 = 3030e7;
-      float X2 = 3030e7;
+  //   SECTION("Fuzz test") {
+  //     float X1 = 3030e7;
+  //     float X2 = 3030e7;
 
-      for (int i = 0; i < 100; i++) {
-	float r1 = rand_float_signed(X1);
-	float r2 = rand_float_signed(X2);
+  //     for (int i = 0; i < 100; i++) {
+  //       float r1 = rand_float_signed(X1);
+  //       float r2 = rand_float_signed(X2);
 
-    	dbv a = float_bv(r1);
-    	dbv b = float_bv(r2);
+  //   	dbv a = float_bv(r1);
+  //   	dbv b = float_bv(r2);
 
-    	// cout << "i  = " << i << endl;
-    	// cout << "r1 = " << r1 << endl;
-    	// cout << "r2 = " << r2 << endl;
-    	// cout << "a  = " << a << endl;
-    	// cout << "b  = " << b << endl;
+  //   	// cout << "i  = " << i << endl;
+  //   	// cout << "r1 = " << r1 << endl;
+  //   	// cout << "r2 = " << r2 << endl;
+  //   	// cout << "a  = " << a << endl;
+  //   	// cout << "b  = " << b << endl;
 
-	bool val = r1 > r2;
-	bool res = float_gt(a, b);
+  //       bool val = r1 > r2;
+  //       bool res = float_gt(a, b);
 
-	// cout << "r1 > r2 = " << val << endl;
-	// cout << "res     = " << res << endl;
+  //       // cout << "r1 > r2 = " << val << endl;
+  //       // cout << "res     = " << res << endl;
 
-    	REQUIRE(res == val);
-      }
-    }
-  }
+  //   	REQUIRE(res == val);
+  //     }
+  //   }
+  // }
 
 }
     

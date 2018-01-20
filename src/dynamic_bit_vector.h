@@ -921,6 +921,11 @@ namespace bsim {
   dynamic_bit_vector
   ashr(const dynamic_bit_vector& a,
        const dynamic_bit_vector& shift_amount) {
+
+    if (shift_amount == dynamic_bit_vector(shift_amount.bitLength(), 0)) {
+      return a;
+    }
+
     dynamic_bit_vector res(a.bitLength());
 
     bv_uint64 shift_int = get_shift_int(shift_amount);
