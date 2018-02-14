@@ -147,6 +147,23 @@ namespace bsim {
       REQUIRE(a.hex_string() == "5'h08");
     }
 
+    SECTION("Print out as hex string longer") {
+      dynamic_bit_vector a("32'ha936d4c0");
+
+      REQUIRE(a.hex_string() == "32'ha936d4c0");
+    }
+
+    SECTION("Print out as hex string longer and not power of 4 width") {
+      dynamic_bit_vector a("37'h14a936d4c0");
+
+      SECTION("Bit length is 37") {
+        cout << "NUM_BYTES = " << NUM_BYTES(a.bitLength()) << endl;
+        REQUIRE(a.bitLength() == 37);
+      }
+
+      REQUIRE(a.hex_string() == "37'h14a936d4c0");
+    }
+    
   }
 
   TEST_CASE("Dynamic bitvector arithmetic") {

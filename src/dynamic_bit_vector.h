@@ -7,11 +7,12 @@
 #include <type_traits>
 
 #define GEN_NUM_BYTES(N) (((N) / 8) + 1 - (((N) % 8 == 0)))
-#define NUM_BYTES_GT_8(N) GEN_NUM_BYTES(N)
-#define NUM_BYTES_GT_4(N) (N <= 64 ? 8 : NUM_BYTES_GT_8(N))
-#define NUM_BYTES_GT_2(N) (N <= 32 ? 4 : NUM_BYTES_GT_4(N))
-#define NUM_BYTES_GT_1(N) (N <= 16 ? 2 : NUM_BYTES_GT_2(N))
-#define NUM_BYTES(N) (N <= 8 ? (1) : NUM_BYTES_GT_1(N))
+// #define NUM_BYTES_GT_8(N) GEN_NUM_BYTES(N)
+// #define NUM_BYTES_GT_4(N) (N <= 64 ? 8 : NUM_BYTES_GT_8(N))
+// #define NUM_BYTES_GT_2(N) (N <= 32 ? 4 : NUM_BYTES_GT_4(N))
+// #define NUM_BYTES_GT_1(N) (N <= 16 ? 2 : NUM_BYTES_GT_2(N))
+#define NUM_BYTES(N) GEN_NUM_BYTES(N)
+//(N <= 8 ? (1) : NUM_BYTES_GT_1(N))
 
 typedef int8_t  bv_sint8;
 typedef int32_t  bv_sint32;
@@ -177,13 +178,12 @@ namespace bsim {
     std::string hex_string() {
       std::string hex = std::to_string(N) + "'h";
 
-      int ind = 0;
-      for (int i = 0; i < bits.size(); i++) {
-        char bit_h = bits[i];
+      for (int i = bits.size() - 1; i >= 0; i--) {
+        char bit_h = bits[i] & 0x0f;
         char bit_l = (bits[i] >> 4) & 0x0f;
 
-        hex += bit_l > 57 ? bit_l + 55 : bit_l + 48;
-        hex += bit_h > 57 ? bit_h + 55 : bit_h + 48;
+        hex += bit_l > 9 ? bit_l + 87 : bit_l + 48;
+        hex += bit_h > 9 ? bit_h + 87 : bit_h + 48;
       }
       return hex;
     }
