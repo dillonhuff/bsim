@@ -23,6 +23,48 @@ typedef uint64_t bv_uint64;
 
 namespace bsim {
 
+  std::string hex_digit_to_binary(const char hex_digit) {
+    switch (hex_digit) {
+    case '0':
+      return "0000";
+    case '1':
+      return "0001";
+    case '2':
+      return "0010";
+    case '3':
+      return "0011";
+    case '4':
+      return "0100";
+    case '5':
+      return "0101";
+    case '6':
+      return "0110";
+    case '7':
+      return "0111";
+    case '8':
+      return "1000";
+    case '9':
+      return "1001";
+    case 'a':
+      return "1010";
+    case 'b':
+      return "1011";
+    case 'c':
+      return "1100";
+    case 'd':
+      return "1101";
+    case 'e':
+      return "1110";
+    case 'f':
+      return "1111";
+      
+    default:
+      assert(false);
+    }
+
+    assert(false);
+  }
+
   class dynamic_bit_vector {
     std::vector<unsigned char> bits;
     int N;
@@ -39,8 +81,59 @@ namespace bsim {
       }
     }
 
-    dynamic_bit_vector(const int N_, const std::string& str_raw) : N(N_) {
+    dynamic_bit_vector(const std::string& str_raw) : N(0) {
+      std::string bv_size = "";
+      int ind = 0;
+      while (str_raw[ind] != '\'') {
+        assert(isdigit(str_raw[ind]));
+        bv_size += str_raw[ind];
+        ind++;
+      }
 
+      assert (str_raw[ind] == '\'');
+
+      ind++;
+
+      char format = str_raw[ind];
+
+      assert((format == 'b') ||
+             (format == 'h') ||
+             (format == 'd'));
+
+      ind++;
+
+      std::string digits = "";
+      while (ind < str_raw.size()) {
+        digits += str_raw[ind];
+        ind++;
+      }
+
+      int width = stoi(bv_size);
+      N = width;
+      bits.resize(N);
+
+      // TODO: Check that digits are not too long
+
+      assert(format == 'h');
+
+      int bit_ind = 0;
+      for (int i = 0; i < digits.size(); i++) {
+        char hex_digit = digits[i];
+        std::string hex_to_binary = hex_digit_to_binary(hex_digit);
+
+        assert(hex_to_binary.size() == 4);
+
+        int k = 0;
+        for (int j = hex_to_binary.size() - 1; j >= 0; j--) {
+          set(bit_ind + k, hex_to_binary[j]);
+          k++;
+        }
+        bit_ind += 4;
+      }
+
+    }
+
+    dynamic_bit_vector(const int N_, const std::string& str_raw) : N(N_) {
       int num_digits = 0;
       std::string str;
       for (int i = 0; i < str_raw.size(); i++) {
@@ -119,6 +212,10 @@ namespace bsim {
     }
 
     inline bool equals(const dynamic_bit_vector& other) const {
+
+      if (other.bitLength() != this->bitLength()) {
+        return false;
+      }
 
       for (int i = 0; i < N; i++) {
 	if (get(i) != other.get(i)) {

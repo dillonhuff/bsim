@@ -109,6 +109,13 @@ namespace bsim {
       REQUIRE(b.bitLength() == 23);
     }
 
+    SECTION("Initializing with explicit binary") {
+      dynamic_bit_vector a("5'h3");
+      dynamic_bit_vector b(5, "00011");
+
+      REQUIRE(a == b);
+    }
+
   }
 
   TEST_CASE("Dynamic bitvector arithmetic") {
