@@ -448,7 +448,7 @@ namespace bsim {
 
     dynamic_bit_vector res(a.bitLength());
     unsigned char carry = 0;
-    for (int i = 0; i < a.bitLength(); i++) {
+    for (int i = 0; i < ((int) a.bitLength()); i++) {
       unsigned char sum = a.get(i) + b.get(i) + carry;
 
       carry = 0;
@@ -472,7 +472,6 @@ namespace bsim {
     dynamic_bit_vector diff(a.bitLength());
     dynamic_bit_vector a_cpy = a;
 
-    bool underflow = false;
     for (int i = 0; i < Width; i++) {
 
       if ((a_cpy.get(i) == 0) &&
@@ -489,7 +488,6 @@ namespace bsim {
   	}
 
   	if (j >= Width) {
-  	  underflow = true;
   	} else {
   	  a_cpy.set(j, 0);
   	}
@@ -891,7 +889,7 @@ namespace bsim {
     for (int i = 0; i < a.bitLength(); i++) {
       res.set(i, a.get(i));
     }
-    for (int i = 0; i < b.bitLength(); i++) {
+    for (int i = 0; i < ((int) b.bitLength()); i++) {
       res.set(i + a.bitLength(), b.get(i));
     }
 
@@ -1033,8 +1031,8 @@ namespace bsim {
     dynamic_bit_vector a_mant = slice(a, 0, precision_width);
     dynamic_bit_vector b_mant = slice(b, 0, precision_width);
 
-    assert(a_mant.bitLength() == precision_width);
-    assert(b_mant.bitLength() == precision_width);
+    assert(a_mant.bitLength() == ((int) precision_width));
+    assert(b_mant.bitLength() == ((int) precision_width));
 
     // TODO: Check normalization
     dynamic_bit_vector a_exp = slice(a,
@@ -1099,7 +1097,7 @@ namespace bsim {
       dynamic_bit_vector sliced_sum(sum.bitLength() - 2);
       sliced_sum = slice(sum, 2, sum.bitLength() - 2);
 
-      assert(sliced_sum.bitLength() == precision_width);
+      assert(sliced_sum.bitLength() == ((int) precision_width));
 
       tentative_exp = renormalize_zeros(sliced_sum, tentative_exp, width);
 
@@ -1123,7 +1121,7 @@ namespace bsim {
 	dynamic_bit_vector sliced_sum(sum.bitLength() - 2);
 	sliced_sum = slice(sum, 2, sum.bitLength() - 2);
 
-	assert(sliced_sum.bitLength() == precision_width);
+	assert(sliced_sum.bitLength() == ((int) precision_width));
 	final_sum = sliced_sum;      
       }
 
@@ -1157,8 +1155,8 @@ namespace bsim {
     dynamic_bit_vector a_mant = slice(a, 0, precision_width);
     dynamic_bit_vector b_mant = slice(b, 0, precision_width);
 
-    assert(a_mant.bitLength() == precision_width);
-    assert(b_mant.bitLength() == precision_width);
+    assert(a_mant.bitLength() == ((int) precision_width));
+    assert(b_mant.bitLength() == ((int) precision_width));
 
     // TODO: Check normalization
     dynamic_bit_vector a_exp = slice(a,
