@@ -174,10 +174,19 @@ namespace bsim {
       *((int*) (&(bits[0]))) = val;
     }
 
-    //dynamic_bit_vector(const int N_, const bv_uint8 val) : N(N_) {
-    //  bits.resize(NUM_BYTES(N));
-    //  *((bv_uint8*)(&(bits[0]))) = val;
-    //}
+    std::string hex_string() {
+      std::string hex = std::to_string(N) + "'h";
+
+      int ind = 0;
+      for (int i = 0; i < bits.size(); i++) {
+        char bit_h = bits[i];
+        char bit_l = (bits[i] >> 4) & 0x0f;
+
+        hex += bit_l > 57 ? bit_l + 55 : bit_l + 48;
+        hex += bit_h > 57 ? bit_h + 55 : bit_h + 48;
+      }
+      return hex;
+    }
     
     dynamic_bit_vector(const dynamic_bit_vector& other) {
       bits.resize(other.bits.size());

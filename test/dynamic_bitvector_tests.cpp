@@ -139,6 +139,16 @@ namespace bsim {
     
   }
 
+  TEST_CASE("Serialization") {
+
+    SECTION("Print out as hex string") {
+      dynamic_bit_vector a("5'h08");
+
+      REQUIRE(a.hex_string() == "5'h08");
+    }
+
+  }
+
   TEST_CASE("Dynamic bitvector arithmetic") {
 
     SECTION("Setting bit vector values") {
