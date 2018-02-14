@@ -163,6 +163,14 @@ namespace bsim {
 
       REQUIRE(a.hex_string() == "37'h14a936d4c0");
     }
+
+    SECTION("Serialize and de-serialize") {
+      dynamic_bit_vector a("39'h1ca236f4c0");
+
+      dynamic_bit_vector b(a.hex_string());
+
+      REQUIRE(a == b);
+    }
     
   }
 
