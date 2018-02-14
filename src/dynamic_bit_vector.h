@@ -103,7 +103,7 @@ namespace bsim {
       ind++;
 
       std::string digits = "";
-      while (ind < str_raw.size()) {
+      while (ind < ((int) str_raw.size())) {
         digits += str_raw[ind];
         ind++;
       }
@@ -111,7 +111,7 @@ namespace bsim {
       int num_bits = stoi(bv_size);
       N = num_bits;
       bits.resize(NUM_BYTES(num_bits));
-      for (int i = 0; i < bits.size(); i++) {
+      for (int i = 0; i < ((int) bits.size()); i++) {
         bits[i] = 0;
       }
 
@@ -144,7 +144,7 @@ namespace bsim {
     dynamic_bit_vector(const int N_, const std::string& str_raw) : N(N_) {
       int num_digits = 0;
       std::string str;
-      for (int i = 0; i < str_raw.size(); i++) {
+      for (int i = 0; i < ((int) str_raw.size()); i++) {
 	if (isdigit(str_raw[i])) {
 	  num_digits++;
 	  str += str_raw[i];
