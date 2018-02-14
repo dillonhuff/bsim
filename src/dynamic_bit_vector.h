@@ -23,7 +23,7 @@ typedef uint64_t bv_uint64;
 
 namespace bsim {
 
-  std::string hex_digit_to_binary(const char hex_digit) {
+  static std::string hex_digit_to_binary(const char hex_digit) {
     switch (hex_digit) {
     case '0':
       return "0000";
