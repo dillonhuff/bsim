@@ -109,13 +109,34 @@ namespace bsim {
       REQUIRE(b.bitLength() == 23);
     }
 
-    SECTION("Initializing with explicit binary") {
+    SECTION("Initializing with explicit hex") {
       dynamic_bit_vector a("5'h3");
       dynamic_bit_vector b(5, "00011");
 
       REQUIRE(a == b);
     }
 
+    SECTION("Initializing with explicit hex, ab") {
+      dynamic_bit_vector a("8'hab");
+      dynamic_bit_vector b(8, "10101011");
+
+      REQUIRE(a == b);
+    }
+
+    SECTION("Initializing with explicit hex, cdef") {
+      dynamic_bit_vector a("16'hcdef");
+      dynamic_bit_vector b(16, "1100_1101_1110_1111");
+
+      REQUIRE(a == b);
+    }
+
+    SECTION("Initializing with explicit hex, off width") {
+      dynamic_bit_vector a("5'h18");
+      dynamic_bit_vector b(5, "1_1000");
+
+      REQUIRE(a == b);
+    }
+    
   }
 
   TEST_CASE("Dynamic bitvector arithmetic") {

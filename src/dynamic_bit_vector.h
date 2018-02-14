@@ -108,16 +108,19 @@ namespace bsim {
         ind++;
       }
 
-      int width = stoi(bv_size);
-      N = width;
-      bits.resize(N);
+      int num_bits = stoi(bv_size);
+      N = num_bits;
+      bits.resize(NUM_BYTES(num_bits));
+      for (int i = 0; i < bits.size(); i++) {
+        bits[i] = 0;
+      }
 
       // TODO: Check that digits are not too long
 
       assert(format == 'h');
 
       int bit_ind = 0;
-      for (int i = 0; i < digits.size(); i++) {
+      for (int i = digits.size() - 1; i >= 0; i--) {
         char hex_digit = digits[i];
         std::string hex_to_binary = hex_digit_to_binary(hex_digit);
 
@@ -125,8 +128,13 @@ namespace bsim {
 
         int k = 0;
         for (int j = hex_to_binary.size() - 1; j >= 0; j--) {
-          set(bit_ind + k, hex_to_binary[j]);
-          k++;
+          // Dont add past the end
+          if ((bit_ind + k) < bitLength()) {
+            set(bit_ind + k, hex_to_binary[j]);
+            k++;
+          } else {
+            assert(hex_to_binary[j] == '0');
+          }
         }
         bit_ind += 4;
       }
