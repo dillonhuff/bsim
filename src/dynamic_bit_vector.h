@@ -70,6 +70,9 @@ namespace bsim {
     int N;
 
   public:
+
+    dynamic_bit_vector() : N(0) {}
+
     dynamic_bit_vector(const int N_) : N(N_) {
       bits.resize(NUM_BYTES(N));
       for (uint i = 0; i < bits.size(); i++) {
