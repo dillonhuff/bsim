@@ -104,6 +104,19 @@ namespace bsim {
       return value;
     }
 
+    std::string binary_string() const {
+      if (value == 1) {
+        return "1";
+      } else if (value == 0) {
+        return "0";
+      } else if (value == QBV_UNKNOWN_VALUE) {
+        return "x";
+      } else if (value == QBV_HIGH_IMPEDANCE_VALUE) {
+        return "z";
+      }
+      assert(false);
+    }
+
     void print(std::ostream& out) const {
       if (value == 1) {
         out << "1";
@@ -284,21 +297,32 @@ namespace bsim {
 	if (isdigit(str_raw[i])) {
 	  num_digits++;
 	  str += str_raw[i];
-	} else {
+	} else if (str_raw[i] == 'z') {
+          str += str_raw[i];
+        } else if (str_raw[i] == 'x') {
+          str += str_raw[i];
+        } else {
 	  assert(str_raw[i] == '_');
 	}
       }
       assert(num_digits <= N);
 
       int len = str.size();      
-      //bits.resize(NUM_BYTES(N));
+
       bits.resize(N);
       for (int i = len - 1; i >= 0; i--) {
         unsigned char val = (str[i] == '0') ? 0 : 1;
+        if (str[i] == 'x') {
+          val = QBV_UNKNOWN_VALUE;
+        }
+        if (str[i] == 'z') {
+          val = QBV_HIGH_IMPEDANCE_VALUE;
+        }
+
         int ind = len - i - 1;
         set(ind, val);
       }
-      for (int i = N-1; i>=len; i--) {
+      for (int i = N - 1; i >= len; i--) {
         set(i,0);
       }
     }
@@ -308,14 +332,12 @@ namespace bsim {
       bits.resize(N);
 
       for (int i = 0; i < N; i++) {
-        //assert(i < N);
         if (i < sizeof(int)*8) {
           set(i, quad_value((val >> i) & 0x01));
         } else {
           set(i, quad_value(0));
         }
       }
-      //*((int*) (&(bits[0]))) = val;
     }
 
     std::string hex_string() {
@@ -335,22 +357,15 @@ namespace bsim {
         hex_digits += bit_l > 9 ? bit_l + 87 : bit_l + 48;
 
       }
-      // for (int i = bits.size() - 1; i >= 0; i--) {
-      //   char bit_h = bits[i] & 0x0f;
-      //   char bit_l = (bits[i] >> 4) & 0x0f;
 
-      //   hex += bit_l > 9 ? bit_l + 87 : bit_l + 48;
-      //   hex += bit_h > 9 ? bit_h + 87 : bit_h + 48;
-      // }
       std::reverse(std::begin(hex_digits), std::end(hex_digits));
       return hex + hex_digits;
-
     }
     
     quad_value_bit_vector(const quad_value_bit_vector& other) {
       bits.resize(other.bits.size());
       N = other.bitLength();
-      //for (int i = 0; i < NUM_BYTES(N); i++) {
+
       for (int i = 0; i < other.bitLength(); i++) {
 	bits[i] = other.bits[i];
       }
@@ -364,20 +379,29 @@ namespace bsim {
       bits.resize(other.bits.size());
 
       N = other.bitLength();
-      //for (int i = 0; i < NUM_BYTES(N); i++) {
+
       for (int i = 0; i < other.bitLength(); i++) {
         bits[i] = other.bits[i];
       }
 
-
       return *this;
     }
 
-    inline void set(const int ind, const int v) {
-      if ((v != 0) && (v != 1)) {
-        std::cout << "\tv = " << (int) v << std::endl;
+    std::string binary_string() const {
+      std::string str = "";
+      const int N = bitLength();
+      for (int i = N - 1; i >= 0; i--) {
+        str += get(i).binary_string();
       }
-      assert((v == 0) || (v == 1));
+
+      return str;
+    }
+    
+    inline void set(const int ind, const int v) {
+      // if ((v != 0) && (v != 1)) {
+      //   std::cout << "\tv = " << (int) v << std::endl;
+      // }
+      // assert((v == 0) || (v == 1));
 
       bits[ind] = quad_value(v);
     }
@@ -462,17 +486,7 @@ namespace bsim {
 
   static inline std::ostream& operator<<(std::ostream& out,
 					 const quad_value_bit_vector& a) {
-    const int N = a.bitLength();
-    for (int i = N - 1; i >= 0; i--) {
-      out << a.get(i);
-      // if (a.get(i) == quad_value(0)) {
-      //   out << "0";
-      // } else if (a.get(i) == quad_value(1)) {
-      //   out << "1";
-      // } else {
-      //   assert(false);
-      // }
-    }
+    out << a.binary_string();
 
     return out;
   }
@@ -494,15 +508,14 @@ namespace bsim {
     quad_value_bit_vector res(a.bitLength());
     unsigned char carry = 0;
     for (int i = 0; i < ((int) a.bitLength()); i++) {
-      //quad_value sum = a.get(i) + b.get(i) + carry;
+
       unsigned char sum = a.get(i).binary_value() + b.get(i).binary_value() + carry;
 
       carry = 0;
 
-      //unsigned char z_i = sum.get_char() & 0x01; //sum % 2;
-      unsigned char z_i = sum & 0x01; //sum % 2;
+      unsigned char z_i = sum & 0x01;
       res.set(i, quad_value(z_i));
-      //if (sum.get_char() >= 2) {
+
       if (sum >= 2) {
   	carry = 1;
       }

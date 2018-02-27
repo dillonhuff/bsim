@@ -147,6 +147,12 @@ namespace bsim {
       REQUIRE(a.hex_string() == "5'h08");
     }
 
+    SECTION("Print out as binary string, with z values") {
+      quad_value_bit_vector a(6, "11zxx0");
+
+      REQUIRE(a.binary_string() == "11zxx0");
+    }
+    
     SECTION("Print out as hex string longer") {
       quad_value_bit_vector a("32'ha936d4c0");
 
