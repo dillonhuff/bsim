@@ -55,6 +55,10 @@ namespace bsim {
       return "1110";
     case 'f':
       return "1111";
+    case 'x':
+      return "xxxx";
+    case 'z':
+      return "zzzz";
       
     default:
       assert(false);
@@ -82,6 +86,14 @@ namespace bsim {
       return (value == 1) || (value == 0);
     }
 
+    bool is_unknown() const {
+      return (value == QBV_UNKNOWN_VALUE);
+    }
+
+    bool is_high_impedance() const {
+      return (value == QBV_HIGH_IMPEDANCE_VALUE);
+    }
+    
     quad_value plus(const quad_value& other) const {
       assert(other.is_binary());
       assert(is_binary());
@@ -277,6 +289,10 @@ namespace bsim {
               set(bit_ind + k, quad_value(1));
             } else if (hex_to_binary[j] == '0') {
               set(bit_ind + k, quad_value(0));
+            } else if (hex_to_binary[j] == 'x') {
+              set(bit_ind + k, quad_value(QBV_UNKNOWN_VALUE));
+            } else if (hex_to_binary[j] == 'z') {
+              set(bit_ind + k, quad_value(QBV_HIGH_IMPEDANCE_VALUE));
             } else {
               assert(false);
             }
@@ -340,21 +356,41 @@ namespace bsim {
       }
     }
 
+    // Note: Need to check that all digits in each clump that
+    // contain 'x' or 'z' values are 'x' or 'z' values
     std::string hex_string() {
       std::string hex = std::to_string(N) + "'h";
 
       std::string hex_digits = "";
+
       for (int i = 0; i < bits.size(); i += 4) {
         unsigned char bit_l = 0;
+        bool found_abnormal = false;
+
         for (int j = 0; j < 4; j++) {
           int index = i + j;
           if (index >= bits.size()) {
           } else {
-            bit_l |= (bits[index].binary_value() & 0x01) << j;
+            if (bits[index].is_binary()) {
+              bit_l |= (bits[index].binary_value() & 0x01) << j;
+            } else if (bits[index].is_unknown()) {
+              bit_l = 'x';
+              found_abnormal = true;
+              break;
+            } else {
+              assert(bits[index].is_high_impedance());
+              bit_l = 'z';
+              found_abnormal = true;
+              break;
+            }
           }
         }
 
-        hex_digits += bit_l > 9 ? bit_l + 87 : bit_l + 48;
+        if (!found_abnormal) {
+          hex_digits += bit_l > 9 ? bit_l + 87 : bit_l + 48;
+        } else {
+          hex_digits += bit_l;
+        }
 
       }
 

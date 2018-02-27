@@ -159,6 +159,18 @@ namespace bsim {
       REQUIRE(a.hex_string() == "32'ha936d4c0");
     }
 
+    SECTION("Print out as hex string longer") {
+      quad_value_bit_vector a("32'ha9x6dzc0");
+
+      REQUIRE(a.hex_string() == "32'ha9x6dzc0");
+    }
+
+    SECTION("Build z values as binary, then print as hex") {
+      quad_value_bit_vector a(5, "1zzzz");
+
+      REQUIRE(a.hex_string() == "5'h1z");
+    }
+    
     SECTION("Print out as hex string longer and not power of 4 width") {
       quad_value_bit_vector a("37'h14a936d4c0");
 
