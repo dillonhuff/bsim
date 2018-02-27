@@ -1,33 +1,33 @@
 #include "catch.hpp"
 
-#include "dynamic_bit_vector.h"
+#include "quad_value_bit_vector.h"
 
 using namespace std;
 
 namespace bsim {
 
-  typedef dynamic_bit_vector dbv;
+  typedef quad_value_bit_vector dbv;
 
-  TEST_CASE("Dynamic vector comparison") {
+  TEST_CASE("Quad_Value vector comparison") {
 
     SECTION("3 bits") {
-      dynamic_bit_vector b(3);
+      quad_value_bit_vector b(3);
       b.set(0, 1);
 
       SECTION("Copy construct") {
-	dynamic_bit_vector b_cpy(b);
+	quad_value_bit_vector b_cpy(b);
 
 	REQUIRE(b == b_cpy);
       }
 
       SECTION("Copy assign") {
-	dynamic_bit_vector b_cpy = b;
+	quad_value_bit_vector b_cpy = b;
 
 	REQUIRE(b == b_cpy);
       }
 
       SECTION("bit by bit copy") {
-	dynamic_bit_vector b_cpy(b);
+	quad_value_bit_vector b_cpy(b);
 	for (int i = 0; i < 3; i++) {
 	  b_cpy.set(i, b.get(i));
 	}
@@ -37,18 +37,18 @@ namespace bsim {
     }
   }
 
-  TEST_CASE("Dynamic bitvector initialization") {
+  TEST_CASE("Quad_Value bitvector initialization") {
     SECTION("Default initialization is zero") {
       int i = 23;
 
-      dynamic_bit_vector a(i);
+      quad_value_bit_vector a(i);
 
       REQUIRE(a.to_type<int>() == 0);
     }
     SECTION("1 initialization is zero") {
       int i = 1;
 
-      dynamic_bit_vector a(16,5);
+      quad_value_bit_vector a(16,5);
       REQUIRE(a.to_type<uint64_t>() == 5);
     }
 
@@ -56,8 +56,8 @@ namespace bsim {
       int i = 23;
       int len = 30;
 
-      dynamic_bit_vector a(len, i);
-      dynamic_bit_vector b = a;
+      quad_value_bit_vector a(len, i);
+      quad_value_bit_vector b = a;
 
       REQUIRE(a.to_type<int>() == i);
       REQUIRE(b.to_type<int>() == i);
@@ -65,27 +65,27 @@ namespace bsim {
 
     SECTION("construct from uint8") {
       bv_uint8 i = 4;
-      dynamic_bit_vector a(3, i);
+      quad_value_bit_vector a(3, i);
 
       REQUIRE(a.to_type<bv_uint8>() == 4);
     }
     SECTION("construct from full binary string") {
       string s = "101";
-      dynamic_bit_vector a(3, s);
+      quad_value_bit_vector a(3, s);
 
       REQUIRE(a.to_type<bv_uint8>() == 5);
     }
     SECTION("construct from partial binary string") {
       string s = "101";
-      dynamic_bit_vector a(10, s);
+      quad_value_bit_vector a(10, s);
 
       REQUIRE(a.to_type<bv_uint8>() == 5);
     }
 
     SECTION("Copy constructor") {
       int i = 4;
-      dynamic_bit_vector a(20, i);
-      dynamic_bit_vector b(a);
+      quad_value_bit_vector a(20, i);
+      quad_value_bit_vector b(a);
 
       REQUIRE(b.bitLength() == 20);
       REQUIRE(b.to_type<int>() == 4);
@@ -93,8 +93,8 @@ namespace bsim {
 
     SECTION("Assign from another bit vector") {
       int i = 4;
-      dynamic_bit_vector a(20, i);
-      dynamic_bit_vector b = a;
+      quad_value_bit_vector a(20, i);
+      quad_value_bit_vector b = a;
 
       cout << "b = " << b << endl;
 
@@ -102,7 +102,7 @@ namespace bsim {
       REQUIRE(b.to_type<int>() == 4);
 
       int j = i + 12;
-      dynamic_bit_vector c(23, j);
+      quad_value_bit_vector c(23, j);
 
       b = c;
 
@@ -110,29 +110,29 @@ namespace bsim {
     }
 
     SECTION("Initializing with explicit hex") {
-      dynamic_bit_vector a("5'h3");
-      dynamic_bit_vector b(5, "00011");
+      quad_value_bit_vector a("5'h3");
+      quad_value_bit_vector b(5, "00011");
 
       REQUIRE(a == b);
     }
 
     SECTION("Initializing with explicit hex, ab") {
-      dynamic_bit_vector a("8'hab");
-      dynamic_bit_vector b(8, "10101011");
+      quad_value_bit_vector a("8'hab");
+      quad_value_bit_vector b(8, "10101011");
 
       REQUIRE(a == b);
     }
 
     SECTION("Initializing with explicit hex, cdef") {
-      dynamic_bit_vector a("16'hcdef");
-      dynamic_bit_vector b(16, "1100_1101_1110_1111");
+      quad_value_bit_vector a("16'hcdef");
+      quad_value_bit_vector b(16, "1100_1101_1110_1111");
 
       REQUIRE(a == b);
     }
 
     SECTION("Initializing with explicit hex, off width") {
-      dynamic_bit_vector a("5'h18");
-      dynamic_bit_vector b(5, "1_1000");
+      quad_value_bit_vector a("5'h18");
+      quad_value_bit_vector b(5, "1_1000");
 
       REQUIRE(a == b);
     }
@@ -142,19 +142,19 @@ namespace bsim {
   TEST_CASE("Serialization") {
 
     SECTION("Print out as hex string") {
-      dynamic_bit_vector a("5'h08");
+      quad_value_bit_vector a("5'h08");
 
       REQUIRE(a.hex_string() == "5'h08");
     }
 
     SECTION("Print out as hex string longer") {
-      dynamic_bit_vector a("32'ha936d4c0");
+      quad_value_bit_vector a("32'ha936d4c0");
 
       REQUIRE(a.hex_string() == "32'ha936d4c0");
     }
 
     SECTION("Print out as hex string longer and not power of 4 width") {
-      dynamic_bit_vector a("37'h14a936d4c0");
+      quad_value_bit_vector a("37'h14a936d4c0");
 
       SECTION("Bit length is 37") {
         cout << "NUM_BYTES = " << NUM_BYTES(a.bitLength()) << endl;
@@ -165,28 +165,28 @@ namespace bsim {
     }
 
     SECTION("Serialize and de-serialize") {
-      dynamic_bit_vector a("39'h1ca236f4c0");
+      quad_value_bit_vector a("39'h1ca236f4c0");
 
-      dynamic_bit_vector b(a.hex_string());
+      quad_value_bit_vector b(a.hex_string());
 
       REQUIRE(a == b);
     }
     
   }
 
-  TEST_CASE("Dynamic bitvector arithmetic") {
+  TEST_CASE("Quad_Value bitvector arithmetic") {
 
     SECTION("Setting bit vector values") {
 
       SECTION("Length 1 vector") {
-	dynamic_bit_vector a(1);
+	quad_value_bit_vector a(1);
 	a.set(0, 1);
 
 	REQUIRE(a.get(0) == 1);
       }
 
       SECTION("Length 37 vector") {
-	dynamic_bit_vector a(37);
+	quad_value_bit_vector a(37);
 	a.set(14, 0);
 	a.set(17, 1);
 	a.set(36, 1);
@@ -203,13 +203,13 @@ namespace bsim {
     SECTION("Subtracting unsigned numbers") {
 
       SECTION("3 bit numbers") {
-	dynamic_bit_vector a(3);
+	quad_value_bit_vector a(3);
 	a.set(2, 1);
 	
-	dynamic_bit_vector b(3);
+	quad_value_bit_vector b(3);
 	b.set(0, 1);
 
-	dynamic_bit_vector correct(3);
+	quad_value_bit_vector correct(3);
 	correct.set(0, 1);
 	correct.set(1, 1);
 
@@ -220,14 +220,14 @@ namespace bsim {
       }
 
       SECTION("8 bit case with overflow") {
-	dynamic_bit_vector a(8);
+	quad_value_bit_vector a(8);
 	a.set(7, 1);
 
-	dynamic_bit_vector b(8);
+	quad_value_bit_vector b(8);
 	b.set(7, 1);
 	b.set(0, 1);
 
-	dynamic_bit_vector c =
+	quad_value_bit_vector c =
 	  sub_general_width_bv(a, b);
 
 	bv_uint8 ac = 128;
@@ -241,7 +241,7 @@ namespace bsim {
     }
 
 //       SECTION("Testing plus operator") {
-// 	dynamic_bit_vector<230> a;
+// 	quad_value_bit_vector<230> a;
 // 	a.set(220, 1);
 // 	a.set(23, 1);
 // 	a.set(3, 1);
@@ -386,43 +386,43 @@ namespace bsim {
     SECTION("Unsigned multiplication") {
 
       SECTION("32 bit numbers") {
-	dynamic_bit_vector a(32);
+	quad_value_bit_vector a(32);
 	a.set(1, 1);
 	a.set(7, 1);
 	a.set(23, 1);
 
-	dynamic_bit_vector b(32);
+	quad_value_bit_vector b(32);
 	b.set(1, 1);
 	b.set(8, 1);
 	b.set(24, 1);
 
-	dynamic_bit_vector c =
+	quad_value_bit_vector c =
 	  mul_general_width_bv(a, b);
 
 	bv_uint32 an = a.as_native_uint32();
 	bv_uint32 bn = b.as_native_uint32();
 	bv_uint32 cn = an * bn;
 
-	REQUIRE(c == dynamic_bit_vector(32, cn));
+	REQUIRE(c == quad_value_bit_vector(32, cn));
       }
     }
 
     SECTION("Logical and bit vectors") {
 
       SECTION("3 bit numbers") {
-	dynamic_bit_vector a(3);
+	quad_value_bit_vector a(3);
 	a.set(0, 0);
 	a.set(1, 1);
 	a.set(2, 0);
 
-	dynamic_bit_vector b(3);
+	quad_value_bit_vector b(3);
 	b.set(0, 1);
 	b.set(1, 1);
 	b.set(2, 0);
 
-	dynamic_bit_vector c = a & b;
+	quad_value_bit_vector c = a & b;
 
-	dynamic_bit_vector expected(3);
+	quad_value_bit_vector expected(3);
 	expected.set(0, 0);
 	expected.set(1, 1);
 	expected.set(2, 0);
@@ -431,20 +431,20 @@ namespace bsim {
       }
 
       SECTION("13 bit numbers") {
-	dynamic_bit_vector a(13);
+	quad_value_bit_vector a(13);
 	a.set(0, 0);
 	a.set(1, 1);
 	a.set(2, 0);
 	a.set(12, 1);
 
-	dynamic_bit_vector b(13);
+	quad_value_bit_vector b(13);
 	b.set(0, 1);
 	b.set(1, 1);
 	b.set(2, 0);
 
-	dynamic_bit_vector c = a & b;
+	quad_value_bit_vector c = a & b;
 
-	dynamic_bit_vector expected(13);
+	quad_value_bit_vector expected(13);
 	expected.set(0, 0);
 	expected.set(1, 1);
 	expected.set(2, 0);
@@ -453,34 +453,34 @@ namespace bsim {
       }
 
       SECTION("32 bit numbers") {
-	dynamic_bit_vector a(32);
+	quad_value_bit_vector a(32);
 	a.set(23, 1);
 	a.set(4, 1);
 
-	dynamic_bit_vector b(32);
+	quad_value_bit_vector b(32);
 	b.set(4, 1);
 	b.set(9, 1);
 
-	dynamic_bit_vector c = a & b;
+	quad_value_bit_vector c = a & b;
 
-	dynamic_bit_vector correct(32);
+	quad_value_bit_vector correct(32);
 	correct.set(4, 1);
 
 	REQUIRE(c == correct);
       }
 
       SECTION("41 bit numbers") {
-	dynamic_bit_vector a(41);
+	quad_value_bit_vector a(41);
 	a.set(23, 1);
 	a.set(9, 1);
 
-	dynamic_bit_vector b(41);
+	quad_value_bit_vector b(41);
 	b.set(4, 1);
 	b.set(9, 1);
 
-	dynamic_bit_vector c = a & b;
+	quad_value_bit_vector c = a & b;
 
-	dynamic_bit_vector correct(41);
+	quad_value_bit_vector correct(41);
 	correct.set(9, 1);
 
 	REQUIRE(c == correct);
@@ -489,26 +489,26 @@ namespace bsim {
     }
 
     SECTION("Addition") {
-      dynamic_bit_vector a(33, 10);
-      dynamic_bit_vector b(33, 23);
+      quad_value_bit_vector a(33, 10);
+      quad_value_bit_vector b(33, 23);
 
-      REQUIRE(add_general_width_bv(a, b) == dynamic_bit_vector(33, 33));
+      REQUIRE(add_general_width_bv(a, b) == quad_value_bit_vector(33, 33));
       
     }
 
     SECTION("Logical or") {
 
       SECTION("3 bits") {
-    	dynamic_bit_vector a(3);
+    	quad_value_bit_vector a(3);
     	a.set(0, 1);
     	a.set(2, 1);
 
-    	dynamic_bit_vector b(3);
+    	quad_value_bit_vector b(3);
     	b.set(0, 1);
 
-    	dynamic_bit_vector c = a | b;
+    	quad_value_bit_vector c = a | b;
 
-    	dynamic_bit_vector correct(3);
+    	quad_value_bit_vector correct(3);
     	correct.set(0, 1);
     	correct.set(2, 1);
 
@@ -516,19 +516,19 @@ namespace bsim {
       }
 
       SECTION("1129 bits") {
-    	dynamic_bit_vector a(1129);
+    	quad_value_bit_vector a(1129);
     	a.set(1000, 1);
     	a.set(932, 1);
     	a.set(60, 1);
 
-    	dynamic_bit_vector b(1129);
+    	quad_value_bit_vector b(1129);
     	b.set(1001, 1);
     	b.set(932, 1);
     	b.set(287, 1);
 
-    	dynamic_bit_vector c = a | b;
+    	quad_value_bit_vector c = a | b;
 
-    	dynamic_bit_vector correct(1129);
+    	quad_value_bit_vector correct(1129);
     	correct.set(1001, 1);
     	correct.set(1000, 1);
     	correct.set(932, 1);
@@ -543,17 +543,17 @@ namespace bsim {
     SECTION("Logical XOR") {
 
       SECTION("83 bit vectors") {
-    	dynamic_bit_vector a(83);
+    	quad_value_bit_vector a(83);
     	a.set(82, 1);
     	a.set(60, 1);
     	a.set(13, 1);
 
-    	dynamic_bit_vector b(83);
+    	quad_value_bit_vector b(83);
     	b.set(60, 1);
 
-    	dynamic_bit_vector c = a ^ b;
+    	quad_value_bit_vector c = a ^ b;
 
-    	dynamic_bit_vector correct(83);
+    	quad_value_bit_vector correct(83);
     	correct.set(82, 1);
     	correct.set(13, 1);
 
@@ -565,13 +565,13 @@ namespace bsim {
     SECTION("Logical not") {
 
       SECTION("77 bits") {
-    	dynamic_bit_vector a(77);
+    	quad_value_bit_vector a(77);
     	a.set(49, 1);
     	a.set(12, 1);
 
-    	dynamic_bit_vector c = ~a;
+    	quad_value_bit_vector c = ~a;
 
-    	dynamic_bit_vector correct(77);
+    	quad_value_bit_vector correct(77);
     	for (int i = 0; i < 77; i++) {
     	  if ((i != 49) && (i != 12)) {
     	    correct.set(i, 1);
@@ -588,9 +588,9 @@ namespace bsim {
 
     SECTION("Equal and not equal") {
       SECTION("23 bit numbers") {
-	dynamic_bit_vector a(23, "01010010101010101111001");
-	dynamic_bit_vector b(23, "01010010101010101111001");
-	dynamic_bit_vector c(23, "11010010101110101111001");
+	quad_value_bit_vector a(23, "01010010101010101111001");
+	quad_value_bit_vector b(23, "01010010101010101111001");
+	quad_value_bit_vector c(23, "11010010101110101111001");
 
 	REQUIRE(a == b);
 	REQUIRE(a != c);
@@ -600,15 +600,15 @@ namespace bsim {
     SECTION("Greater than") {
 
       SECTION("7 bit numbers") {
-	dynamic_bit_vector a(7, "0101000");
-	dynamic_bit_vector b(7, "1101000");
+	quad_value_bit_vector a(7, "0101000");
+	quad_value_bit_vector b(7, "1101000");
 
 	REQUIRE(b > a);
       }
 
       SECTION("9 bit numbers") {
-	dynamic_bit_vector a(9, "100101010");
-	dynamic_bit_vector b(9, "100101000");
+	quad_value_bit_vector a(9, "100101010");
+	quad_value_bit_vector b(9, "100101000");
 
 	REQUIRE(!(b > a));
       }
@@ -618,8 +618,8 @@ namespace bsim {
     SECTION("Less than") {
 
       SECTION("18 bit numbers") {
-	dynamic_bit_vector a(17, "01001011110101010");
-	dynamic_bit_vector b(17, "10001001101010011");
+	quad_value_bit_vector a(17, "01001011110101010");
+	quad_value_bit_vector b(17, "10001001101010011");
 
 
 	REQUIRE(a < b);
@@ -781,7 +781,7 @@ namespace bsim {
 
       cout << "b_ext = " << b_ext << endl;
 
-      b_ext = shl(b_ext, dynamic_bit_vector(10, 3));
+      b_ext = shl(b_ext, quad_value_bit_vector(10, 3));
 
       cout << "b_ext = " << b_ext << endl;
 
