@@ -494,13 +494,16 @@ namespace bsim {
     quad_value_bit_vector res(a.bitLength());
     unsigned char carry = 0;
     for (int i = 0; i < ((int) a.bitLength()); i++) {
-      quad_value sum = a.get(i) + b.get(i) + carry;
+      //quad_value sum = a.get(i) + b.get(i) + carry;
+      unsigned char sum = a.get(i).binary_value() + b.get(i).binary_value() + carry;
 
       carry = 0;
 
-      unsigned char z_i = sum.get_char() & 0x01; //sum % 2;
+      //unsigned char z_i = sum.get_char() & 0x01; //sum % 2;
+      unsigned char z_i = sum & 0x01; //sum % 2;
       res.set(i, quad_value(z_i));
-      if (sum.get_char() >= 2) {
+      //if (sum.get_char() >= 2) {
+      if (sum >= 2) {
   	carry = 1;
       }
 

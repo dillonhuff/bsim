@@ -196,7 +196,6 @@ namespace bsim {
 	REQUIRE(a.get(36) == 1);
 	REQUIRE(a.get(2) == 0);
       }
-      
     }
 
     SECTION("Subtracting unsigned numbers") {
@@ -492,7 +491,6 @@ namespace bsim {
       quad_value_bit_vector b(33, 23);
 
       REQUIRE(add_general_width_bv(a, b) == quad_value_bit_vector(33, 33));
-      
     }
 
     SECTION("Logical or") {
