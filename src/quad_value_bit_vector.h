@@ -78,8 +78,15 @@ namespace bsim {
       return value;
     }
 
+    bool is_binary() const {
+      return (value == 1) || (value == 0);
+    }
+
     quad_value plus(const quad_value& other) const {
-      assert(false);
+      assert(other.is_binary());
+      assert(is_binary());
+
+      return quad_value((other.binary_value() + binary_value()) & 0x01);
     }
     
     bool equals(const quad_value& other) const {
