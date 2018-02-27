@@ -923,7 +923,7 @@ namespace bsim {
   dynamic_bit_vector
   extend(const dynamic_bit_vector& a, const int extra_bits) {
     dynamic_bit_vector res(a.bitLength() + extra_bits);
-    for (uint i = 0; i < a.bitLength(); i++) {
+    for (uint i = 0; i < ((int) a.bitLength()); i++) {
       res.set(i, a.get(i));
     }
 
