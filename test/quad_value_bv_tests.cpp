@@ -139,7 +139,7 @@ namespace bsim {
     
   }
 
-  TEST_CASE("Serialization") {
+  TEST_CASE("Quad value serialization") {
 
     SECTION("Print out as hex string") {
       quad_value_bit_vector a("5'h08");
@@ -584,7 +584,7 @@ namespace bsim {
     }
   }
 
-  TEST_CASE("Comparison") {
+  TEST_CASE("Quad value comparison") {
 
     SECTION("Equal and not equal") {
       SECTION("23 bit numbers") {
@@ -628,7 +628,7 @@ namespace bsim {
 		 
   }
 
-  TEST_CASE("Reduction operations") {
+  TEST_CASE("Quad value reduction operations") {
 
     SECTION("andr") {
 
@@ -678,7 +678,7 @@ namespace bsim {
 
   }
 
-  TEST_CASE("Signed comparison") {
+  TEST_CASE("Quad value signed comparison") {
 
     SECTION("Greater than") {
 
@@ -730,7 +730,7 @@ namespace bsim {
     
   }
 
-  TEST_CASE("casting") {
+  TEST_CASE("Quad value casting") {
     int j = 3;
     dbv a(65, j);
 
@@ -760,7 +760,7 @@ namespace bsim {
 
   }
 
-  TEST_CASE("Shifting") {
+  TEST_CASE("Quad value shifting") {
     dbv a(9, "001010110");
 
     // shift amount is 5
