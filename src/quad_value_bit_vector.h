@@ -124,31 +124,53 @@ namespace bsim {
 
   static inline quad_value operator&(const quad_value& a,
                                      const quad_value& b) {
-    assert(false);
+    assert(a.is_binary());
+    assert(b.is_binary());
+
+    return quad_value(a.binary_value() & b.binary_value());
   }
 
   static inline quad_value operator|(const quad_value& a,
                                      const quad_value& b) {
-    assert(false);
+
+    assert(a.is_binary());
+    assert(b.is_binary());
+
+    return quad_value(a.binary_value() | b.binary_value());
   }
 
   static inline quad_value operator^(const quad_value& a,
                                      const quad_value& b) {
-    assert(false);
+    assert(a.is_binary());
+    assert(b.is_binary());
+
+    return quad_value(a.binary_value() ^ b.binary_value());
+
   }
 
   static inline bool operator>(const quad_value& a,
                                const quad_value& b) {
-    assert(false);
+
+    assert(a.is_binary());
+    assert(b.is_binary());
+
+    return a.binary_value() > b.binary_value();
   }
 
   static inline bool operator<(const quad_value& a,
                                const quad_value& b) {
-    assert(false);
+
+    assert(a.is_binary());
+    assert(b.is_binary());
+
+    return a.binary_value() < b.binary_value();
   }
   
   static inline quad_value operator~(const quad_value& a) {
-    assert(false);
+
+    assert(a.is_binary());
+
+    return quad_value((~a.binary_value()) & 0x01);
   }
   
   static inline bool operator==(const quad_value& a,
