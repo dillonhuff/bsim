@@ -68,11 +68,69 @@ namespace bsim {
     unsigned char value;
 
   public:
+    quad_value() : value(0) {}
+
     quad_value(unsigned char v) : value(v) {
       assert(v < 4);
     }
+
+    unsigned char get_char() const {
+      return value;
+    }
+
+    quad_value plus(const quad_value& other) const {
+      assert(false);
+    }
+    
+    bool equals(const quad_value& other) const {
+      return false;
+    }
   };
 
+  static inline quad_value operator+(const quad_value& a,
+                                     const quad_value& b) {
+    return a.plus(b);
+  }
+
+  static inline quad_value operator&(const quad_value& a,
+                                     const quad_value& b) {
+    assert(false);
+  }
+
+  static inline quad_value operator|(const quad_value& a,
+                                     const quad_value& b) {
+    assert(false);
+  }
+
+  static inline quad_value operator^(const quad_value& a,
+                                     const quad_value& b) {
+    assert(false);
+  }
+
+  static inline bool operator>(const quad_value& a,
+                               const quad_value& b) {
+    assert(false);
+  }
+
+  static inline bool operator<(const quad_value& a,
+                               const quad_value& b) {
+    assert(false);
+  }
+  
+  static inline quad_value operator~(const quad_value& a) {
+    assert(false);
+  }
+  
+  static inline bool operator==(const quad_value& a,
+                                const quad_value& b) {
+    return a.equals(b);
+  }
+
+  static inline bool operator!=(const quad_value& a,
+                                const quad_value& b) {
+    return !(a == b);
+  }
+  
   class quad_value_bit_vector {
     std::vector<quad_value> bits;
     int N;
@@ -187,16 +245,17 @@ namespace bsim {
     }
 
     std::string hex_string() {
-      std::string hex = std::to_string(N) + "'h";
+      // std::string hex = std::to_string(N) + "'h";
 
-      for (int i = bits.size() - 1; i >= 0; i--) {
-        char bit_h = bits[i] & 0x0f;
-        char bit_l = (bits[i] >> 4) & 0x0f;
+      // for (int i = bits.size() - 1; i >= 0; i--) {
+      //   char bit_h = bits[i] & 0x0f;
+      //   char bit_l = (bits[i] >> 4) & 0x0f;
 
-        hex += bit_l > 9 ? bit_l + 87 : bit_l + 48;
-        hex += bit_h > 9 ? bit_h + 87 : bit_h + 48;
-      }
-      return hex;
+      //   hex += bit_l > 9 ? bit_l + 87 : bit_l + 48;
+      //   hex += bit_h > 9 ? bit_h + 87 : bit_h + 48;
+      // }
+      // return hex;
+      assert(false);
     }
     
     quad_value_bit_vector(const quad_value_bit_vector& other) {
@@ -243,11 +302,12 @@ namespace bsim {
     }
 
     quad_value get(const int ind) const {
-      int byte_num = ind / 8;
-      int bit_num = ind % 8;
+      return bits[ind];
+      // int byte_num = ind / 8;
+      // int bit_num = ind % 8;
 
-      unsigned char target_byte = bits[byte_num];
-      return 0x01 & (target_byte >> bit_num);
+      // unsigned char target_byte = bits[byte_num];
+      // return 0x01 & (target_byte >> bit_num);
     }
 
     inline bool equals(const quad_value_bit_vector& other) const {
@@ -320,7 +380,7 @@ namespace bsim {
     return a.equals(b);
   }
 
-  static inline unsigned char highBit(const quad_value_bit_vector& a) {
+  static inline quad_value highBit(const quad_value_bit_vector& a) {
     return a.get(a.bitLength() - 1);
   }
 
@@ -332,13 +392,13 @@ namespace bsim {
     quad_value_bit_vector res(a.bitLength());
     unsigned char carry = 0;
     for (int i = 0; i < ((int) a.bitLength()); i++) {
-      unsigned char sum = a.get(i) + b.get(i) + carry;
+      quad_value sum = a.get(i) + b.get(i) + carry;
 
       carry = 0;
 
-      unsigned char z_i = sum & 0x01; //sum % 2;
-      res.set(i, z_i);
-      if (sum >= 2) {
+      unsigned char z_i = sum.get_char() & 0x01; //sum % 2;
+      res.set(i, quad_value(z_i));
+      if (sum.get_char() >= 2) {
   	carry = 1;
       }
 
@@ -657,7 +717,7 @@ namespace bsim {
 
     bv_uint64 shift_int = get_shift_int(shift_amount);
 
-    unsigned char sign_bit = a.get(a.bitLength() - 1);
+    quad_value sign_bit = a.get(a.bitLength() - 1);
     for (uint i = a.bitLength() - 1; i >= shift_int; i--) {
       res.set(i - shift_int, a.get(i));
     }
