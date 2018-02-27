@@ -8,9 +8,6 @@
 
 // This is a comment
 
-#define GEN_NUM_BYTES(N) (((N) / 8) + 1 - (((N) % 8 == 0)))
-#define NUM_BYTES(N) GEN_NUM_BYTES(N)
-
 typedef int8_t  bv_sint8;
 typedef int32_t  bv_sint32;
 
@@ -18,6 +15,9 @@ typedef uint8_t  bv_uint8;
 typedef uint16_t bv_uint16;
 typedef uint32_t bv_uint32;
 typedef uint64_t bv_uint64;
+
+#define QBV_UNKNOWN_VALUE 2
+#define QBV_HIGH_IMPEDANCE_VALUE 3
 
 namespace bsim {
 
@@ -83,7 +83,30 @@ namespace bsim {
     }
     
     bool equals(const quad_value& other) const {
-      return false;
+      if ((value == QBV_UNKNOWN_VALUE) ||
+          (other.value == QBV_UNKNOWN_VALUE)) {
+        return false;
+      }
+
+      // All high impedance values are equal
+      return value == other.value;
+    }
+
+    unsigned char binary_value() const {
+      assert((value == 1) || (value == 0));
+      return value;
+    }
+
+    void print(std::ostream& out) const {
+      if (value == 1) {
+        out << "1";
+      } else if (value == 0) {
+        out << "0";
+      } else if (value == QBV_UNKNOWN_VALUE) {
+        out << "x";
+      } else if (value == QBV_HIGH_IMPEDANCE_VALUE) {
+        out << "z";
+      }
     }
   };
 
@@ -130,7 +153,13 @@ namespace bsim {
                                 const quad_value& b) {
     return !(a == b);
   }
-  
+
+  static inline std::ostream& operator<<(std::ostream& out,
+					 const quad_value& a) {
+    a.print(out);
+    return out;
+  }  
+
   class quad_value_bit_vector {
     std::vector<quad_value> bits;
     int N;
@@ -201,7 +230,14 @@ namespace bsim {
         for (int j = hex_to_binary.size() - 1; j >= 0; j--) {
           // Dont add past the end
           if ((bit_ind + k) < bitLength()) {
-            set(bit_ind + k, hex_to_binary[j]);
+            //std::cout << "setting digit = " << hex_to_binary[j] << std::endl;
+            if (hex_to_binary[j] == '1') {
+              set(bit_ind + k, quad_value(1));
+            } else if (hex_to_binary[j] == '0') {
+              set(bit_ind + k, quad_value(0));
+            } else {
+              assert(false);
+            }
             k++;
           } else {
             assert(hex_to_binary[j] == '0');
@@ -241,12 +277,35 @@ namespace bsim {
     quad_value_bit_vector(const int N_, const int val) : N(N_) {
       //bits.resize(NUM_BYTES(N));
       bits.resize(N);
-      *((int*) (&(bits[0]))) = val;
+
+      for (int i = 0; i < N; i++) {
+        //assert(i < N);
+        if (i < sizeof(int)*8) {
+          set(i, quad_value((val >> i) & 0x01));
+        } else {
+          set(i, quad_value(0));
+        }
+      }
+      //*((int*) (&(bits[0]))) = val;
     }
 
     std::string hex_string() {
-      // std::string hex = std::to_string(N) + "'h";
+      std::string hex = std::to_string(N) + "'h";
 
+      std::string hex_digits = "";
+      for (int i = 0; i < bits.size(); i += 4) {
+        unsigned char bit_l = 0;
+        for (int j = 0; j < 4; j++) {
+          int index = i + j;
+          if (index >= bits.size()) {
+          } else {
+            bit_l |= (bits[index].binary_value() & 0x01) << j;
+          }
+        }
+
+        hex_digits += bit_l > 9 ? bit_l + 87 : bit_l + 48;
+
+      }
       // for (int i = bits.size() - 1; i >= 0; i--) {
       //   char bit_h = bits[i] & 0x0f;
       //   char bit_l = (bits[i] >> 4) & 0x0f;
@@ -254,14 +313,16 @@ namespace bsim {
       //   hex += bit_l > 9 ? bit_l + 87 : bit_l + 48;
       //   hex += bit_h > 9 ? bit_h + 87 : bit_h + 48;
       // }
-      // return hex;
-      assert(false);
+      std::reverse(std::begin(hex_digits), std::end(hex_digits));
+      return hex + hex_digits;
+
     }
     
     quad_value_bit_vector(const quad_value_bit_vector& other) {
       bits.resize(other.bits.size());
       N = other.bitLength();
-      for (int i = 0; i < NUM_BYTES(N); i++) {
+      //for (int i = 0; i < NUM_BYTES(N); i++) {
+      for (int i = 0; i < other.bitLength(); i++) {
 	bits[i] = other.bits[i];
       }
     }
@@ -274,7 +335,8 @@ namespace bsim {
       bits.resize(other.bits.size());
 
       N = other.bitLength();
-      for (int i = 0; i < NUM_BYTES(N); i++) {
+      //for (int i = 0; i < NUM_BYTES(N); i++) {
+      for (int i = 0; i < other.bitLength(); i++) {
         bits[i] = other.bits[i];
       }
 
@@ -283,6 +345,9 @@ namespace bsim {
     }
 
     inline void set(const int ind, const int v) {
+      if ((v != 0) && (v != 1)) {
+        std::cout << "\tv = " << (int) v << std::endl;
+      }
       assert((v == 0) || (v == 1));
 
       bits[ind] = quad_value(v);
@@ -327,10 +392,17 @@ namespace bsim {
 
     template<typename ConvType>
     ConvType to_type() const {
-      ConvType tmp = *(const_cast<ConvType*>((const ConvType*) (&(bits[0]))));
-      //TODO FIXME I am a sketchy hack.
-      ConvType mask = sizeof(ConvType) > bits.size() ? (1<<N)-1 : -1; 
-      return tmp & mask;
+      ConvType tmp = 0;
+      ConvType exp = 1;
+      for (int i = 0; i < bitLength(); i++) {
+        tmp += exp*get(i).binary_value();
+        exp *= 2;
+      }
+      return tmp;
+      // ConvType tmp = *(const_cast<ConvType*>((const ConvType*) (&(bits[0]))));
+      // //TODO FIXME I am a sketchy hack.
+      // ConvType mask = sizeof(ConvType) > bits.size() ? (1<<N)-1 : -1; 
+      // return tmp & mask;
     }
 
     inline bv_uint64 as_native_int32() const {
@@ -363,13 +435,14 @@ namespace bsim {
 					 const quad_value_bit_vector& a) {
     const int N = a.bitLength();
     for (int i = N - 1; i >= 0; i--) {
-      if (a.get(i) == 0) {
-	out << "0";
-      } else if (a.get(i) == 1) {
-	out << "1";
-      } else {
-	assert(false);
-      }
+      out << a.get(i);
+      // if (a.get(i) == quad_value(0)) {
+      //   out << "0";
+      // } else if (a.get(i) == quad_value(1)) {
+      //   out << "1";
+      // } else {
+      //   assert(false);
+      // }
     }
 
     return out;

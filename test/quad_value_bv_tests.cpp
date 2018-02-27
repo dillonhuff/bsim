@@ -48,7 +48,7 @@ namespace bsim {
     SECTION("1 initialization is zero") {
       int i = 1;
 
-      quad_value_bit_vector a(16,5);
+      quad_value_bit_vector a(16, 5);
       REQUIRE(a.to_type<uint64_t>() == 5);
     }
 
@@ -157,7 +157,6 @@ namespace bsim {
       quad_value_bit_vector a("37'h14a936d4c0");
 
       SECTION("Bit length is 37") {
-        cout << "NUM_BYTES = " << NUM_BYTES(a.bitLength()) << endl;
         REQUIRE(a.bitLength() == 37);
       }
 
