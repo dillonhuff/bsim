@@ -873,32 +873,32 @@ namespace bsim {
     std::cout << '\n';
   }
 
-  dbv float_add(const dbv& a, const dbv& b) {
-    assert(a.bitLength() == 32);
-    assert(b.bitLength() == 32);
+  // dbv float_add(const dbv& a, const dbv& b) {
+  //   assert(a.bitLength() == 32);
+  //   assert(b.bitLength() == 32);
 
-    return floating_point_add(a, b, 23, 8);
-  }
+  //   return floating_point_add(a, b, 23, 8);
+  // }
 
-  bool float_gt(const dbv& a, const dbv& b) {
-    assert(a.bitLength() == 32);
-    assert(b.bitLength() == 32);
+  // bool float_gt(const dbv& a, const dbv& b) {
+  //   assert(a.bitLength() == 32);
+  //   assert(b.bitLength() == 32);
 
-    return floating_point_gt(a, b, 23, 8);
-  }
+  //   return floating_point_gt(a, b, 23, 8);
+  // }
   
-  dbv float_bv(const float f) {
-    return dbv(32, float_bit_string(f));
-  }
+  // dbv float_bv(const float f) {
+  //   return dbv(32, float_bit_string(f));
+  // }
 
-  float rand_float(const float max) {
-    return static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/max));
-  }
+  // float rand_float(const float max) {
+  //   return static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/max));
+  // }
 
-  float rand_float_signed(const float max) {
-    float sgn = ((rand() % 2) > 0.5) ? 1.0 : -1.0;
-    return static_cast <float>( (sgn*rand()) / (static_cast <float> (RAND_MAX/max)) );
-  }
+  // float rand_float_signed(const float max) {
+  //   float sgn = ((rand() % 2) > 0.5) ? 1.0 : -1.0;
+  //   return static_cast <float>( (sgn*rand()) / (static_cast <float> (RAND_MAX/max)) );
+  // }
   
   // TEST_CASE("Floating point add / subtract") {
 
