@@ -832,6 +832,14 @@ namespace bsim {
       REQUIRE(res == dbv(12, "000001000010"));
     }
 
+    SECTION("Arithmetic shift right by more than the base bit vector width") {
+      dbv a(10, "1100000000");
+      dbv shift(6, "100000");
+      dbv res = ashr(a, shift);
+
+      REQUIRE(res == dbv(10, "1111111111"));
+    }
+    
     SECTION("Logical shift right with one") {
       dbv a(12, "100000100000");
       dbv shift(5, "00011");
