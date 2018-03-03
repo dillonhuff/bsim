@@ -214,6 +214,13 @@ namespace bsim {
 	REQUIRE(a.get(36) == 1);
 	REQUIRE(a.get(2) == 0);
       }
+
+      SECTION("Bit vector with unknowns") {
+        dbv a(5, "10x11");
+        dbv b(5, "10111");
+
+        REQUIRE( a != b);
+      }
     }
 
     SECTION("Subtracting unsigned numbers") {
@@ -233,6 +240,15 @@ namespace bsim {
 	  sub_general_width_bv(a, b);
 
 	REQUIRE(c == correct);
+      }
+
+      SECTION("Subtracting with unknowns") {
+        dbv a(4, "1xx1");
+        dbv b(4, "1100");
+
+        auto c = sub_general_width_bv(a, b);
+
+        REQUIRE(same_representation(c, dbv(4, "xxxx")));
       }
 
       SECTION("8 bit case with overflow") {
@@ -377,26 +393,6 @@ namespace bsim {
 //       }
 //     }
 
-//     SECTION("Unsigned division") {
-
-//       SECTION("9 bit numbers") {
-// 	unsigned_int<9> a("000000001");
-// 	unsigned_int<9> b("100101001");
-
-// 	REQUIRE(b / a == b);
-//       }
-
-//       SECTION("22 bit numbers") {
-// 	unsigned_int<22> a((bv_uint32) 2345);
-// 	unsigned_int<22> b((bv_uint32) 5);
-
-// 	unsigned_int<22> expected((bv_uint32) 2345 / 5);
-
-// 	cout << "Expected = " << expected << endl;
-// 	cout << "Actual   = " << (b / a) << endl;
-
-// 	REQUIRE(b / a == expected);
-//       }
 //     }
 
     SECTION("Unsigned multiplication") {
@@ -420,6 +416,13 @@ namespace bsim {
 	bv_uint32 cn = an * bn;
 
 	REQUIRE(c == quad_value_bit_vector(32, cn));
+      }
+
+      SECTION("Unknown values") {
+        dbv a("32'hxx0fx1b3");
+        dbv b("32'h11934891");
+
+        REQUIRE(same_representation(mul_general_width_bv(a, b), dbv("32'hxxxxxxxx")));
       }
     }
 
