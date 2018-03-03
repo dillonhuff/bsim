@@ -149,11 +149,29 @@ namespace bsim {
 
   static inline quad_value operator+(const quad_value& a,
                                      const quad_value& b) {
+    assert(!a.is_high_impedance());
+    assert(!b.is_high_impedance());
+
     return a.plus(b);
   }
 
   static inline quad_value operator&(const quad_value& a,
                                      const quad_value& b) {
+    assert(!a.is_high_impedance());
+    assert(!b.is_high_impedance());
+
+    if (a.is_binary() && (a.binary_value() == 0)) {
+      return quad_value(0);
+    }
+
+    if (b.is_binary() && (b.binary_value() == 0)) {
+      return quad_value(0);
+    }
+
+    if (a.is_unknown() || b.is_unknown()) {
+      return quad_value(QBV_UNKNOWN_VALUE);
+    }
+
     assert(a.is_binary());
     assert(b.is_binary());
 
@@ -163,14 +181,30 @@ namespace bsim {
   static inline quad_value operator|(const quad_value& a,
                                      const quad_value& b) {
 
+    assert(!a.is_high_impedance());
+    assert(!b.is_high_impedance());
+
+    if (a.is_binary() && (a.binary_value() == 1)) {
+      return quad_value(1);
+    }
+    if (b.is_binary() && (b.binary_value() == 1)) {
+      return quad_value(1);
+    }
+
+    if (a.is_unknown() || b.is_unknown()) {
+      return quad_value(QBV_UNKNOWN_VALUE);
+    }
+
     assert(a.is_binary());
     assert(b.is_binary());
-
     return quad_value(a.binary_value() | b.binary_value());
   }
 
   static inline quad_value operator^(const quad_value& a,
                                      const quad_value& b) {
+    assert(!a.is_high_impedance());
+    assert(!b.is_high_impedance());
+
     assert(a.is_binary());
     assert(b.is_binary());
 
@@ -181,6 +215,9 @@ namespace bsim {
   static inline bool operator>(const quad_value& a,
                                const quad_value& b) {
 
+    assert(!a.is_high_impedance());
+    assert(!b.is_high_impedance());
+
     assert(a.is_binary());
     assert(b.is_binary());
 
@@ -189,6 +226,8 @@ namespace bsim {
 
   static inline bool operator<(const quad_value& a,
                                const quad_value& b) {
+    assert(!a.is_high_impedance());
+    assert(!b.is_high_impedance());
 
     assert(a.is_binary());
     assert(b.is_binary());
@@ -198,6 +237,8 @@ namespace bsim {
   
   static inline quad_value operator~(const quad_value& a) {
 
+    assert(!a.is_high_impedance());
+    
     assert(a.is_binary());
 
     return quad_value((~a.binary_value()) & 0x01);
@@ -205,11 +246,17 @@ namespace bsim {
   
   static inline bool operator==(const quad_value& a,
                                 const quad_value& b) {
+    assert(!a.is_high_impedance());
+    assert(!b.is_high_impedance());
+
     return a.equals(b);
   }
 
   static inline bool operator!=(const quad_value& a,
                                 const quad_value& b) {
+    assert(!a.is_high_impedance());
+    assert(!b.is_high_impedance());
+
     return !(a == b);
   }
 

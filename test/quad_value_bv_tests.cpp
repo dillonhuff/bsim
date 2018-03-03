@@ -428,6 +428,13 @@ namespace bsim {
 
     SECTION("Logical and bit vectors") {
 
+      SECTION("x values") {
+        dbv a(4, "x10x");
+        dbv b(4, "10x0");
+
+        REQUIRE(same_representation(a & b, dbv(4, "x000")));
+      }
+
       SECTION("3 bit numbers") {
 	quad_value_bit_vector a(3);
 	a.set(0, 0);
@@ -514,7 +521,14 @@ namespace bsim {
       REQUIRE(add_general_width_bv(a, b) == quad_value_bit_vector(33, 33));
     }
 
-    SECTION("Logical or") {
+    SECTION("Bitwise or") {
+
+      SECTION("Unknown values") {
+        dbv a(6, "0x0xx1");
+        dbv b(6, "x1xx0x");
+
+        REQUIRE(same_representation(a | b, dbv(6, "x1xxx1")));
+      }
 
       SECTION("3 bits") {
     	quad_value_bit_vector a(3);
