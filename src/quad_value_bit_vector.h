@@ -483,6 +483,15 @@ namespace bsim {
       return *this;
     }
 
+    bool is_binary() const {
+      for (int i = 0; i < ((int) bitLength()); i++) {
+        if (!get(i).is_binary()) {
+          return false;
+        }
+      }
+      return true;
+    }
+    
     std::string binary_string() const {
       std::string str = "";
       const int N = bitLength();
@@ -613,6 +622,11 @@ namespace bsim {
 
   static inline bool operator==(const quad_value_bit_vector& a,
 				const quad_value_bit_vector& b) {
+
+    // if (!a.is_binary() || !b.is_binary()) {
+    //   return false;
+    // }
+
     return a.equals(b);
   }
 
@@ -787,11 +801,19 @@ namespace bsim {
 
   static inline bool operator!=(const quad_value_bit_vector& a,
   				const quad_value_bit_vector& b) {
+    // if (!a.is_binary() || !b.is_binary()) {
+    //   return false;
+    // }
+
     return !a.equals(b);
   }
 
   static inline bool operator>(const quad_value_bit_vector& a,
   			       const quad_value_bit_vector& b) {
+    if (!a.is_binary() || !b.is_binary()) {
+      return false;
+    }
+
     int N = a.bitLength();
     for (int i = N - 1; i >= 0; i--) {
       if (a.get(i) > b.get(i)) {
@@ -808,11 +830,19 @@ namespace bsim {
 
   static inline bool operator>=(const quad_value_bit_vector& a,
 				const quad_value_bit_vector& b) {
+    if (!a.is_binary() || !b.is_binary()) {
+      return false;
+    }
+
     return (a > b) || (a == b);
   }
   
   static inline bool operator<(const quad_value_bit_vector& a,
   			       const quad_value_bit_vector& b) {
+    if (!a.is_binary() || !b.is_binary()) {
+      return false;
+    }
+
     if (a == b) { return false; }
 
     return !(a > b);
