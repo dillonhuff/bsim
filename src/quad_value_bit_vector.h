@@ -982,6 +982,10 @@ namespace bsim {
   ashr(const quad_value_bit_vector& a,
        const quad_value_bit_vector& shift_amount) {
 
+    if (!a.is_binary() || !shift_amount.is_binary()) {
+      return unknown_bv(a.bitLength());
+    }
+    
     if (shift_amount == quad_value_bit_vector(shift_amount.bitLength(), 0)) {
       return a;
     }
@@ -1007,6 +1011,11 @@ namespace bsim {
   quad_value_bit_vector
   shl(const quad_value_bit_vector& a,
       const quad_value_bit_vector& shift_amount) {
+
+    if (!a.is_binary() || !shift_amount.is_binary()) {
+      return unknown_bv(a.bitLength());
+    }
+
     quad_value_bit_vector res(a.bitLength());
 
     bv_uint64 shift_int = get_shift_int(shift_amount);    
