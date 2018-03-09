@@ -572,7 +572,7 @@ namespace bsim {
       
     }
 
-    SECTION("Logical XOR") {
+    SECTION("Bitwise XOR") {
 
       SECTION("83 bit vectors") {
     	quad_value_bit_vector a(83);
@@ -592,9 +592,21 @@ namespace bsim {
     	REQUIRE(c == correct);
 	
       }
+
+      SECTION("Unknowns") {
+        dbv a(3, "1x0");
+        dbv b(3, "xxx");
+
+        REQUIRE(same_representation(a ^ b, dbv(3, "xxx")));
+      }
     }
 
-    SECTION("Logical not") {
+    SECTION("Bitwise not") {
+
+      SECTION("Unknowns") {
+        dbv a(1, "x");
+        REQUIRE(same_representation(~a, a));
+      }
 
       SECTION("77 bits") {
     	quad_value_bit_vector a(77);

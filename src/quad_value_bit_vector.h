@@ -205,6 +205,10 @@ namespace bsim {
     assert(!a.is_high_impedance());
     assert(!b.is_high_impedance());
 
+    if(a.is_unknown() || b.is_unknown()) {
+      return quad_value(QBV_UNKNOWN_VALUE);
+    }
+
     assert(a.is_binary());
     assert(b.is_binary());
 
@@ -238,6 +242,10 @@ namespace bsim {
   static inline quad_value operator~(const quad_value& a) {
 
     assert(!a.is_high_impedance());
+
+    if(a.is_unknown()) {
+      return quad_value(QBV_UNKNOWN_VALUE);
+    }
     
     assert(a.is_binary());
 
@@ -572,7 +580,7 @@ namespace bsim {
     
   };
 
-  bool same_representation(const quad_value_bit_vector& a,
+  static inline bool same_representation(const quad_value_bit_vector& a,
                            const quad_value_bit_vector& b) {
     if (a.bitLength() != b.bitLength()) {
       return false;
@@ -588,7 +596,7 @@ namespace bsim {
     return true;
   }
 
-  quad_value_bit_vector unknown_bv(const int len) {
+  static inline quad_value_bit_vector unknown_bv(const int len) {
     std::string str = "";
     for (int i = 0; i < len; i++) {
       str += "x";
