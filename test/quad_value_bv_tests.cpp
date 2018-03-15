@@ -894,4 +894,11 @@ namespace bsim {
     
   }
 
+  TEST_CASE("Testing subtraction") {
+    dbv a(32, 347);
+    dbv b(32, -347);
+
+    REQUIRE(negate_general_width_bv(a) == b);
+  }
+
 }

@@ -780,6 +780,13 @@ namespace bsim {
     
   };
 
+  static inline
+  quad_value_bit_vector
+  negate_general_width_bv(const quad_value_bit_vector& a) {
+    quad_value_bit_vector zero(a.bitLength(), 0);
+    return sub_general_width_bv(zero, a);
+  }
+
   static inline quad_value_bit_vector operator~(const quad_value_bit_vector& a) {
     return quad_value_bit_vector_operations::lnot(a);
   }
