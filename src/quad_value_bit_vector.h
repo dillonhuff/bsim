@@ -1082,4 +1082,15 @@ namespace bsim {
     return res;
   }
 
+  static inline
+  quad_value_bit_vector
+  zero_extend(const int outWidth, const quad_value_bit_vector& in) {
+    quad_value_bit_vector res(outWidth, 0);
+    for (uint i = 0; i < in.bitLength(); i++) {
+      res.set(i, in.get(i));
+    }
+
+    return res;
+  }
+  
 }

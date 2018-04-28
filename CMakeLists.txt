@@ -15,3 +15,4 @@ SET(TEST_FILES ./test/bitvector_tests.cpp
                ./test/quad_value_bv_tests.cpp)
 
 add_executable(all-tests ${TEST_FILES})
+add_executable(quad-value-tests ./test/quad_value_bv_tests.cpp ./test/test_qv_main.cpp)
