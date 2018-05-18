@@ -289,9 +289,9 @@ namespace bsim {
 	bits[i] = quad_value(0);
       }
       
-      for (int i = 0; i < N; i++) {
-	set(i, 0);
-      }
+      // for (int i = 0; i < N; i++) {
+      //   set(i, 0);
+      // }
     }
 
     quad_value_bit_vector(const std::string& str_raw) : N(0) {
