@@ -732,69 +732,74 @@ namespace bsim {
 
     return res;
   }    
-  
-  // class static_quad_value_bit_vector<N>_operations {
-  // public:
 
-  //   static inline
-  //   static_quad_value_bit_vector<N>
-  //   land(const static_quad_value_bit_vector<N>& a,
-  // 	 const static_quad_value_bit_vector<N>& b) {
-  //     static_quad_value_bit_vector<N> a_and_b(a.bitLength());
-  //     for (int i = 0; i < a.bitLength(); i++) {
-  // 	a_and_b.set(i, a.get(i) & b.get(i));
-  //     }
-  //     return a_and_b;
+  template<int N>
+  class static_quad_value_bit_vector_operations {
+  public:
 
-  //   }
+    static inline
+    static_quad_value_bit_vector<N>
+    land(const static_quad_value_bit_vector<N>& a,
+  	 const static_quad_value_bit_vector<N>& b) {
+      static_quad_value_bit_vector<N> a_and_b;
+      for (int i = 0; i < a.bitLength(); i++) {
+  	a_and_b.set(i, a.get(i) & b.get(i));
+      }
+      return a_and_b;
 
-  //   static inline static_quad_value_bit_vector<N> lnot(const static_quad_value_bit_vector<N>& a) {
-  //     static_quad_value_bit_vector<N> not_a(a.bitLength());
-  //     for (int i = 0; i < a.bitLength(); i++) {
-  // 	not_a.set(i, ~a.get(i));
-  //     }
-  //     return not_a;
+    }
 
-  //   }
+    static inline static_quad_value_bit_vector<N> lnot(const static_quad_value_bit_vector<N>& a) {
+      static_quad_value_bit_vector<N> not_a(a.bitLength());
+      for (int i = 0; i < a.bitLength(); i++) {
+  	not_a.set(i, ~a.get(i));
+      }
+      return not_a;
+
+    }
       
-  //   static inline static_quad_value_bit_vector<N> lor(const static_quad_value_bit_vector<N>& a,
-  //       				 const static_quad_value_bit_vector<N>& b) {
-  //     static_quad_value_bit_vector<N> a_or_b(a.bitLength());
-  //     for (int i = 0; i < a.bitLength(); i++) {
-  // 	a_or_b.set(i, a.get(i) | b.get(i));
-  //     }
-  //     return a_or_b;
-  //   }
+    static inline static_quad_value_bit_vector<N> lor(const static_quad_value_bit_vector<N>& a,
+        				 const static_quad_value_bit_vector<N>& b) {
+      static_quad_value_bit_vector<N> a_or_b(a.bitLength());
+      for (int i = 0; i < a.bitLength(); i++) {
+  	a_or_b.set(i, a.get(i) | b.get(i));
+      }
+      return a_or_b;
+    }
 
-  //   static inline
-  //   static_quad_value_bit_vector<N>
-  //   lxor(const static_quad_value_bit_vector<N>& a,
-  // 	 const static_quad_value_bit_vector<N>& b) {
-  //     static_quad_value_bit_vector<N> a_or_b(a.bitLength());
-  //     for (int i = 0; i < a.bitLength(); i++) {
-  // 	a_or_b.set(i, a.get(i) ^ b.get(i));
-  //     }
-  //     return a_or_b;
+    static inline
+    static_quad_value_bit_vector<N>
+    lxor(const static_quad_value_bit_vector<N>& a,
+  	 const static_quad_value_bit_vector<N>& b) {
+      static_quad_value_bit_vector<N> a_or_b(a.bitLength());
+      for (int i = 0; i < a.bitLength(); i++) {
+  	a_or_b.set(i, a.get(i) ^ b.get(i));
+      }
+      return a_or_b;
 
-  //   }
+    }
     
-  // };
+  };
 
-  // static inline
-  // static_quad_value_bit_vector<N>
-  // negate_general_width_bv(const static_quad_value_bit_vector<N>& a) {
-  //   static_quad_value_bit_vector<N> zero(a.bitLength(), 0);
-  //   return sub_general_width_bv(zero, a);
-  // }
+  template<int N>
+  static inline
+  static_quad_value_bit_vector<N>
+  negate_general_width_bv(const static_quad_value_bit_vector<N>& a) {
+    static_quad_value_bit_vector<N> zero(0);
+    return sub_general_width_bv(zero, a);
+  }
 
   // static inline static_quad_value_bit_vector<N> operator~(const static_quad_value_bit_vector<N>& a) {
   //   return static_quad_value_bit_vector<N>_operations::lnot(a);
   // }
-  
-  // static inline static_quad_value_bit_vector<N> operator&(const static_quad_value_bit_vector<N>& a,
-  //       				     const static_quad_value_bit_vector<N>& b) {
-  //   return static_quad_value_bit_vector<N>_operations::land(a, b);
-  // }
+
+  template<int N>
+  static inline
+  static_quad_value_bit_vector<N>
+  operator&(const static_quad_value_bit_vector<N>& a,
+            const static_quad_value_bit_vector<N>& b) {
+    return static_quad_value_bit_vector_operations<N>::land(a, b);
+  }
 
   // static inline static_quad_value_bit_vector<N> operator|(const static_quad_value_bit_vector<N>& a,
   //       				     const static_quad_value_bit_vector<N>& b) {

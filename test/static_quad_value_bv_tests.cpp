@@ -6,8 +6,6 @@ using namespace std;
 
 namespace bsim {
 
-//   typedef quad_value_bit_vector dbv;
-
   TEST_CASE("static_quad_value vector comparison") {
 
     SECTION("3 bits") {
@@ -423,7 +421,7 @@ namespace bsim {
       // }
     }
 
-//     SECTION("Logical and bit vectors") {
+     SECTION("Logical and bit vectors") {
 
 //       SECTION("x values") {
 //         dbv a(4, "x10x");
@@ -492,24 +490,24 @@ namespace bsim {
 // 	REQUIRE(c == correct);
 //       }
 
-//       SECTION("41 bit numbers") {
-// 	static_quad_value_bit_vector a(41);
-// 	a.set(23, 1);
-// 	a.set(9, 1);
+      SECTION("41 bit numbers") {
+	static_quad_value_bit_vector<41> a;
+	a.set(23, 1);
+	a.set(9, 1);
 
-// 	static_quad_value_bit_vector b(41);
-// 	b.set(4, 1);
-// 	b.set(9, 1);
+	static_quad_value_bit_vector<41> b;
+	b.set(4, 1);
+	b.set(9, 1);
 
-// 	static_quad_value_bit_vector c = a & b;
+	static_quad_value_bit_vector<41> c = a & b;
 
-// 	static_quad_value_bit_vector correct(41);
-// 	correct.set(9, 1);
+	static_quad_value_bit_vector<41> correct;
+	correct.set(9, 1);
 
-// 	REQUIRE(c == correct);
-//       }
+	REQUIRE(c == correct);
+      }
 
-//     }
+     }
 
 //     SECTION("Addition") {
 //       static_quad_value_bit_vector a(33, 10);
