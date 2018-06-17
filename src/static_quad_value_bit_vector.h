@@ -286,115 +286,115 @@ namespace bsim {
       }
     }
 
-    // static_quad_value_bit_vector(const std::string& str_raw) {
-    //   std::string bv_size = "";
-    //   int ind = 0;
-    //   while (str_raw[ind] != '\'') {
-    //     assert(isdigit(str_raw[ind]));
-    //     bv_size += str_raw[ind];
-    //     ind++;
-    //   }
-
-    //   assert (str_raw[ind] == '\'');
-
-    //   ind++;
-
-    //   char format = str_raw[ind];
-
-    //   assert((format == 'b') ||
-    //          (format == 'h') ||
-    //          (format == 'd'));
-
-    //   ind++;
-
-    //   std::string digits = "";
-    //   while (ind < ((int) str_raw.size())) {
-    //     digits += str_raw[ind];
-    //     ind++;
-    //   }
-
-    //   int num_bits = stoi(bv_size);
-    //   assert(num_bits == N);
-
-    //   //bits.resize(NUM_BYTES(num_bits));
-    //   bits.resize(num_bits);
-    //   for (int i = 0; i < ((int) bits.size()); i++) {
-    //     bits[i] = 0;
-    //   }
-
-    //   // TODO: Check that digits are not too long
-
-    //   assert(format == 'h');
-
-    //   int bit_ind = 0;
-    //   for (int i = digits.size() - 1; i >= 0; i--) {
-    //     char hex_digit = digits[i];
-    //     std::string hex_to_binary = hex_digit_to_binary(hex_digit);
-
-    //     assert(hex_to_binary.size() == 4);
-
-    //     int k = 0;
-    //     for (int j = hex_to_binary.size() - 1; j >= 0; j--) {
-    //       // Dont add past the end
-    //       if ((bit_ind + k) < bitLength()) {
-    //         //std::cout << "setting digit = " << hex_to_binary[j] << std::endl;
-    //         if (hex_to_binary[j] == '1') {
-    //           set(bit_ind + k, quad_value(1));
-    //         } else if (hex_to_binary[j] == '0') {
-    //           set(bit_ind + k, quad_value(0));
-    //         } else if (hex_to_binary[j] == 'x') {
-    //           set(bit_ind + k, quad_value(QBV_UNKNOWN_VALUE));
-    //         } else if (hex_to_binary[j] == 'z') {
-    //           set(bit_ind + k, quad_value(QBV_HIGH_IMPEDANCE_VALUE));
-    //         } else {
-    //           assert(false);
-    //         }
-    //         k++;
-    //       } else {
-    //         //assert(hex_to_binary[j] == '0');
-    //       }
-    //     }
-    //     bit_ind += 4;
-    //   }
-
-    // }
-
     static_quad_value_bit_vector(const std::string& str_raw) {
-      int num_digits = 0;
-      std::string str;
-      for (int i = 0; i < ((int) str_raw.size()); i++) {
-        if (isdigit(str_raw[i])) {
-          num_digits++;
-          str += str_raw[i];
-        } else if (str_raw[i] == 'z') {
-          str += str_raw[i];
-        } else if (str_raw[i] == 'x') {
-          str += str_raw[i];
-        } else {
-          assert(str_raw[i] == '_');
-        }
+      std::string bv_size = "";
+      int ind = 0;
+      while (str_raw[ind] != '\'') {
+        assert(isdigit(str_raw[ind]));
+        bv_size += str_raw[ind];
+        ind++;
       }
-      assert(num_digits <= N);
 
-      int len = str.size();      
+      assert (str_raw[ind] == '\'');
 
-      //bits.resize(N);
-      for (int i = len - 1; i >= 0; i--) {
-        unsigned char val = (str[i] == '0') ? 0 : 1;
-        if (str[i] == 'x') {
-          val = QBV_UNKNOWN_VALUE;
-        }
-        if (str[i] == 'z') {
-          val = QBV_HIGH_IMPEDANCE_VALUE;
-        }
+      ind++;
 
-        int ind = len - i - 1;
-        set(ind, val);
+      char format = str_raw[ind];
+
+      assert((format == 'b') ||
+             (format == 'h') ||
+             (format == 'd'));
+
+      ind++;
+
+      std::string digits = "";
+      while (ind < ((int) str_raw.size())) {
+        digits += str_raw[ind];
+        ind++;
       }
-      for (int i = N - 1; i >= len; i--) {
-        set(i,0);
+
+      int num_bits = stoi(bv_size);
+      assert(num_bits == N);
+
+      //bits.resize(NUM_BYTES(num_bits));
+      //bits.resize(num_bits);
+      for (int i = 0; i < ((int) bits.size()); i++) {
+        bits[i] = 0;
       }
+
+      // TODO: Check that digits are not too long
+
+      assert(format == 'h');
+
+      int bit_ind = 0;
+      for (int i = digits.size() - 1; i >= 0; i--) {
+        char hex_digit = digits[i];
+        std::string hex_to_binary = hex_digit_to_binary(hex_digit);
+
+        assert(hex_to_binary.size() == 4);
+
+        int k = 0;
+        for (int j = hex_to_binary.size() - 1; j >= 0; j--) {
+          // Dont add past the end
+          if ((bit_ind + k) < bitLength()) {
+            //std::cout << "setting digit = " << hex_to_binary[j] << std::endl;
+            if (hex_to_binary[j] == '1') {
+              set(bit_ind + k, quad_value(1));
+            } else if (hex_to_binary[j] == '0') {
+              set(bit_ind + k, quad_value(0));
+            } else if (hex_to_binary[j] == 'x') {
+              set(bit_ind + k, quad_value(QBV_UNKNOWN_VALUE));
+            } else if (hex_to_binary[j] == 'z') {
+              set(bit_ind + k, quad_value(QBV_HIGH_IMPEDANCE_VALUE));
+            } else {
+              assert(false);
+            }
+            k++;
+          } else {
+            //assert(hex_to_binary[j] == '0');
+          }
+        }
+        bit_ind += 4;
+      }
+
     }
+
+    // static_quad_value_bit_vector(const std::string& str_raw) {
+    //   int num_digits = 0;
+    //   std::string str;
+    //   for (int i = 0; i < ((int) str_raw.size()); i++) {
+    //     if (isdigit(str_raw[i])) {
+    //       num_digits++;
+    //       str += str_raw[i];
+    //     } else if (str_raw[i] == 'z') {
+    //       str += str_raw[i];
+    //     } else if (str_raw[i] == 'x') {
+    //       str += str_raw[i];
+    //     } else {
+    //       assert(str_raw[i] == '_');
+    //     }
+    //   }
+    //   assert(num_digits <= N);
+
+    //   int len = str.size();      
+
+    //   //bits.resize(N);
+    //   for (int i = len - 1; i >= 0; i--) {
+    //     unsigned char val = (str[i] == '0') ? 0 : 1;
+    //     if (str[i] == 'x') {
+    //       val = QBV_UNKNOWN_VALUE;
+    //     }
+    //     if (str[i] == 'z') {
+    //       val = QBV_HIGH_IMPEDANCE_VALUE;
+    //     }
+
+    //     int ind = len - i - 1;
+    //     set(ind, val);
+    //   }
+    //   for (int i = N - 1; i >= len; i--) {
+    //     set(i,0);
+    //   }
+    // }
 
     static_quad_value_bit_vector(const int val) {
       //bits.resize(NUM_BYTES(N));
@@ -600,11 +600,12 @@ namespace bsim {
 
   template<int N>
   static inline static_quad_value_bit_vector<N> unknown_bv() {
-    std::string str = "";
+    static_quad_value_bit_vector<N> res;
+
     for (int i = 0; i < N; i++) {
-      str += "x";
+      res.set(i, QBV_UNKNOWN_VALUE);
     }
-    return static_quad_value_bit_vector<N>(str);
+    return res;
   }
 
   template<int N>
