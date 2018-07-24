@@ -816,6 +816,13 @@ namespace bsim {
       REQUIRE(res == dbv(9, "011000000"));
     }
 
+    SECTION("lshr by bit vector width") {
+      dbv a(16, "0010111011010100");
+      dbv b(16, "0000000000010000");
+
+      REQUIRE(lshr(a, b) == dbv(16, "0000000000000000"));
+    }
+
     SECTION("Shift left zeros at end") {
       dbv b_man(23, "11001111111111000010001");
 

@@ -318,7 +318,7 @@ namespace bsim {
 
       //bits.resize(NUM_BYTES(num_bits));
       //bits.resize(num_bits);
-      for (int i = 0; i < ((int) bits.size()); i++) {
+      for (int i = 0; i < ((int) N); i++) {
         bits[i] = 0;
       }
 
@@ -790,9 +790,10 @@ namespace bsim {
     return sub_general_width_bv(zero, a);
   }
 
-  // static inline static_quad_value_bit_vector<N> operator~(const static_quad_value_bit_vector<N>& a) {
-  //   return static_quad_value_bit_vector<N>_operations::lnot(a);
-  // }
+  template<int N>
+  static inline static_quad_value_bit_vector<N> operator~(const static_quad_value_bit_vector<N>& a) {
+    return static_quad_value_bit_vector_operations<N>::lnot(a);
+  }
 
   template<int N>
   static inline
@@ -802,86 +803,94 @@ namespace bsim {
     return static_quad_value_bit_vector_operations<N>::land(a, b);
   }
 
-  // static inline static_quad_value_bit_vector<N> operator|(const static_quad_value_bit_vector<N>& a,
-  //       				     const static_quad_value_bit_vector<N>& b) {
-  //   return static_quad_value_bit_vector<N>_operations::lor(a, b);
-  // }
+  template<int N>
+  static inline static_quad_value_bit_vector<N> operator|(const static_quad_value_bit_vector<N>& a,
+        				     const static_quad_value_bit_vector<N>& b) {
+    return static_quad_value_bit_vector_operations<N>::lor(a, b);
+  }
 
-  // static inline static_quad_value_bit_vector<N> operator^(const static_quad_value_bit_vector<N>& a,
-  //       				     const static_quad_value_bit_vector<N>& b) {
-  //   return static_quad_value_bit_vector<N>_operations::lxor(a, b);
-  // }
+  template<int N>
+  static inline static_quad_value_bit_vector<N> operator^(const static_quad_value_bit_vector<N>& a,
+        				     const static_quad_value_bit_vector<N>& b) {
+    return static_quad_value_bit_vector_operations<N>::lxor(a, b);
+  }
 
-  // static inline bool operator!=(const static_quad_value_bit_vector<N>& a,
-  // 				const static_quad_value_bit_vector<N>& b) {
-  //   // if (!a.is_binary() || !b.is_binary()) {
-  //   //   return false;
-  //   // }
+  template<int N>
+  static inline bool operator!=(const static_quad_value_bit_vector<N>& a,
+  				const static_quad_value_bit_vector<N>& b) {
+    // if (!a.is_binary() || !b.is_binary()) {
+    //   return false;
+    // }
 
-  //   return !a.equals(b);
-  // }
+    return !a.equals(b);
+  }
 
-  // static inline bool operator>(const static_quad_value_bit_vector<N>& a,
-  // 			       const static_quad_value_bit_vector<N>& b) {
-  //   if (!a.is_binary() || !b.is_binary()) {
-  //     return false;
-  //   }
+  template<int N>
+  static inline bool operator>(const static_quad_value_bit_vector<N>& a,
+  			       const static_quad_value_bit_vector<N>& b) {
+    if (!a.is_binary() || !b.is_binary()) {
+      return false;
+    }
 
-  //   int N = a.bitLength();
-  //   for (int i = N - 1; i >= 0; i--) {
-  //     if (a.get(i) > b.get(i)) {
-  // 	return true;
-  //     }
+    //int    int N = a.bitLength();
+    for (int i = N - 1; i >= 0; i--) {
+      if (a.get(i) > b.get(i)) {
+  	return true;
+      }
 
-  //     if (a.get(i) < b.get(i)) {
-  // 	return false;
-  //     }
-  //   }
+      if (a.get(i) < b.get(i)) {
+  	return false;
+      }
+    }
 
-  //   return false;
-  // }
+    return false;
+  }
 
-  // static inline bool operator>=(const static_quad_value_bit_vector<N>& a,
-  //       			const static_quad_value_bit_vector<N>& b) {
-  //   if (!a.is_binary() || !b.is_binary()) {
-  //     return false;
-  //   }
+  template<int N>
+  static inline bool operator>=(const static_quad_value_bit_vector<N>& a,
+        			const static_quad_value_bit_vector<N>& b) {
+    if (!a.is_binary() || !b.is_binary()) {
+      return false;
+    }
 
-  //   return (a > b) || (a == b);
-  // }
-  
-  // static inline bool operator<(const static_quad_value_bit_vector<N>& a,
-  // 			       const static_quad_value_bit_vector<N>& b) {
-  //   if (!a.is_binary() || !b.is_binary()) {
-  //     return false;
-  //   }
+    return (a > b) || (a == b);
+  }
 
-  //   if (a == b) { return false; }
+  template<int N>
+  static inline bool operator<(const static_quad_value_bit_vector<N>& a,
+  			       const static_quad_value_bit_vector<N>& b) {
+    if (!a.is_binary() || !b.is_binary()) {
+      return false;
+    }
 
-  //   return !(a > b);
-  // }
+    if (a == b) { return false; }
 
-  // static inline static_quad_value_bit_vector<N>
-  // andr(const static_quad_value_bit_vector<N>& a) {
-  //   for (int i = 0; i < a.bitLength(); i++) {
-  //     if (a.get(i) != 1) {
-  //       return static_quad_value_bit_vector<N>(1, "0");
-  //     }
-  //   }
+    return !(a > b);
+  }
 
-  //   return static_quad_value_bit_vector<N>(1, "1");
-  // }
+  template<int N>
+  static inline static_quad_value_bit_vector<1>
+  andr(const static_quad_value_bit_vector<N>& a) {
+    for (int i = 0; i < a.bitLength(); i++) {
+      if (a.get(i) != 1) {
+        return static_quad_value_bit_vector<1>(0);
+      }
+    }
 
-  // static inline static_quad_value_bit_vector<N>
-  // orr(const static_quad_value_bit_vector<N>& a) {
-  //   for (int i = 0; i < a.bitLength(); i++) {
-  //     if (a.get(i) == 1) {
-  //       return static_quad_value_bit_vector<N>(1, "1");
-  //     }
-  //   }
+    return static_quad_value_bit_vector<1>(1);
+  }
 
-  //   return static_quad_value_bit_vector<N>(1, "0");
-  // }
+  template<int N>
+  static inline static_quad_value_bit_vector<1>
+  orr(const static_quad_value_bit_vector<N>& a) {
+    for (int i = 0; i < a.bitLength(); i++) {
+      if (a.get(i) == 1) {
+        return static_quad_value_bit_vector<1>(1);
+      }
+    }
+
+    return static_quad_value_bit_vector<1>(0);
+  }
 
   // static inline static_quad_value_bit_vector<N>
   // xorr(const static_quad_value_bit_vector<N>& a) {
@@ -1088,15 +1097,17 @@ namespace bsim {
   //   return res;
   // }
 
-  // static inline
-  // static_quad_value_bit_vector<N>
-  // zero_extend(const int outWidth, const static_quad_value_bit_vector<N>& in) {
-  //   static_quad_value_bit_vector<N> res(outWidth, 0);
-  //   for (uint i = 0; i < in.bitLength(); i++) {
-  //     res.set(i, in.get(i));
-  //   }
+  template<int InWidth, int OutWidth>
+  static inline
+  static_quad_value_bit_vector<OutWidth>
+  zero_extend(const int outWidth,
+              const static_quad_value_bit_vector<InWidth>& in) {
+    static_quad_value_bit_vector<OutWidth> res(0);
+    for (uint i = 0; i < in.bitLength(); i++) {
+      res.set(i, in.get(i));
+    }
 
-  //   return res;
-  // }
+    return res;
+  }
   
 }

@@ -981,11 +981,11 @@ namespace bsim {
     }
 
     //unsigned char sign_bit = a.get(a.bitLength() - 1);
-    for (uint i = a.bitLength() - 1; i >= shift_int; i--) {
+    for (int i = a.bitLength() - 1; i >= (int) shift_int; i--) {
       res.set(i - shift_int, a.get(i));
     }
 
-    for (uint i = a.bitLength() - 1; i >= (a.bitLength() - shift_int); i--) {
+    for (int i = a.bitLength() - 1; i >= (((int) a.bitLength()) - ((int) shift_int)); i--) {
       res.set(i, 0);
     }
 
