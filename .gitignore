@@ -5,3 +5,5 @@ Makefile
 all-tests
 cmake_install.cmake
 all-tests.dSYM/
+quad-value-tests
+quad-value-tests.dSYM/
