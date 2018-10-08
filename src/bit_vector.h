@@ -368,7 +368,6 @@ namespace bsim {
     bit_vector<Width> diff;
     bit_vector<Width> a_cpy = a;
 
-    bool underflow = false;
     for (int i = 0; i < Width; i++) {
 
       if ((a_cpy.get(i) == 0) &&
