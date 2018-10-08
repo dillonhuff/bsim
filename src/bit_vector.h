@@ -384,7 +384,6 @@ namespace bsim {
 	}
 
 	if (j >= Width) {
-	  underflow = true;
 	} else {
 	  a_cpy.set(j, 0);
 	}
