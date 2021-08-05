@@ -1,0 +1,40 @@
+cc_library(
+    name = "catch",
+    hdrs = ["catch.hpp"],
+)
+
+cc_test(
+    name = "bitvector_tests",
+    srcs = ["bitvector_tests.cpp"],
+    deps = [
+        ":catch",
+        "//src:bit_vector",
+    ],
+)
+
+cc_test(
+    name = "dynamic_bitvector_tests",
+    srcs = ["dynamic_bitvector_tests.cpp", "test_qv_main.cpp"],
+    deps = [
+        ":catch",
+        "//src:dynamic_bit_vector",
+    ],
+)
+
+cc_test(
+    name = "quad_value_bv_tests",
+    srcs = ["quad_value_bv_tests.cpp", "test_qv_main.cpp"],
+    deps = [
+        ":catch",
+        "//src:quad_value_bit_vector",
+    ],
+)
+
+cc_test(
+    name = "static_quad_value_bv_tests",
+    srcs = ["static_quad_value_bv_tests.cpp", "test_qv_main.cpp"],
+    deps = [
+        ":catch",
+        "//src:static_quad_value_bit_vector",
+    ],
+)

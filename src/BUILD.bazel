@@ -1,0 +1,17 @@
+COMPONENTS = [
+    "bit_vector",
+    "dynamic_bit_vector",
+    "quad_value_bit_vector",
+    "static_quad_value_bit_vector",
+]
+
+[
+    cc_library(
+        name = "%s" % x,
+        hdrs = ["%s.h" % x],
+        visibility = ["//visibility:public"],
+        includes = ["."],
+    )
+    for x in COMPONENTS
+]
+
